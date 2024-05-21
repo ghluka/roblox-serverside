@@ -8,8 +8,6 @@ Uploads a model to Roblox using their API.
 
 ## ⚙️ Running
 
-Simply install all the requirements and run the main script!
-
 ```sh
 # Install dependencies
 $ pip install -r requirements.txt

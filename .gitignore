@@ -1,8 +1,13 @@
 # Authentication files
 cookie.pkl
 
-# Test models
-models/*
+# Other files
+out.lua
+*.rbxl*
+working/*
+src/modules/*
+!src/modules/template
+id.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

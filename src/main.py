@@ -1,13 +1,23 @@
+import glob
+import json
+import os
+
 from utils.cookie import get_cookie
-from utils.inputs import select_rbxmx
+from utils.inputs import PATH
 from utils.session import Session
 
-auth_cookie = get_cookie()
+if __name__ == "__main__":
+    auth_cookie = get_cookie()
 
-s = Session(auth_cookie)
-asset_id = s.upload(select_rbxmx())
+    for module in glob.glob(f"{PATH}/modules/*"):
+        if not os.path.exists(f"{module}/id.txt"):
+            s = Session(auth_cookie)
 
-if asset_id == "Unable to upload, invalid cookie?":
-    print(asset_id)
-else:
-    print(f"```lua\nrequire({asset_id})(\"username here\")\n```")
+            with open(f"{module}/data.json") as f:
+                info = json.loads(f.read())
+            info["rbxmx"] = f"{module}/{info['rbxmx']}"
+
+            asset_id = s.upload(info["rbxmx"], info)
+
+            with open(f"{module}/id.txt", "w+") as f:
+                f.write(str(asset_id))

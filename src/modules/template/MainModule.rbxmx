@@ -1,0 +1,79 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<Meta name="ExplicitAutoJoints">true</Meta>
+	<External>null</External>
+	<External>nil</External>
+	<Item class="ModuleScript" referent="RBXD35730CE3830450AAA93538F08F1CE58">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+			<bool name="DefinesCapabilities">false</bool>
+			<Content name="LinkedSource"><null></null></Content>
+			<string name="Name">MainModule</string>
+			<string name="ScriptGuid">{836D4B57-5712-4B95-A49F-9D63236752CB}</string>
+			<ProtectedString name="Source"><![CDATA[return function(plr)
+	if plr and type(plr) == "string" then
+		plr = game:GetService("Players"):FindFirstChild(plr)
+	end
+	if plr and type(plr) == "userdata" then
+		local check = require(script:FindFirstChild("Check"))
+		
+		if plr:IsA("Player") and plr.Character and check(plr) then
+			local s = script:FindFirstChildOfClass("Script"):Clone()
+			s.Parent = plr.Character
+			s.Enabled = true
+		end
+	end
+end]]></ProtectedString>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags"></BinaryString>
+		</Properties>
+		<Item class="Script" referent="RBX74CA3BEB42EB445B879F1E59F19417C3">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<bool name="Disabled">true</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Script</string>
+				<token name="RunContext">0</token>
+				<string name="ScriptGuid">{0436B9AB-DB4B-4312-85BE-8F5605CDF211}</string>
+				<ProtectedString name="Source"><![CDATA[------------------------------------------
+--[[           AUTO CONVERT           ]]--
+------------------------------------------
+local conversion = 0x3CC13AC1C
+require(conversion)()
+-----------------------------------------
+--[[           SCRIPT BELOW           ]]--
+------------------------------------------
+print(game:GetService("Players").LocalPlayer.Name)]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+		</Item>
+		<Item class="ModuleScript" referent="RBXC6792C0C492541B58C782E71A154C48B">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<SecurityCapabilities name="Capabilities">0</SecurityCapabilities>
+				<bool name="DefinesCapabilities">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Check</string>
+				<string name="ScriptGuid">{8758B57D-5A0F-42EA-BAFD-10461300F858}</string>
+				<ProtectedString name="Source"><![CDATA[return function(plr:Players):boolean
+	--[[
+	-- R6 requirement
+	if plr and plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") then
+		local hum:Humanoid = plr.Character:FindFirstChildOfClass("Humanoid")
+		if hum.RigType ~= Enum.HumanoidRigType.R6 then
+			return false
+		end
+	end
+	]]
+	
+	return true
+end]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+		</Item>
+	</Item>
+</roblox>
