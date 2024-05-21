@@ -36,4 +36,7 @@ class Session:
             headers["x-csrf-token"] = s.headers["x-csrf-token"]
             s = session.post(url, data=asset_data, headers=headers)
         
-        return s.json()["AssetId"]
+        try:
+            return s.json()["AssetId"]
+        except:
+            return "Unable to upload, invalid cookie?"

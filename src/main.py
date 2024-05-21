@@ -7,4 +7,7 @@ auth_cookie = get_cookie()
 s = Session(auth_cookie)
 asset_id = s.upload(select_rbxmx())
 
-print(asset_id)
+if asset_id == "Unable to upload, invalid cookie?":
+    print(asset_id)
+else:
+    print(f"```lua\nrequire({asset_id})(\"username here\")\n```")
