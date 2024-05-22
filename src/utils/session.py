@@ -11,17 +11,17 @@ class Session:
            ".ROBLOSECURITY": self.auth_cookie
         })
     
-    def upload(self, rbxmx_path:str, info:dict[str]={"name": "MainModule", "description": ""}) -> int:
+    def upload(self, rbxmx_path:str, info:dict[str]={"roblox_name": "MainModule", "roblox_description": ""}) -> int:
         info = {
-            "name": info["name"],
-            "description": info["description"],
+            "roblox_name": info["roblox_name"],
+            "roblox_description": info["roblox_description"],
             "copylocked": True,
             "groupId": ""
         }
 
         url = f"https://data.roblox.com/Data/Upload.ashx?json=1&assetid=0&type=Model&genreTypeId=1" \
-            f"&name={info['name']}" \
-            f"&description={info['description']}" \
+            f"&name={info['roblox_name']}" \
+            f"&description={info['roblox_description']}" \
             f"&ispublic={info['copylocked']}" \
             f"&allowComments=false" \
             f"&groupId=\"\""

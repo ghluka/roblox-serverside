@@ -1,5 +1,5 @@
-# 🎮 Roblox Model Uploader
-Uploads a model to Roblox using their API.
+# 🎮 Roblox Module Uploader
+Uploads modules through Roblox's API, store the requires on a website (optional) 
 
 [![GitHub license](https://img.shields.io/github/license/ghluka/roblox-model-uploader)](LICENSE)
 
@@ -14,4 +14,7 @@ $ pip install -r requirements.txt
 
 # Run main script
 $ python3 main.py
+
+# Run website script (optional)
+$ python3 web/main.py
 ```

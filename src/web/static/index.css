@@ -1,0 +1,64 @@
+html, body {
+    background-color: #303030;
+}
+
+* {
+    font-family: poppins, Poppins, Arial, sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: #FFFFFF;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.grid-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.grid-container > div {
+    width: 100%;
+    max-width: 380px;
+    display: inline-flex;
+    flex-direction: column;
+    position: relative;
+    padding: 16px 8px;
+    margin: 5px;
+    border: 1px solid #181919;
+    border-radius: 4px;
+    background-color: #2C2C2C;
+}
+
+.grid-container > div > h1, h2, h3, h4, h5, h6, p, a {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+.code {
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #181919;
+    border-radius: 4px;
+    background-color: #252525;
+    color: #CCCCCC;
+    font-family: "Fira Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+.code * {
+    font-family: "Fira Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
