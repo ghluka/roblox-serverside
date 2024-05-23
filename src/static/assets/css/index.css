@@ -2,7 +2,7 @@ html, body {
     background-color: #303030;
 }
 
-* {
+*:not(#editor, #editor *) {
     font-family: poppins, Poppins, Arial, sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -32,6 +32,23 @@ html, body {
     background-color: #2C2C2C;
 }
 
+button {
+    border: 1px solid #181919;
+    border-radius: 4px;
+    background-color: #2C2C2C;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+input {
+    display: none;
+}
+
 .grid-container > div > h1, h2, h3, h4, h5, h6, p, a {
     margin-top: 0;
     margin-bottom: 4px;
@@ -51,6 +68,7 @@ html, body {
     -webkit-user-select: text;
     -ms-user-select: text;
     user-select: text;
+    word-wrap: break-word;
 }
 
 .code * {
