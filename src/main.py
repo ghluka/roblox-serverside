@@ -2,7 +2,7 @@ import glob
 import json
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 
 from blueprints.executor import executor
 from utils.cookie import get_cookie
@@ -19,12 +19,21 @@ for module in glob.glob(f"{PATH}/modules/*"):
             info = json.loads(f.read())
         with open(f"{module}/id.txt") as f:
             info["id"] = f.read()
-
+        if os.path.exists(f"{module}/script.lua"):
+            with open(f"{module}/script.lua") as f:
+                info["script"] = f.read()
+        else:
+            info["script"] = f"require({info['id']})(username)"
+        
         modules.append(info)
 
 @app.route('/') 
 def homepage():
-    return render_template("index.html", modules=modules)
+    return app.send_static_file("index.html")
+
+@app.route('/executor') 
+def executor():
+    return render_template("executor.html", modules=modules)
 
 if __name__ == "__main__":
     auth_cookie = get_cookie()

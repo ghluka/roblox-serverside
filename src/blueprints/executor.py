@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 
 executor = Blueprint("executor", __name__)
 
@@ -18,14 +18,14 @@ def web_execute():
 def roblox_ping():
     user = users.get(request.headers["user-id"])
     
-    script = ""
+    script = []
     if not user:
         users.update({request.headers["user-id"]: []})
     elif len(user) > 0:
-        script = user[0]
-        user.pop(0)
+        script = user.copy()
+        user.clear()
 
-    return script
+    return jsonify(script)
 
 @executor.route('/api/close', methods=['POST'])
 def roblox_close():

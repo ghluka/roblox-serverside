@@ -1,10 +1,9 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const userid = document.getElementById("userid").value;
 
 function execute(script) {
+    const userid = document.getElementById("userid").value;
     const url = window.location.origin + "/api/execute?userid=" + userid
-    console.log(script);
     fetch(url, {
         method: "POST",
         headers: {
@@ -13,7 +12,12 @@ function execute(script) {
         body: script
     }).then(response => response.text()).then(function(response) {
         if (response == "NO CLIENT") {
-            Swal.fire("No client!");
+            Swal.fire("No client!", "Unable to find user " + userid + ".");
         }
     }).catch(error => console.error('Error:', error));
+}
+
+function executeRequire(script, user)
+{
+    execute("local username = \"" + user + "\"\n" + script);
 }

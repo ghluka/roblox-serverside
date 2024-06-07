@@ -2,7 +2,7 @@ html, body {
     background-color: #303030;
 }
 
-*:not(#editor, #editor *) {
+*:not(#editor, #editor *, i, a, span) {
     font-family: poppins, Poppins, Arial, sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -32,7 +32,7 @@ html, body {
     background-color: #2C2C2C;
 }
 
-button {
+button, input {
     border: 1px solid #181919;
     border-radius: 4px;
     background-color: #2C2C2C;
@@ -46,12 +46,20 @@ button {
 }
 
 input {
-    display: none;
+    padding: 0;
 }
 
 .grid-container > div > h1, h2, h3, h4, h5, h6, p, a {
     margin-top: 0;
     margin-bottom: 4px;
+}
+
+.centered {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .code {

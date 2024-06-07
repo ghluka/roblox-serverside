@@ -21,18 +21,5 @@
                 </p>
             </div>
         </div>
-        <div style="text-align: center;">
-            <h1 style="margin-bottom: 0;">Modules</h1>
-            <h3>Roblox modules</h3>
-        </div>
-        <div class="grid-container">
-            {%for v in modules%}
-                <div>
-                    <h2>{{v["name"]}}</h2>
-                    <p>{{v["description"]}}</p>
-                    <p class="code"><span style="color: #84d6f7;">require</span>(<span style="color: #ffc600;">{{v["id"]}}</span>)(<span style="color: #adf195;">"your username"</span>)</p>
-                </div>
-            {%endfor%}
-        </div>
     </body>
 </html>
