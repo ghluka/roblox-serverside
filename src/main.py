@@ -4,6 +4,7 @@ import os
 
 from flask import Flask, render_template
 
+from blueprints.auth import auth
 from blueprints.executor import executor
 from utils.cookie import get_cookie
 from utils.inputs import PATH
@@ -11,10 +12,11 @@ from utils.session import Session
 
 app = Flask(__name__, static_url_path="")
 app.register_blueprint(executor)
+app.register_blueprint(auth)
 
 modules = []
 for module in glob.glob(f"{PATH}/modules/*"):
-    if os.path.exists(f"{module}/id.txt") and not module.endswith("template"):
+    if os.path.exists(f"{module}/id.txt"):# and not module.endswith("template"):
         with open(f"{module}/data.json") as f:
             info = json.loads(f.read())
         with open(f"{module}/id.txt") as f:

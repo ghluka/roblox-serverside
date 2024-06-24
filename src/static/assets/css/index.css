@@ -2,7 +2,7 @@ html, body {
     background-color: #303030;
 }
 
-*:not(#editor, #editor *, i, a, span) {
+*:not(#editor, #editor *, #code, #code *, p, i, a, span) {
     font-family: poppins, Poppins, Arial, sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;

@@ -2,13 +2,16 @@ local https = game:GetService("HttpService")
 local plrs = game:GetService("Players")
 
 local endpoint = "http://localhost:5000/"
-local whitelist = https:JSONDecode(https:GetAsync(endpoint.."whitelist.json"))
 local run = require(0x26E001F12)
 
 local threads = {}
 
+local whitelist = function(plr)
+	return https:JSONDecode(https:GetAsync(endpoint.."api/whitelist?userid="..tostring(plr.UserId)))
+end
+
 local function plrAdded(plr)
-	if whitelist[tostring(plr.UserId)] then
+	if whitelist(plr) then
 		threads[tostring(plr.UserId)] = coroutine.create(function()
 			while true do
 				task.wait(0.3)
@@ -26,7 +29,7 @@ local function plrAdded(plr)
 	end
 end
 local function plrRemoving(plr)
-	if whitelist[tostring(plr.UserId)] then
+	if whitelist(plr.UserId) then
 		coroutine.close(threads[tostring(plr.UserId)])
 		pcall(function()
 			https:PostAsync(endpoint.."api/close", "", Enum.HttpContentType.TextPlain, false, {["user-id"]=tostring(plr.UserId)})

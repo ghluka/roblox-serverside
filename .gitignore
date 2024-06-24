@@ -1,5 +1,6 @@
 # Authentication files
 cookie.pkl
+whitelisted.txt
 
 # Other files
 out.lua
