@@ -29,11 +29,12 @@ local function plrAdded(plr)
 	end
 end
 local function plrRemoving(plr)
-	if whitelist(plr.UserId) then
-		coroutine.close(threads[tostring(plr.UserId)])
+	print(plr, whitelist(plr))
+	if whitelist(plr) then
 		pcall(function()
 			https:PostAsync(endpoint.."api/close", "", Enum.HttpContentType.TextPlain, false, {["user-id"]=tostring(plr.UserId)})
 		end)
+		coroutine.close(threads[tostring(plr.UserId)])
 	end
 end
 
@@ -44,7 +45,8 @@ plrs.PlayerAdded:Connect(plrAdded)
 plrs.PlayerRemoving:Connect(plrRemoving)
 
 game:BindToClose(function()
-    for _, plr in pairs(plrs:GetPlayers()) do 
+    for _, plr in pairs(plrs:GetPlayers()) do
         plrRemoving(plr)
     end
+	wait(1)
 end)

@@ -12,7 +12,7 @@ function execute(script) {
         body: script
     }).then(response => response.text()).then(function(response) {
         if (response == "NO CLIENT") {
-            Swal.fire("No client!", "Unable to find user " + userid + ".");
+            userIdAlert(userid);
         }
     }).catch(error => console.error('Error:', error));
 }
