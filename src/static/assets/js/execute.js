@@ -19,5 +19,17 @@ function execute(script) {
 
 function executeRequire(script, user)
 {
-    execute("local username = \"" + user + "\"\n" + script);
+    const userid = document.getElementById("userid").value;
+    const url = window.location.origin + "/api/execute_module?userid=" + userid
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "text/plain"
+        },
+        body: script
+    }).then(response => response.text()).then(function(response) {
+        if (response == "NO CLIENT") {
+            userIdAlert(userid);
+        }
+    }).catch(error => console.error('Error:', error));
 }

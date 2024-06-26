@@ -2,15 +2,38 @@ html, body {
     background-color: #303030;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
 *:not(#editor, #editor *, #code, #code *, p, i, a, span) {
     font-family: poppins, Poppins, Arial, sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
     color: #FFFFFF;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    user-select: none;
+}
+
+img {
+    pointer-events: none;
 }
 
 .grid-container {
@@ -21,7 +44,7 @@ html, body {
 
 .grid-container > div {
     width: 100%;
-    max-width: 380px;
+    max-width: 300px;
     display: inline-flex;
     flex-direction: column;
     position: relative;

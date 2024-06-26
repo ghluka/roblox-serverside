@@ -8,6 +8,7 @@ out.lua
 working/*
 src/modules/*
 !src/modules/template
+src/static/assets/img/modules
 id.txt
 
 # Byte-compiled / optimized / DLL files

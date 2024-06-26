@@ -1,7 +1,8 @@
 {
     "roblox_name": "MainModule",
     "roblox_description": "Test module",
-    "name": "Template module",
-    "description": "Test module",
+    "name": "Template",
+    "author": "Authors",
+    "description": "Description",
     "rbxmx": "MainModule.rbxmx"
 }

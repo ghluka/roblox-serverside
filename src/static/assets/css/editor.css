@@ -1,7 +1,10 @@
-body {
-    overflow: hidden;
-}
 #editor {
     width: 720px;
     height: 400px;
+}
+
+.preview-img {
+    width: calc(100% + 16px);
+    margin: -16px -8px 4px;
+    border-radius: 4px 4px 0 0;
 }

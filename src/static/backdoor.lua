@@ -29,7 +29,6 @@ local function plrAdded(plr)
 	end
 end
 local function plrRemoving(plr)
-	print(plr, whitelist(plr))
 	if whitelist(plr) then
 		pcall(function()
 			https:PostAsync(endpoint.."api/close", "", Enum.HttpContentType.TextPlain, false, {["user-id"]=tostring(plr.UserId)})

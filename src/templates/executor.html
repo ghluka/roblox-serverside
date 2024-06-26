@@ -64,9 +64,11 @@
       <div class="grid-container">
         {%for v in modules%}
             <div>
+                <img src='{{v["image"]}}' class="preview-img">
                 <h3>{{v["name"]}}</h3>
-                <h5>{{v["description"]}}</h5>
-                <button onclick='executeRequire("{{v["script"]}}", document.getElementById("username").value);'>Execute</button>
+                <h5>{{v["author"]}}</h5>
+                <h5 style="color: #C4C4C4;">{{v["description"]}}</h5>
+                <button onclick='executeRequire(`{{v["module"]}}`, document.getElementById("username").value);'>Execute</button>
             </div>
         {%endfor%}
       </div>
