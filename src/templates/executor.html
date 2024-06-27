@@ -7,7 +7,6 @@
   <link rel="stylesheet" media="screen" href="/assets/css/editor.css">
   <link rel="stylesheet" media="screen" href="/assets/css/index.css">
   <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
-  <script src="/assets/js/sidebar.js" defer></script>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.0/ace.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.0/ext-language_tools.min.js"></script>
@@ -17,12 +16,12 @@
   <body>
     <div class="sidebar">
         <div class="logo-details">
-            <div class="logo_name"></div>
+            <div class="logo_name">Idk what 2 name</div>
             <i class='bx bx-menu' id="btn"></i>
         </div>
         <ul class="nav-list">
             <li>
-                <a onclick="openTab(event, 'dashboard')">
+                <a id="tab-selected" onclick="openTab(event, 'dashboard')">
                     <i class='bx bxs-dashboard'></i>
                     <span class="links_name">Dashboard</span>
                 </a>
@@ -47,14 +46,30 @@
     
     <section class="home-section" id="dashboard">
       <div class="centered">
-        <input id="userid" value="" placeholder="Your userid">
+        <div class="grid-container avatar-container">
+            <div>
+                <h5 style="color: #606070;">Roblox Username</h5>
+                <div>
+                  <img id="avatar">
+                  <div>
+                      <h3 id="username">Roblox</h3>
+                      <input oninput="updateUserDashboard()" type="number" id="userid" value="1" placeholder="Your userid">
+                  </div>
+                </div>
+            </div>
+        </div>
       </div>
     </section>
     <section class="home-section" id="executor">
-      <pre id="editor"></pre>
-      <div>
-        <button onclick='execute(GetText());'>execute</button>
-        <button onclick='SetText("print(\"Hello world!\")");'>clear</button>
+      <div class="script-container">
+        <pre id="editor"></pre>
+        <div>
+          <button onclick='execute(GetText());'>Execute</button>
+          <button onclick='SetText("print(\"Hello world!\")");'>Clear</button>
+          <button onclick='SetFile();'>Open File</button>
+          <button onclick='ExecuteFile();'>Execute File</button>
+          <button onclick='SaveFile(GetText());'>Save File</button>
+        </div>
       </div>
     </section>
     <section class="home-section" id="scripthub">
@@ -66,14 +81,15 @@
             <div>
                 <img src='{{v["image"]}}' class="preview-img">
                 <h3>{{v["name"]}}</h3>
-                <h5>{{v["author"]}}</h5>
-                <h5 style="color: #C4C4C4;">{{v["description"]}}</h5>
+                <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
+                <h5 style="color: #606070;">{{v["description"]}}</h5>
                 <button onclick='executeRequire(`{{v["module"]}}`, document.getElementById("username").value);'>Execute</button>
             </div>
         {%endfor%}
       </div>
     </section>
 
+    <script src="/assets/js/sidebar.js"></script>
     <script src="/assets/js/roblox.js"></script>
     <script src="/assets/js/execute.js"></script>
     <script src="/assets/js/editor.js"></script>

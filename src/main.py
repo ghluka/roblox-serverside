@@ -11,5 +11,9 @@ app.register_blueprint(user)
 def homepage():
     return app.send_static_file("index.html")
 
+@app.route('/backdoor') 
+def backdoor_page():
+    return app.send_static_file("backdoor.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

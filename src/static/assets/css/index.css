@@ -1,25 +1,11 @@
-html, body {
-    background-color: #303030;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-::-webkit-scrollbar {
-    width: 10px;
-}
-  
-::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-}
-   
-::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-  
-::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+html, body {
+    background-color: #141414;
 }
 
 *:not(#editor, #editor *, #code, #code *, p, i, a, span) {
-    font-family: poppins, Poppins, Arial, sans-serif;
+    font-family: Inter, sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -30,6 +16,22 @@ html, body {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+  
+::-webkit-scrollbar-track {
+    background: #000000; 
+}
+   
+::-webkit-scrollbar-thumb {
+    background: #33063f; 
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #330440; 
 }
 
 img {
@@ -44,21 +46,34 @@ img {
 
 .grid-container > div {
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     display: inline-flex;
     flex-direction: column;
     position: relative;
-    padding: 16px 8px;
+    padding: 16px 8px 4px 8px;
     margin: 5px;
-    border: 1px solid #181919;
-    border-radius: 4px;
-    background-color: #2C2C2C;
+    border: 2px solid #50407040;
+    border-radius: 8px;
+    background-color: #171717;
+}
+
+.script-container {
+    width: auto;
+    padding: 16px 16px 8px 16px;
+    margin: 5px;
+    border: 2px solid #50407040;
+    border-radius: 8px;
+    background-color: #171717;
+}
+
+.grid-container > div > button {
+    margin-top: auto;  
 }
 
 button, input {
-    border: 1px solid #181919;
+    border: 2px solid #50407040;
     border-radius: 4px;
-    background-color: #2C2C2C;
+    background-color: #0a0a0a;
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
@@ -66,6 +81,14 @@ button, input {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+button:hover, input:hover {
+    background-color: #111111;
+}
+
+button:active, input:active {
+    background-color: #000000;
 }
 
 input {
@@ -88,7 +111,7 @@ input {
 .code {
     padding: 8px;
     margin: 5px;
-    border: 1px solid #181919;
+    border: 2px solid #50407040;
     border-radius: 4px;
     background-color: #252525;
     color: #CCCCCC;

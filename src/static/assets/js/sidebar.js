@@ -16,9 +16,8 @@ function menuBtnChange() {
 }
 
 function openTab(evt, tabName) {
-    var i, tabcontent;
-    tabcontent = document.getElementsByClassName("home-section");
-    for (i = 0; i < tabcontent.length; i++) {
+    var tabcontent = document.getElementsByClassName("home-section");
+    for (var i = 0; i < tabcontent.length; i++) {
         const tab = tabcontent[i];
         if (tab.id == tabName) {
             tabcontent[i].style.display = "block";
@@ -27,7 +26,17 @@ function openTab(evt, tabName) {
             tabcontent[i].style.display = "none";
         }
     }
+
+    if (evt) {
+        var selected = document.getElementById("tab-selected");
+        selected.id = "";
+        if (evt.target.nodeName == "A")
+            evt.target.id = "tab-selected";
+        else
+            evt.target.parentNode.id = "tab-selected";
+    }
 }
 
 menuBtnChange();
+closeBtn.click();
 openTab(null, "dashboard")
