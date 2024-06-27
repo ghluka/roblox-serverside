@@ -63,8 +63,9 @@ def web_execute():
 @executor.route('/api/execute_module', methods=['POST'])
 def web_execute_module():
     userid = request.args.get("userid")
+    user = request.args.get("username")
     data = request.data.decode("utf8")
-    script = f"local username = game:GetService(\"Players\"):GetPlayerByUserId({userid})\n"
+    script = f"local username = \"{user}\"\n"
 
     module = f"{PATH}/modules/{data}"
     if os.path.exists(module):

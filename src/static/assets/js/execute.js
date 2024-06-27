@@ -17,10 +17,14 @@ function execute(script) {
     }).catch(error => console.error('Error:', error));
 }
 
-function executeRequire(script, user)
+function executeRequire(script)
 {
     const userid = document.getElementById("userid").value;
-    const url = window.location.origin + "/api/execute_module?userid=" + userid
+    var username =  document.getElementById("module-username").value;
+    if (username == "") {
+        var username = document.getElementById("username").innerHTML;
+    }
+    const url = window.location.origin + "/api/execute_module?userid="+ userid + "&username=" + username
     fetch(url, {
         method: "POST",
         headers: {

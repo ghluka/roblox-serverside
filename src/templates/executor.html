@@ -16,7 +16,7 @@
   <body>
     <div class="sidebar">
         <div class="logo-details">
-            <div class="logo_name">Idk what 2 name</div>
+            <div class="logo_name">Serverside</div>
             <i class='bx bx-menu' id="btn"></i>
         </div>
         <ul class="nav-list">
@@ -74,7 +74,7 @@
     </section>
     <section class="home-section" id="scripthub">
       <div class="centered">
-        <input id="username" value="" placeholder="Target's username">
+        <input id="module-username" value="" placeholder="Target's username">
       </div>  
       <div class="grid-container">
         {%for v in modules%}
@@ -83,7 +83,7 @@
                 <h3>{{v["name"]}}</h3>
                 <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
                 <h5 style="color: #606070;">{{v["description"]}}</h5>
-                <button onclick='executeRequire(`{{v["module"]}}`, document.getElementById("username").value);'>Execute</button>
+                <button onclick='executeRequire(`{{v["module"]}}`);'>Execute</button>
             </div>
         {%endfor%}
       </div>
