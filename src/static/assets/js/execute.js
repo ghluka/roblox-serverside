@@ -38,6 +38,19 @@ function executeRequire(script)
     }).catch(error => console.error('Error:', error));
 }
 
+function executePlayerAction(script) {
+    const userid = document.getElementById("userid").value;
+    const targetid = document.getElementById("player-actions").getAttribute("userid");
+    
+    script = "local targethum = targetchar:FindFirstChildOfClass('Humanoid')\n" + script
+    script = "local targetchar = target.Character\n" + script
+    script = "local target = game:GetService('Players'):GetPlayerByUserId(" + targetid + ")\n" + script
+    script = "local plrchar = plr.Character\n" + script
+    script = "local plr = game:GetService('Players'):GetPlayerByUserId(" + userid + ")\n" + script
+    
+    execute(script);
+}
+
 function FileInput(f) {
     let input = document.createElement('input');
     input.type = 'file';

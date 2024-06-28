@@ -81,7 +81,7 @@ button:after {
     text-align: left;
 }
 
-#avatar {
+.avatar {
     vertical-align: middle;
     width: 60px;
     height: 60px;
@@ -103,4 +103,9 @@ button:after {
 
 .avatar-container > div > div > div {
     padding-left: 8px;
+}
+
+.emoji {
+    height: 31px;
+    transform: translate(10px, 5px);
 }

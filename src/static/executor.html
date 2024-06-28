@@ -6,12 +6,14 @@
   <title>Editor</title>
   <link rel="stylesheet" media="screen" href="/assets/css/editor.css">
   <link rel="stylesheet" media="screen" href="/assets/css/index.css">
+  <link rel="stylesheet" media="screen" href="/assets/css/players.css">
   <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.0/ace.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.0/ext-language_tools.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 </head>
   <body>
     <div class="sidebar">
@@ -35,6 +37,13 @@
                 <span class="tooltip">Executor</span>
             </li>
             <li>
+                <a onclick="openTab(event, 'players')">
+                    <i class='bx bxs-face'></i>
+                    <span class="links_name">Players</span>
+                </a>
+                <span class="tooltip">Players</span>
+            </li>
+            <li>
                 <a onclick="openTab(event, 'scripthub')">
                     <i class='bx bx-folder'></i>
                     <span class="links_name">Script Hub</span>
@@ -50,7 +59,7 @@
             <div>
                 <h5 style="color: #606070;">Roblox Username</h5>
                 <div>
-                  <img id="avatar">
+                  <img id="avatar" class="avatar">
                   <div>
                       <h3 id="username">Roblox</h3>
                       <input oninput="updateUserDashboard()" type="number" id="userid" value="1" placeholder="Your userid">
@@ -72,20 +81,54 @@
         </div>
       </div>
     </section>
+    <section class="home-section" id="players">
+      <div style="display: flex!important; height: 100%;">
+        <div style="width: 30%;" class="script-container">
+          <h3>Player list</h3>
+          <ul id="player-list">
+          </ul>
+        </div>
+        <div style="width: 70%;" class="script-container" id="player-actions" userid="1">
+          <div class="grid-container avatar-container" id="player-actions-container">
+            <div style="padding: 0!important; border: none; background: transparent;">
+                <div>
+                  <img class="avatar" id="player-action-avatar" style="width: 100px; height: 100px;">
+                  <div>
+                    <h2 id="player-action-displayname">Roblox</h2>
+                    <h3 style="color: #606070;" id="player-action-username">@Roblox</h3>
+                  </div>
+                </div>
+            </div>
+            <h4 style="width: 100%; margin: 10px 0 0 10px;">Essential Actions</h4>
+            <div class="grid-container avatar-container" style="border: none; margin: 0; padding: 0;">
+              <div style="border: none; margin: 0; padding: 0!important;">
+                <button style="width: 50%;" onclick="executePlayerAction('target:Kick()');">Kick</button>
+                <button style="width: 50%;" onclick="executePlayerAction('targetchar:Destroy()');">Punish</button>
+              </div>
+              <div style="border: none; margin: 0; padding: 0!important;">
+                <button style="width: 50%;" onclick="executePlayerAction('require(18209170328)(target)');">R6</button>
+                <button style="width: 50%;" onclick="executePlayerAction('local c = CFrame.new(); pcall(function() c = targetchar.PrimaryPart.CFrame; targetchar:Destroy(); end); target:LoadCharacter(); target.Character:SetPrimaryPartCFrame(c)');">Refresh</button>
+              </div>
+              <div style="border: none; margin: 0; padding: 0!important;">
+                <button style="width: 50%;" onclick="executePlayerAction('plrchar:SetPrimaryPartCFrame(targetchar.PrimaryPart.CFrame)');">Goto</button>
+                <button style="width: 50%;" onclick="executePlayerAction('targetchar:SetPrimaryPartCFrame(plrchar.PrimaryPart.CFrame)');">Bring</button>
+              </div>
+            </div>
+            <h4 style="width: 100%; margin: 10px 0 0 10px;">Fun Actions</h4>
+            <div class="grid-container avatar-container" style="border: none; margin: 0; padding: 0;">
+              <div style="border: none; margin: 0; padding: 0!important;">
+                <button style="width: 33%;" onclick="executePlayerAction('targethum.Health = 0');">Kill</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="home-section" id="scripthub">
       <div class="centered">
         <input id="module-username" value="" placeholder="Target's username">
       </div>  
-      <div class="grid-container">
-        {%for v in modules%}
-            <div>
-                <img src='{{v["image"]}}' class="preview-img">
-                <h3>{{v["name"]}}</h3>
-                <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
-                <h5 style="color: #606070;">{{v["description"]}}</h5>
-                <button onclick='executeRequire(`{{v["module"]}}`);'>Execute</button>
-            </div>
-        {%endfor%}
+      <div class="grid-container" id="modules">
       </div>
     </section>
 

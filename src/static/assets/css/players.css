@@ -1,0 +1,98 @@
+.players i {
+    color: #fff;
+    height: 60px;
+    min-width: 50px;
+    font-size: 28px;
+    text-align: center;
+    line-height: 60px;
+}
+
+.players .nav-list {
+    margin-top: 20px;
+    height: 100%;
+}
+
+.players li {
+    position: relative;
+    margin: 8px 0;
+    list-style: none;
+}
+
+.players input {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 400;
+    outline: none;
+    height: 50px;
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    transition: all 0.5s ease;
+    background: #1d1b31;
+}
+
+.players.open input {
+    padding: 0 20px 0 50px;
+    width: 100%;
+}
+
+.players .bx-search {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 22px;
+    background: #1d1b31;
+    color: #fff;
+}
+
+.players .bx-search:hover {
+    background: #fff;
+    color: #222222;
+}
+
+.players.open .bx-search:hover {
+    background: #1d1b31;
+    color: #fff;
+}
+
+.players li i {
+    font-size: 18px;
+    border-radius: 12px;
+}
+
+.players li a {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    background: #222222;
+}
+
+.players li a:hover {
+    background: #272727;
+}
+
+.players li a .links_name {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s;
+}
+
+.players.open li a .links_name {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.players li a:hover .links_name,
+.players li a:hover i {
+    transition: all 0.5s ease;
+    color: #2B2B2B;
+}

@@ -66,3 +66,45 @@ if (user != "") {
     document.getElementById("userid").value = user;
 }
 updateUserInfoDashboard();
+
+function updatePlayers() {
+    var userid = document.getElementById("userid").value;
+    const url = "http://localhost:5000/api/players?userid=" + userid;
+    fetch(url, {
+        method: "GET"
+    }).then(response => response.text()).then(function(response) {
+        document.getElementById("player-list").innerHTML = response;
+    }).catch(error => console.error('Error:', error));
+    setTimeout(updatePlayers, 10000);
+}
+updatePlayers();
+
+function updateModules() {
+    const url = "http://localhost:5000/api/modules";
+    fetch(url, {
+        method: "GET"
+    }).then(response => response.text()).then(function(response) {
+        document.getElementById("modules").innerHTML = response;
+    }).catch(error => console.error('Error:', error));
+    setTimeout(updateModules, 60000);
+}
+updateModules();
+
+function getFlagEmoji(countryCode) {
+    const codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
+    return String.fromCodePoint(...codePoints);
+  }
+
+function setPlayer(event) {
+    var dataNode = event.target;
+    while (dataNode.nodeName !== "A") {
+        dataNode = dataNode.parentNode;
+    }
+    var data = JSON.parse(dataNode.getAttribute("data").replaceAll("'", "\""));
+    document.getElementById("player-action-avatar").src = data["AvatarUrl"];
+    document.getElementById("player-action-displayname").innerHTML = data["DisplayName"] + twemoji.parse(getFlagEmoji(data["Country"]));
+    document.getElementById("player-action-username").innerHTML = "@" + data["Username"];
+    document.getElementById("player-actions").setAttribute("userid", data["UserId"]);
+    document.getElementById("player-actions-container").style.display = "flex";
+}
+document.getElementById("player-actions-container").style.display = "none";

@@ -11,6 +11,10 @@ app.register_blueprint(user)
 def homepage():
     return app.send_static_file("index.html")
 
+@app.route('/executor') 
+def executor():
+    return app.send_static_file("executor.html")
+
 @app.route('/backdoor') 
 def backdoor_page():
     return app.send_static_file("backdoor.html")

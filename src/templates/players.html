@@ -1,0 +1,21 @@
+{%for i, v in players.items()%}
+    <div class="players open">
+        <ul class="nav-list">
+            <li>
+                <a id='{{v["UserId"]}}' data="{{v}}" onclick="setPlayer(event)">
+                    <div class="grid-container avatar-container">
+                        <div style="padding: 0!important; border: none; background: transparent;">
+                            <div>
+                              <img class="avatar" src='{{v["AvatarUrl"]}}'>
+                              <div>
+                                <h3>{{v["DisplayName"]}}</h3>
+                                <h5 style="color: #606070;">@{{i}}</h5>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+{%endfor%}

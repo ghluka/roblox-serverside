@@ -1,0 +1,9 @@
+{%for v in modules%}
+    <div>
+        <img src='{{v["image"]}}' class="preview-img">
+        <h3>{{v["name"]}}</h3>
+        <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
+        <h5 style="color: #606070;">{{v["description"]}}</h5>
+        <button onclick='executeRequire(`{{v["module"]}}`);'>Execute</button>
+    </div>
+{%endfor%}
