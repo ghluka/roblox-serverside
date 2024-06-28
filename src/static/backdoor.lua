@@ -14,7 +14,7 @@ local function plrAdded(plr)
 	if whitelist(plr) then
 		threads[tostring(plr.UserId)] = coroutine.create(function()
 			while true do
-				task.wait(0.3)
+				task.wait(1)
 				pcall(function()
 					local queue = https:JSONDecode(https:GetAsync(endpoint.."api/ping?userid="..tostring(plr.UserId), true))
                     for _, code in pairs(queue) do

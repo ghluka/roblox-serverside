@@ -97,7 +97,19 @@ input {
 
 .grid-container > div > h1, h2, h3, h4, h5, h6, p, a {
     margin-top: 0;
-    margin-bottom: 4px;
+    /*margin-bottom: 4px;*/
+}
+
+.description {
+    height: 2.4em;
+    color: #606070!important;
+    margin-bottom: 6px;
+    background-color: #171717;
+    white-space: pre-line;
+}
+
+.description:hover {
+    height: max-content;
 }
 
 .centered {

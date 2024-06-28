@@ -3,7 +3,9 @@
         <img src='{{v["image"]}}' class="preview-img">
         <h3>{{v["name"]}}</h3>
         <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
-        <h5 style="color: #606070;">{{v["description"]}}</h5>
+        <h5 class="description">{{v["description"]}}
+            {%if v["controls"]%}<a onclick='Swal.fire({textalign:`left`, html:`<p style="text-align: left; white-space: pre;">{{v["controls"]}}</p>`})' href="#">Click for controls.</a>
+            {%endif%}</h5>
         <button onclick='executeRequire(`{{v["module"]}}`);'>Execute</button>
     </div>
 {%endfor%}

@@ -105,6 +105,14 @@ button:after {
     padding-left: 8px;
 }
 
+.avatar-container > div > div > div > h1, h2, h3, h4, h5, h6, p, a, span, li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.avatar-container > div > div > div > h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, p:hover, a:hover, span:hover, li:hover {
+  overflow: visible;
+}
+
 .emoji {
     height: 31px;
     transform: translate(10px, 5px);
