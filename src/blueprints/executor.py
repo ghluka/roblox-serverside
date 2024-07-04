@@ -2,8 +2,8 @@ import glob
 import json
 import os
 
-from flask import Blueprint, render_template, request
 import requests
+from flask import Blueprint, render_template, request
 
 from utils.cookie import get_cookie
 from utils.inputs import PATH
@@ -13,6 +13,8 @@ executor = Blueprint("executor", __name__)
 
 users = {}
 users_players = {}
+
+module_exists = lambda module: (os.path.exists(f"{module}/id.txt") or os.path.exists(f"{module}/script.lua"))
 
 @executor.route('/api/execute', methods=['POST'])
 def web_execute():
@@ -29,17 +31,44 @@ def web_execute_module():
     userid = request.args.get("userid")
     user = request.args.get("username")
     data = request.data.decode("utf8")
-    script = f"local username = \"{user}\"\n"
+    script = f"""local me = game:GetService("Players"):GetPlayerByUserId({userid})
+    local target = "{user}"
+    """
 
     module = f"{PATH}/modules/{data}"
-    if os.path.exists(module):
+    if module_exists(module):
         if os.path.exists(f"{module}/script.lua"):
             with open(f"{module}/script.lua") as f:
                 script += f.read()
         elif os.path.exists(f"{module}/id.txt"):
             with open(f"{module}/id.txt") as f:
-                script += f"require({f.read()})(username)"
-    
+                script += f"""targets = {{}}
+                
+                if target == "me" then
+                    table.insert(targets, me)
+                elseif target == "all" then
+                    targets = game:GetService("Players"):GetPlayers()
+                elseif target == "others" then
+                    targets = game:GetService("Players"):GetPlayers()
+                    table.remove(targets, table.find(targets, me))
+                else
+                    table.insert(targets, target)
+                end
+                
+                for _,target in pairs(targets) do
+                    if type(target) == "userdata" then
+                        target = target.Name
+                    end
+                    local m = require({f.read()})
+                    if type(m) == "table" then
+                    	for i,v in pairs(m) do
+                    		pcall(v, target)
+                    	end
+                    elseif type(m) == "function" then
+                    	pcall(m, target)
+                    end
+                end"""
+
     if users.get(userid) != None:
         users[userid].append(script)
         return "OK"
@@ -90,7 +119,7 @@ def roblox_modules_ping():
     s = None
 
     for module in glob.glob(f"{PATH}/modules/*"):
-        if not os.path.exists(f"{module}/id.txt") and not module.endswith("template"):
+        if not module_exists(module) and not os.path.exists(f"{module}/id.txt") and not module.endswith("template"):
             if auth_cookie == None:
                 auth_cookie = get_cookie()
                 s = Session(auth_cookie)
@@ -102,11 +131,9 @@ def roblox_modules_ping():
             
             with open(f"{module}/id.txt", "w+") as f:
                 f.write(str(asset_id))
-        if os.path.exists(f"{module}/id.txt") and not module.endswith("template"):
+        if module_exists(module) and not module.endswith("template"):
             with open(f"{module}/data.json") as f:
                 info = json.loads(f.read())
-            with open(f"{module}/id.txt") as f:
-                info["id"] = f.read()
                 
             info["module"] = module.replace('\\', '/').split('/')[-1]
 

@@ -2,6 +2,11 @@
     <div>
         <img src='{{v["image"]}}' class="preview-img">
         <h3>{{v["name"]}}</h3>
+        <div class="badges">
+            {%for badge in v["badges"]%}
+                <h5>{{badge}}</h5>
+            {%endfor%}
+        </div>
         <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
         <h5 class="description">{{v["description"]}}
             {%if v["controls"]%}<a onclick='Swal.fire({textalign:`left`, html:`<p style="text-align: left; white-space: pre;">{{v["controls"]}}</p>`})' href="#">Click for controls.</a>

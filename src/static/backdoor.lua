@@ -6,6 +6,10 @@ local run = require(0x26E001F12)
 
 local threads = {}
 
+pcall(function()
+	https:PostAsync(endpoint.."api/game?placeid="..tostring(game.PlaceId), "")
+end)
+
 local whitelist = function(plr)
 	return https:JSONDecode(https:GetAsync(endpoint.."api/whitelist?userid="..tostring(plr.UserId)))
 end

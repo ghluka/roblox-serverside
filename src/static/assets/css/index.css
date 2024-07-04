@@ -108,9 +108,9 @@ input {
     white-space: pre-line;
 }
 
-.description:hover {
+/*.description:hover {
     height: max-content;
-}
+}*/
 
 .centered {
     width: 100%;

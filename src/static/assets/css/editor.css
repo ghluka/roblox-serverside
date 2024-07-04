@@ -117,3 +117,21 @@ button:after {
     height: 31px;
     transform: translate(10px, 5px);
 }
+
+.badges {
+    display: flex;
+    align-items: left;
+    flex-direction: row;
+}
+
+.badges * {
+    padding: 1px 3px;
+    margin-right: 6px;
+    background: linear-gradient(#a73fc4, #7e16ae);
+    border-radius: 6px;
+    color: #fff!important;
+}
+
+#module-username {
+    width: 100%;
+}
