@@ -1,23 +1,17 @@
 
-local gui = plr:FindFirstChildOfClass("PlayerGui")
-local script = gui:FindFirstChild("_temp")
-if not (script and script:IsA("LocalScript")) then
-    script = Instance.new("LocalScript", gui)
-    script.Name = "_temp"
-end
-
-setfenv(1, setmetatable({script = script, owner = plr}, {__index = getfenv()}))
+getfenv(1).owner = plr
 
 -- 0x24616E567 for Nebula
--- 0x4704B1128689 for Sensation
-require(0x4704B1128689)()
+-- 0x55262CE723BF for Sensation
+local conversion = 0x55262CE723BF
+require(conversion)()
 
 -- APPLY ENVIRONMENT CHANGES
 game = getfenv(1).game
 Game = game
 Instance = getfenv(1).Instance
 LoadLibrary = getfenv(1).LoadLibrary
-if conversion == 0x4704B1128689 then
+if conversion == 0x55262CE723BF then
     PhysicalProperties = getfenv(1).PhysicalProperties
     Raindrop = getfenv(1).Raindrop
     error = getfenv(1).error

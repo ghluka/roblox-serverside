@@ -108,7 +108,7 @@
               </div>
               <div style="border: none; margin: 0; padding: 0!important;">
                 <button style="width: 50%;" onclick="executePlayerAction('require(18209170328)(target)');">R6</button>
-                <button style="width: 50%;" onclick="executePlayerAction('local c = CFrame.new(); pcall(function() c = targetchar.PrimaryPart.CFrame; targetchar:Destroy(); end); target:LoadCharacter(); target.Character:SetPrimaryPartCFrame(c)');">Refresh</button>
+                <button style="width: 50%;" onclick="executePlayerAction('refresh(target)');">Refresh</button>
               </div>
               <div style="border: none; margin: 0; padding: 0!important;">
                 <button style="width: 50%;" onclick="executePlayerAction('if not plrchar.PrimaryPart then plrchar.PrimaryPart = plrchar:FindFirstChild([[HumanoidRootPart]]) end; plrchar:SetPrimaryPartCFrame(targetchar.PrimaryPart.CFrame)');">Goto</button>
