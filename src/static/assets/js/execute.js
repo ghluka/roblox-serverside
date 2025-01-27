@@ -3,7 +3,24 @@ const urlParams = new URLSearchParams(queryString);
 
 function execute(script) {
     const userid = document.getElementById("userid").value;
-    const url = window.location.origin + "/api/execute?userid=" + userid
+    const url = window.location.origin + "/api/execute?userid=" + userid;
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "text/plain"
+        },
+        body: script
+    }).then(response => response.text()).then(function(response) {
+        if (response == "NO CLIENT") {
+            userIdAlert(userid);
+        }
+    }).catch(error => console.error('Error:', error));
+}
+
+function executeSS(script) {
+    const userid = document.getElementById("userid").value;
+    const url = window.location.origin + "/api/execute_ss?userid=" + userid;
     fetch(url, {
         method: "POST",
         headers: {
@@ -48,7 +65,7 @@ function executePlayerAction(script) {
     script = "local plrchar = plr.Character\n" + script
     script = "local plr = game:GetService('Players'):GetPlayerByUserId(" + userid + ")\n" + script
     
-    execute(script);
+    executeSS(script);
 }
 
 function FileInput(f) {
@@ -113,3 +130,7 @@ document.addEventListener('keydown', e => {
         }
     }
 });
+
+try {
+    CefSharp.PostMessage("Close");
+} catch (error) {}

@@ -2,6 +2,7 @@ from flask import Flask
 
 from blueprints.executor import executor
 from blueprints.user import user
+from utils.cookie import get_cookie
 
 app = Flask(__name__, static_url_path="")
 app.register_blueprint(executor)
@@ -12,7 +13,7 @@ def homepage():
     return app.send_static_file("index.html")
 
 @app.route('/executor') 
-def executor():
+def dashboard():
     return app.send_static_file("executor.html")
 
 @app.route('/backdoor') 
@@ -20,4 +21,5 @@ def backdoor_page():
     return app.send_static_file("backdoor.html")
 
 if __name__ == "__main__":
+    get_cookie()
     app.run(debug=True)

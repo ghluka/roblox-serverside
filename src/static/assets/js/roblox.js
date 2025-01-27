@@ -1,5 +1,5 @@
 function userIdAlert(userid) {
-    const url = "http://localhost:5000/api/roblox_data?userid=" + userid
+    const url = "/api/roblox_data?userid=" + userid
     fetch(url, {
         method: "GET"
     }).then(response => response.json()).then(function(response) {
@@ -46,7 +46,7 @@ function getCookie(cname) {
 
 function updateUserInfoDashboard() {
     var userid = document.getElementById("userid").value;
-    const url = "http://localhost:5000/api/roblox_data?userid=" + userid;
+    const url = "/api/roblox_data?userid=" + userid;
     fetch(url, {
         method: "GET"
     }).then(response => response.json()).then(function(response) {
@@ -69,7 +69,7 @@ updateUserInfoDashboard();
 
 function updatePlayers() {
     var userid = document.getElementById("userid").value;
-    const url = "http://localhost:5000/api/players?userid=" + userid;
+    const url = "/api/players?userid=" + userid;
     fetch(url, {
         method: "GET"
     }).then(response => response.text()).then(function(response) {
@@ -80,7 +80,7 @@ function updatePlayers() {
 updatePlayers();
 
 function updateModules() {
-    const url = "http://localhost:5000/api/modules";
+    const url = "/api/modules";
     fetch(url, {
         method: "GET"
     }).then(response => response.text()).then(function(response) {

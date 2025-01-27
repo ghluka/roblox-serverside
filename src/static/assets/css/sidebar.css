@@ -258,6 +258,12 @@
     width: calc(100% - 78px);
     padding: 12px;
     transition: all 0.5s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-section > div {
+    flex-grow: 1;
 }
 
 .sidebar.open~.home-section {

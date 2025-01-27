@@ -20,7 +20,7 @@ function openTab(evt, tabName) {
     for (var i = 0; i < tabcontent.length; i++) {
         const tab = tabcontent[i];
         if (tab.id == tabName) {
-            tabcontent[i].style.display = "block";
+            tabcontent[i].style.display = "flex";
         }
         else {
             tabcontent[i].style.display = "none";

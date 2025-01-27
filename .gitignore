@@ -10,6 +10,8 @@ src/modules/*
 !src/modules/template
 src/static/assets/img/modules
 id.txt
+*.exe
+*.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

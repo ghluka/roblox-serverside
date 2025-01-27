@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Editor</title>
   <link rel="stylesheet" media="screen" href="/assets/css/editor.css">
@@ -18,7 +19,7 @@
   <body>
     <div class="sidebar">
         <div class="logo-details">
-            <div class="logo_name">Serverside</div>
+            <div class="logo_name">Nettsploit</div>
             <i class='bx bx-menu' id="btn"></i>
         </div>
         <ul class="nav-list">
@@ -30,7 +31,7 @@
                 <span class="tooltip">Dashboard</span>
             </li>
             <li>
-                <a onclick="openTab(event, 'executor')">
+                <a class="exec-tab" onclick="openTab(event, 'executor')">
                     <i class='bx bx-code-alt'></i>
                     <span class="links_name">Executor</span>
                 </a>
@@ -70,10 +71,11 @@
       </div>
     </section>
     <section class="home-section" id="executor">
-      <div class="script-container">
+      <div class="script-container executor-container">
         <pre id="editor"></pre>
-        <div>
+        <div class="execution-buttons">
           <button onclick='execute(GetText());'>Execute</button>
+          <button onclick='executeSS(GetText());' id="ss-exec">Execute [SS]</button>
           <button onclick='SetText("print(\"Hello world!\")");'>Clear</button>
           <button onclick='SetFile();'>Open File</button>
           <button onclick='ExecuteFile();'>Execute File</button>
@@ -82,7 +84,7 @@
       </div>
     </section>
     <section class="home-section" id="players">
-      <div style="display: flex!important; height: 100%;">
+      <div class="player-container">
         <div style="width: 30%;" class="script-container">
           <h3>Player list</h3>
           <ul id="player-list">
@@ -110,8 +112,8 @@
                 <button style="width: 50%;" onclick="executePlayerAction('local c = CFrame.new(); pcall(function() c = targetchar.PrimaryPart.CFrame; targetchar:Destroy(); end); target:LoadCharacter(); target.Character:SetPrimaryPartCFrame(c)');">Refresh</button>
               </div>
               <div style="border: none; margin: 0; padding: 0!important;">
-                <button style="width: 50%;" onclick="executePlayerAction('plrchar:SetPrimaryPartCFrame(targetchar.PrimaryPart.CFrame)');">Goto</button>
-                <button style="width: 50%;" onclick="executePlayerAction('targetchar:SetPrimaryPartCFrame(plrchar.PrimaryPart.CFrame)');">Bring</button>
+                <button style="width: 50%;" onclick="executePlayerAction('if not plrchar.PrimaryPart then plrchar.PrimaryPart = plrchar:FindFirstChild([[HumanoidRootPart]]) end; plrchar:SetPrimaryPartCFrame(targetchar.PrimaryPart.CFrame)');">Goto</button>
+                <button style="width: 50%;" onclick="executePlayerAction('if not plrchar.PrimaryPart then plrchar.PrimaryPart = plrchar:FindFirstChild([[HumanoidRootPart]]) end; if not targetchar.PrimaryPart then plrchar.PrimaryPart = targetchar:FindFirstChild([[HumanoidRootPart]]) end;targetchar:SetPrimaryPartCFrame(plrchar.PrimaryPart.CFrame)');">Bring</button>
               </div>
             </div>
             <h4 style="width: 100%; margin: 10px 0 0 10px;">Fun Actions</h4>
@@ -125,10 +127,12 @@
       </div>
     </section>
     <section class="home-section" id="scripthub">
-      <div class="centered">
-        <input id="module-username" value="" placeholder="Target's username (or me, all, others)">
-      </div>  
-      <div class="grid-container" id="modules">
+      <div class="script-container">
+        <div class="centered">
+          <input id="module-username" value="" placeholder="Target's username (or me, all, others)">
+        </div>  
+        <div class="grid-container" id="modules">
+        </div>
       </div>
     </section>
 

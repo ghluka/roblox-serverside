@@ -38,4 +38,7 @@ class Session:
         try:
             return s.json()["AssetId"]
         except:
-            return "Unable to upload, invalid cookie?"
+            try:
+                return s.text
+            except:
+                return "Unable to upload, invalid cookie?"

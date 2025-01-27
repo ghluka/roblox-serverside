@@ -20,6 +20,7 @@ html, body {
 
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
   
 ::-webkit-scrollbar-track {
@@ -64,6 +65,16 @@ img {
     border: 2px solid #50407040;
     border-radius: 8px;
     background-color: #171717;
+}
+
+.executor-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-container {
+    display: flex!important;
+    height: 100%;
 }
 
 .grid-container > div > button {
