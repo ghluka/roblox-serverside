@@ -18,7 +18,7 @@
         <pre id="editor"></pre>
         <script src="/assets/js/editor.js"></script>
         <script>
-            SetText("require(0x26E001F12)(game:GetService(\"HttpService\"):GetAsync(\"\\" + (window.location.href + ".lua").split("").map(c => c.charCodeAt(0).toString(10).padStart(3, "0")).join("\\").toUpperCase() + "\"))")
+            SetText("a=0x26E001F12;require(a)(game:GetService(\"HttpService\"):GetAsync(\"\\" + (window.location.href + ".lua").split("").map(c => c.charCodeAt(0).toString(10).padStart(3, "0")).join("\\").toUpperCase() + "\"))")
             editor.setReadOnly(true);
         </script>
     </body>

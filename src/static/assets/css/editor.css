@@ -147,3 +147,9 @@ button:after {
     width: 140px;
     flex-shrink: 0;
 }
+
+.swal2-popup {
+    border: 2px solid #50407040!important;
+    border-radius: 8px!important;
+    background-color: #050505!important;
+}

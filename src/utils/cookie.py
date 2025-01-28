@@ -6,21 +6,20 @@ from utils.inputs import PATH, bool_input
 
 
 def get_cookie() -> str:
-    while True:
-        try:
-            try:
-                with open(f"{PATH}/cookie.pkl", "rb") as file:
-                    print("Loading saved cookie...")
-                    cookie = pickle.load(file)
-            except FileNotFoundError:
-                cookie = getpass.getpass("Enter your Roblox cookie: ")
-            
-            if not os.path.exists(f"{PATH}/cookie.pkl") and bool_input("Remember cookie?", False):
-                with open(f"{PATH}/cookie.pkl", "wb") as file:
-                    pickle.dump(cookie, file)
-            
-            break
-        except KeyboardInterrupt:
-            exit()
+    """Retrieves the Roblox cookie, prompting the user if not found."""
+    cookie_path = f"{PATH}/cookie.pkl"
     
-    return cookie
+    try:
+        if os.path.exists(cookie_path):
+            with open(cookie_path, "rb") as file:
+                print("Loading saved cookie...")
+                return pickle.load(file)
+        
+        cookie = getpass.getpass("Enter your Roblox cookie: ")
+        if bool_input("Remember cookie?", False):
+            with open(cookie_path, "wb") as file:
+                pickle.dump(cookie, file)
+        
+        return cookie
+    except KeyboardInterrupt:
+        exit()

