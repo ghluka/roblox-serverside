@@ -1,3 +1,7 @@
+html {
+    overflow-y: hidden;
+}
+
 #editor {
     flex-grow: 1;
     margin-bottom: 8px;
@@ -152,4 +156,54 @@ button:after {
     border: 2px solid #50407040!important;
     border-radius: 8px!important;
     background-color: #050505!important;
+}
+
+
+
+.player-list-container {
+    width: 30%;
+    height: calc(100vh - 2em);
+}
+
+#player-actions {
+    width: 70%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: calc(100vh - 2em);
+}
+
+#player-actions::-webkit-scrollbar-track {
+    background-color: #171717;
+}
+
+#player-list {
+    height: calc(100% - 2em);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#player-list::-webkit-scrollbar-track {
+    background-color: #171717;
+}
+
+@media only screen and (max-width: 602px) {
+
+    .player-container {
+        display: block!important;
+        padding: 0 5px 20px 0;
+        overflow: hidden;
+    }
+
+    .player-list-container {
+        width: 100%!important;
+        height: calc(30vh - 20px)!important;
+        margin: 10px 5px;
+    }
+
+    #player-actions {
+        width: 100%!important;
+        height: calc(70vh - 25px)!important;
+        margin: 10px 5px;
+    }
+
 }
