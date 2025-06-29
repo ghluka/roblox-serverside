@@ -1,6 +1,7 @@
 import os
 
 import requests
+import requests_cache
 from flask import Blueprint, jsonify, request
 
 from utils.inputs import PATH
@@ -28,7 +29,17 @@ def whitelist_check():
 def roblox_data():
     user_id = request.args.get("userid")
 
-    response = requests.get(f"https://users.roblox.com/v1/users/{user_id}", timeout=5)
+    session = Session(None)
+
+    try:
+        response = session.pfp_session.get(f"https://users.roblox.com/v1/users/{user_id}", timeout=5)
+    except requests.exceptions.Timeout:
+        return jsonify({
+            "error": {
+                "error": "Servers overloaded.",
+                "advice": "Please re-enter the user id in a moment!"
+            }
+        })
     user_data = response.json()
 
     if user_data.get("errors"):
@@ -39,7 +50,6 @@ def roblox_data():
             }
         })
 
-    session = Session(None)
     user_data["avatarUrl"] = session.get_pfp(user_id)
 
     return jsonify(user_data)

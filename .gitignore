@@ -12,6 +12,7 @@ src/static/assets/img/modules
 id.txt
 *.exe
 *.zip
+roblox_userdata.sqlite
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
