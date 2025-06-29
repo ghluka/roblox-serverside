@@ -6,6 +6,7 @@ local endpoint = "http://{{endpoint}}/"
 {{vlua}}
 
 local threads = {}
+local executionThreads = {}
 
 pcall(function()
     https:PostAsync(endpoint.."api/game?placeid="..tostring(game.PlaceId), "")
@@ -17,9 +18,21 @@ local whitelist = function(plr)
     
     if isWhitelisted then
         table.insert(whitelisted, plr)
+        executionThreads[tostring(plr.UserId)] = {}
     end
 
     return isWhitelisted
+end
+
+local function cleanupExecutionThreads(userId)
+    if executionThreads[userId] then
+        for i, thread in ipairs(executionThreads[userId]) do
+            if coroutine.status(thread) ~= "dead" then
+                coroutine.close(thread)
+            end
+        end
+        executionThreads[userId] = {}
+    end
 end
 
 local function plrAdded(plr)
@@ -31,9 +44,18 @@ local function plrAdded(plr)
                     local queue = https:JSONDecode(https:GetAsync(endpoint.."api/ping?userid="..tostring(plr.UserId), true))
                     for _, code in pairs(queue) do
                         coroutine.wrap(function()
+                            local userId = tostring(plr.UserId)
+                            local thread = coroutine.running()
+                            table.insert(executionThreads[userId], thread)
+                            
                             pcall(function()
                                 run(code)()
                             end)
+                            
+                            local index = table.find(executionThreads[userId], thread)
+                            if index then
+                                table.remove(executionThreads[userId], index)
+                            end
                         end)()
                     end
                 end)
@@ -59,7 +81,11 @@ local function plrRemoving(plr)
         pcall(function()
             https:PostAsync(endpoint.."api/close", "", Enum.HttpContentType.TextPlain, false, {["user-id"]=tostring(plr.UserId)})
         end)
-        coroutine.close(threads[tostring(plr.UserId)])
+        local userId = tostring(plr.UserId)
+        cleanupExecutionThreads(userId)
+        coroutine.close(threads[userId])
+        threads[userId] = nil
+        executionThreads[userId] = nil
     end
 end
 
