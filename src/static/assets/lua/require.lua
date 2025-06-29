@@ -38,10 +38,10 @@ for _,target in pairs(targets) do
     end
 
     if type(m) == "table" then
-    	for i,v in pairs(m) do
-    		pcall(v, target)
-    	end
+        for i,v in pairs(m) do
+            pcall(v, target)
+        end
     elseif type(m) == "function" then
-    	pcall(m, target)
+        pcall(m, target)
     end
 end
