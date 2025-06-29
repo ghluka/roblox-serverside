@@ -23,6 +23,8 @@ def web_execute():
     userid = request.args.get("userid")
     script = request.data.decode('utf-8')
 
+    with open(f"{PATH}/static/assets/lua/header.lua", encoding="utf8") as convert_file:
+        header = convert_file.read()
     with open(f"{PATH}/static/assets/lua/convert.lua", encoding="utf8") as convert_file:
         convert = convert_file.read()
     with open(f"{PATH}/static/assets/lua/functions.lua", encoding="utf8") as functions_file:
@@ -30,6 +32,7 @@ def web_execute():
 
     script = f"""pcall(function()
 local plr = game:GetService('Players'):GetPlayerByUserId({userid})
+{header}
 {convert}
 {functions}
 {script}

@@ -1,15 +1,19 @@
-local env = require(104710331237296)
+local _env = getfenv()
 
 local compile = require(125795446062284)
 local fione = require(100935166061231)
 local createExecutable = function(bCode, env)
-	return fione.wrap_lua(fione.stm_lua(bCode), env or getfenv(0))
+	return fione.wrap_lua(fione.stm_lua(bCode), env or _env)
 end
 
 local ls = function(source, env)
 	local executable
-	local env = env or getfenv(2)
+	local env = env or _env
 	local name = (env.script and env.script:GetFullName())
+
+	compile = require(125795446062284)
+	fione = require(100935166061231)
+
 	local ran, failureReason = pcall(function()
 		local compiledBytecode = compile(source, name)
 		executable = createExecutable(compiledBytecode, env)
@@ -23,12 +27,12 @@ end
 
 
 local function fixenv()
-	game = env.game
+	game = _env.game
 	Game = game
-	Instance = env.Instance
-	CFrame = env.CFrame
-	Vector3 = env.Vector3
-	math = env.math
+	Instance = _env.Instance
+	CFrame = _env.CFrame
+	Vector3 = _env.Vector3
+	math = _env.math
 end
 
 local run = function(source)

