@@ -74,11 +74,11 @@
       <div class="script-container executor-container">
         <pre id="editor"></pre>
         <div class="execution-buttons">
-          <button onclick='execute(GetText());'>Execute</button>
-          <button onclick='SetText("print(\"Hello world!\")");'>Clear</button>
-          <button onclick='SetFile();'>Open File</button>
-          <button onclick='ExecuteFile();'>Execute File</button>
-          <button onclick='SaveFile(GetText());'>Save File</button>
+          <button id="execute" onclick='execute(GetText());'><i class="bx bx-play"></i> Execute</button>
+          <button id="clear" onclick='SetText("print(\"Hello world!\")");'><i class="bx bx-trash"></i> Clear</button>
+          <button onclick='SetFile();'><i class="bx bx-upload"></i> Open File</button>
+          <button onclick='ExecuteFile();'><i class="bx bx-code-block"></i> Execute File</button>
+          <button onclick='SaveFile(GetText());'><i class="bx bx-save"></i> Save File</button>
         </div>
       </div>
     </section>

@@ -147,8 +147,6 @@ button:after {
 }
 
 .execution-buttons * {
-    height: 40px;
-    width: 140px;
     flex-shrink: 0;
 }
 
@@ -215,4 +213,31 @@ button:after {
         margin: 10px 5px;
     }
 
+}
+
+.module {
+    transition: transform 0.3s ease;
+    margin: 1px!important;
+    background-color: #0f0f0f!important;
+}
+
+.module:hover {
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+#execute {
+    background-color: green;
+}
+
+#execute::before {
+    background: green!important;
+}
+
+#clear {
+    background-color: red;
+}
+
+#clear::before {
+    background: red!important;
 }
