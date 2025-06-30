@@ -54,6 +54,6 @@ class Session:
             response = self.session.post(url, data=rbxmx, headers=self.headers)
 
         try:
-            return response.json().get("AssetId")
+            return response.json()
         except (ValueError, KeyError):
             return "Unable to upload, invalid cookie?"
