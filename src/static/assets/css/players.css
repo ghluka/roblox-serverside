@@ -70,6 +70,7 @@
     text-decoration: none;
     transition: all 0.4s ease;
     background: #222222;
+    cursor: pointer;
 }
 
 .players li a:hover {

@@ -14,16 +14,6 @@ html {
     border-bottom: 2px solid #50407040;
 }
 
-#tab-selected {
-    background: linear-gradient(#a73fc4, #7e16ae);
-    color: #fff!important;
-}
-
-#tab-selected * {
-    color: #fff!important;
-    z-index: 2;
-}
-
 button {
     min-height: 40px;
     border: none;
@@ -109,11 +99,7 @@ button:after {
 }
 
 .avatar-container > div > div > div > h1, h2, h3, h4, h5, h6, p, a, span, li {
-    overflow: hidden;
     text-overflow: ellipsis;
-}
-.avatar-container > div > div > div > h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, p:hover, a:hover, span:hover, li:hover {
-  overflow: visible;
 }
 
 .emoji {
@@ -219,6 +205,7 @@ button:after {
     transition: transform 0.3s ease;
     margin: 1px!important;
     background-color: #0f0f0f!important;
+    cursor:pointer;
 }
 
 .module:hover {
