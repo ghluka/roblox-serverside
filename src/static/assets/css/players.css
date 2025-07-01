@@ -69,8 +69,13 @@
     align-items: center;
     text-decoration: none;
     transition: all 0.4s ease;
-    background: #222222;
+    background: #0f0f0f;
     cursor: pointer;
+    border: 2px solid #50407040;
+}
+
+.players li a div div img {
+    border: none;
 }
 
 .players li a:hover {
