@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +13,7 @@
     height: 100%;
     width: 78px;
     background: #111;
-    border-right: 2px solid #504070;
+    border-right: 2px solid #39233f;
     z-index: 1;
     transition: all 0.5s ease;
     overflow-y: auto;
@@ -37,6 +39,12 @@
     opacity: 0;
     transition: all 0.5s ease;
     padding-left: 16px;
+}
+
+.sidebar .logo-details .logo_name * {
+    font-family: "Bowlby One SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .sidebar.open .logo-details,

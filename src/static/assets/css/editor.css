@@ -157,7 +157,7 @@ button:after {
 }
 
 #player-actions::-webkit-scrollbar-track {
-    background-color: #171717;
+    background-color: #111;
 }
 
 #player-list {
@@ -172,11 +172,11 @@ button:after {
 }
 
 .scripthub-container::-webkit-scrollbar-track {
-    background-color: #171717;
+    background-color: #111;
 }
 
 #player-list::-webkit-scrollbar-track {
-    background-color: #171717;
+    background-color: #111;
 }
 
 @media only screen and (max-width: 602px) {
@@ -227,4 +227,9 @@ button:after {
 
 #clear::before {
     background: red!important;
+}
+
+.module-controls {
+    cursor: help;
+    color: #bc49db;
 }
