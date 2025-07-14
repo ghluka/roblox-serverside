@@ -59,7 +59,6 @@ def dashboard():
 
 @app.route('/backdoor') 
 def backdoor_page():
-
     return app.send_static_file("backdoor.html")
 
 if __name__ == "__main__":
