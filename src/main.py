@@ -31,6 +31,10 @@ def homepage():
 def backdoor_page():
     return app.send_static_file("backdoor.html")
 
+@app.errorhandler(404)
+def not_found(_):
+    return app.send_static_file("404.html")
+
 if __name__ == "__main__":
     get_cookie()
     app.run(debug=True)

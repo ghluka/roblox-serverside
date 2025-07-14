@@ -1,5 +1,6 @@
 {
     "0"   : "None",
-    "1"   : "Premium",
+    "1"   : "Standard",
+    "2"   : "Premium",
     "255" : "Admin"
 }
