@@ -2,6 +2,8 @@ import os
 
 from utils.inputs import PATH
 
+UPDATE_EACH_TIME = False
+
 PROMETHEUS = f"{PATH}/prometheus/"
 SOURCE = f"{PROMETHEUS}source.lua"
 
@@ -10,6 +12,8 @@ def obfuscate(script):
     """
     if not os.path.exists(f"{PROMETHEUS}prometheus.exe"):
         return script
+    if UPDATE_EACH_TIME and os.path.exists(f"{PROMETHEUS}source.obfuscated.lua"):
+        os.remove(f"{PROMETHEUS}source.obfuscated.lua")
 
     if os.path.exists(SOURCE) and os.path.exists(f"{PROMETHEUS}source.obfuscated.lua"):
         with open(SOURCE, "r", encoding="utf-8") as f:

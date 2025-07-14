@@ -61,6 +61,6 @@ You can visit [Prometheus' configuration guide](https://levno-710.gitbook.io/pro
 
 I haven't tested it too much, if you do wish to change it, do not enable the following steps, otherwise it breaks:
 - Vmify
-- SplitStrings
+- SplitStrings (only if ConcatenationType is set to "table" and not "strcat")
 - EncryptStrings
 - ConstantArray

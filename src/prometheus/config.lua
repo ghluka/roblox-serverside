@@ -15,6 +15,16 @@ return {
         },
         {
             Name="WrapInFunction";
+            Settings = {
+                Iterations = 2;
+            }
+        },
+        {
+            Name="SplitStrings";
+            Settings = {
+                Treshold = 1;
+                ConcatenationType = "strcat";
+            }
         },
     }
 }

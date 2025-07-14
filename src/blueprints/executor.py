@@ -4,7 +4,7 @@ import json
 import os
 
 import requests
-from flask import Blueprint, render_template, request, send_file
+from flask import Blueprint, render_template, request
 
 from prometheus.wrapper import obfuscate
 from utils.cookie import get_cookie
