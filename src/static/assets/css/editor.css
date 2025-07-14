@@ -233,3 +233,32 @@ button:after {
     cursor: help;
     color: #bc49db;
 }
+
+.discord-profile {
+    margin: 0 8px;
+    display: flex!important;
+    cursor: pointer;
+    width: -webkit-fill-available!important;
+    bottom: 0;
+    position: absolute!important;
+    margin-bottom: 16px;
+}
+
+.discord-profile .avatar {
+    margin-right: 8px;
+}
+
+.discord-profile div {
+    flex: auto;
+}
+
+.discord-profile,
+.discord-profile div,
+.discord-profile div * {
+    /*display: inline;*/
+    width: min-content;
+}
+
+body {
+    overflow-y: hidden;
+}

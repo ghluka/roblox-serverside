@@ -2,14 +2,14 @@
     <div class="players open">
         <ul class="nav-list">
             <li>
-                <a id='{{v["UserId"]}}' data="{{v}}" onclick="setPlayer(event)">
+                <a id='{{v["UserId"]|safe}}' data="{{v|safe}}" onclick="setPlayer(event)">
                     <div class="grid-container avatar-container">
                         <div style="padding: 0!important; border: none; background: transparent;">
                             <div>
-                              <img class="avatar" src='{{v["AvatarUrl"]}}'>
+                              <img class="avatar" src='{{v["AvatarUrl"]|safe}}'>
                               <div>
-                                <h3>{{v["DisplayName"]}}</h3>
-                                <h5 style="color: #606070;">@{{i}}</h5>
+                                <h3>{{v["DisplayName"]|safe}}</h3>
+                                <h5 style="color: #606070;">@{{i|safe}}</h5>
                               </div>
                             </div>
                         </div>

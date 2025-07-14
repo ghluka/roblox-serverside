@@ -169,3 +169,17 @@ input {
     cursor: pointer;
     margin-top: 8px;
 }
+
+.dashboard-button {
+    background-color: #bc49db;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 8px;
+}

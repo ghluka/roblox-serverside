@@ -52,6 +52,13 @@
                 <span class="tooltip">Script Hub</span>
             </li>
         </ul>
+        <div class="logo-details discord-profile" onclick="window.location.href = '/logout'">
+          <img class="avatar" src="{{discord_avatar}}">
+          <div>
+            <p>{{discord_username}}</p>
+            <h5 style="color: #606070;">Logout</h5>
+          </div>
+        </div>
     </div>
     
     <section class="home-section" id="dashboard">
@@ -62,16 +69,28 @@
               <div>
                 <img id="avatar" class="avatar">
                 <div>
-                    <h3 id="username">Roblox</h3>
-                    <input oninput="updateUserDashboard()" type="number" id="userid" value="{{roblox_id}}" placeholder="Your userid">
+                  <h3 id="username">Roblox</h3>
+                  <input oninput="updateUserDashboard()" type="number" id="userid" value="{{roblox_id|safe}}" placeholder="Your userid">
                 </div>
               </div>
           </div>
+
           <div>
-              <h5 style="color: #606070;">Whitelist Type</h5>
               <div>
+                <img class="avatar" src="/assets/svg/shield.svg">
                 <div>
-                    <h3>{{whitelist}}</h3>
+                  <h3 style="color: #606070;">Whitelist Type</h3>
+                  <h3>{{whitelist}}</h3>
+                </div>
+              </div>
+          </div>
+
+          <div>
+              <div>
+                <img class="avatar" src="/assets/svg/user.svg">
+                <div>
+                  <h3 style="color: #606070;">User Id</h3>
+                  <h3>{{user_id}}</h3>
                 </div>
               </div>
           </div>

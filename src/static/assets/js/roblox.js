@@ -52,7 +52,9 @@ function updateUserInfoDashboard() {
     }).then(response => response.json()).then(function(response) {
         if (!response["error"]) {
             document.getElementById("username").innerHTML = response["name"];
-            document.getElementById("avatar").src = response["avatarUrl"];
+            document.querySelectorAll('[id="avatar"]').forEach(el => {
+                el.src = response["avatarUrl"];
+            });
         }
     }).catch(error => console.error('Error:', error));
 }
