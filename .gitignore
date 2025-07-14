@@ -1,18 +1,21 @@
 # Authentication files
+.env
 cookie.pkl
-whitelisted.txt
 
-# Other files
-out.lua
+# Database files
+users.db
+roblox_userdata.sqlite
+
+# Testing files
 *.rbxl*
 working/*
-src/modules/*
-!src/modules/template
-src/static/assets/img/modules
-id.txt
 *.exe
 *.zip
-roblox_userdata.sqlite
+
+# Module files
+src/modules/*
+!src/modules/template
+id.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -136,7 +139,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/

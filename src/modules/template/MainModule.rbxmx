@@ -9,7 +9,7 @@
 			<bool name="DefinesCapabilities">false</bool>
 			<Content name="LinkedSource"><null></null></Content>
 			<string name="Name">MainModule</string>
-			<string name="ScriptGuid">{836D4B57-5712-4B95-A49F-9D63236752CB}</string>
+			<string name="ScriptGuid">{C8DE32F1-CFBD-45ED-803D-329A66C1AD56}</string>
 			<ProtectedString name="Source"><![CDATA[return function(plr)
 	if plr and type(plr) == "string" then
 		plr = game:GetService("Players"):FindFirstChild(plr)
@@ -57,8 +57,8 @@ print(game:GetService("Players").LocalPlayer.Name)]]></ProtectedString>
 				<bool name="DefinesCapabilities">false</bool>
 				<Content name="LinkedSource"><null></null></Content>
 				<string name="Name">Check</string>
-				<string name="ScriptGuid">{8758B57D-5A0F-42EA-BAFD-10461300F858}</string>
-				<ProtectedString name="Source"><![CDATA[return function(plr:Players):boolean
+				<string name="ScriptGuid">{774CE65C-00C2-4B80-9E8D-8F3A236310C2}</string>
+				<ProtectedString name="Source"><![CDATA[return function(plr:Player):boolean
 	--[[
 	-- R6 requirement
 	if plr and plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") then

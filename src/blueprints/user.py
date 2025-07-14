@@ -1,27 +1,35 @@
 import os
+import sqlite3
 
 import requests
 import requests_cache
 from flask import Blueprint, jsonify, request
 
+from blueprints.auth import DB_PATH
 from utils.inputs import PATH
 from utils.session import Session
 
 user = Blueprint("user", __name__)
 
+def roblox_id_exists(roblox_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM users WHERE roblox_id = ?", (roblox_id,))
+        return cursor.fetchone() is not None
+
 @user.route('/api/whitelist', methods=['GET'])
 def whitelist_check():
-    user_id = request.args.get("userid")
+    roblox_id = request.args.get("userid")
+    game_id = request.args.get("gameid")
 
-    whitelist_path = f"{PATH}/whitelisted.txt"
-    if not os.path.exists(whitelist_path):
-        with open(whitelist_path, "x", encoding="utf8"):
-            pass
-
-    with open(whitelist_path, "r", encoding="utf8") as file:
-        lines = file.readlines()
-        if f"{user_id}\n" in lines or (lines and lines[-1].strip() == user_id):
-            return "true"
+    if roblox_id_exists(roblox_id):
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT whitelist FROM users WHERE roblox_id = ?", (roblox_id,))
+            whitelist = cursor.fetchone()[0]
+            
+            if whitelist > 0:
+                return "true"
 
     return "false"
 

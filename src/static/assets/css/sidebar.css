@@ -32,16 +32,20 @@
     position: relative;
 }
 
-.sidebar .logo-details .logo_name {
+.logo_name {
     color: #fff;
-    font-size: 20px;
+    font-size: 100%;
     font-weight: 600;
+}
+
+.sidebar .logo-details .logo_name {
+    font-size: 20px!important;
     opacity: 0;
     transition: all 0.5s ease;
     padding-left: 16px;
 }
 
-.sidebar .logo-details .logo_name * {
+.logo_name * {
     font-family: "Bowlby One SC", sans-serif;
     font-weight: 400;
     font-style: normal;

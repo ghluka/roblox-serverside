@@ -58,13 +58,17 @@ function updateUserInfoDashboard() {
 }
 function updateUserDashboard() {
     var userid = document.getElementById("userid").value;
-    setCookie("userid", userid, 30);
+    //setCookie("userid", userid, 30);
+    const url = "/api/update_id?userid=" + userid;
+    fetch(url, {
+        method: "GET"
+    })
     updateUserInfoDashboard();
 }
-let user = getCookie("userid");
-if (user != "") {
-    document.getElementById("userid").value = user;
-}
+//let user = getCookie("userid");
+//if (user != "") {
+//    document.getElementById("userid").value = user;
+//}
 updateUserInfoDashboard();
 
 function updatePlayers() {

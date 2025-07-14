@@ -1,3 +1,4 @@
 requests
 Flask
 requests-cache
+python-dotenv

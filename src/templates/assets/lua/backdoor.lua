@@ -14,7 +14,7 @@ end)
 
 local whitelisted = {}
 local whitelist = function(plr)
-    local isWhitelisted = https:JSONDecode(https:GetAsync(endpoint.."api/whitelist?userid="..tostring(plr.UserId)))
+    local isWhitelisted = https:JSONDecode(https:GetAsync(endpoint.."api/whitelist?gameid="..game.PlaceId.."&userid="..tostring(plr.UserId)))
     
     if isWhitelisted then
         table.insert(whitelisted, plr)

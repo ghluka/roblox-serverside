@@ -57,16 +57,24 @@
     <section class="home-section" id="dashboard">
       <div class="centered">
         <div class="grid-container avatar-container">
-            <div>
-                <h5 style="color: #606070;">Roblox Username</h5>
+          <div>
+              <h5 style="color: #606070;">Roblox Username</h5>
+              <div>
+                <img id="avatar" class="avatar">
                 <div>
-                  <img id="avatar" class="avatar">
-                  <div>
-                      <h3 id="username">Roblox</h3>
-                      <input oninput="updateUserDashboard()" type="number" id="userid" value="1" placeholder="Your userid">
-                  </div>
+                    <h3 id="username">Roblox</h3>
+                    <input oninput="updateUserDashboard()" type="number" id="userid" value="{{roblox_id}}" placeholder="Your userid">
                 </div>
-            </div>
+              </div>
+          </div>
+          <div>
+              <h5 style="color: #606070;">Whitelist Type</h5>
+              <div>
+                <div>
+                    <h3>{{whitelist}}</h3>
+                </div>
+              </div>
+          </div>
         </div>
       </div>
     </section>

@@ -6,12 +6,43 @@ Roblox serverside proof of concept demonstration with web execution.
 > [!WARNING]  
 > I am not liable for any problems/consequences that may arise from using this program. This program solely serves as a proof of concept.
 
+> Live demonstration available at [nett.wtf](https://nett.wtf).
+
 ## ⚙️ Running
 
 ```sh
+# Ensure you're in the /src directory
+$ cd src
+
 # Install dependencies
 $ pip install -r requirements.txt
 
 # Run main script
 $ python3 main.py
 ```
+
+### 🪪 Auth Prerequisites
+
+Before running the script, ensure that you have your `/src/.env` file populated,
+it should look like this:
+
+```sh
+CLIENT_ID=1015334465989529701
+CLIENT_SECRET=J7WXgwrmN4zD4D4P2Ncl9fZpj-vwrL-J
+SECRET_KEY=d2e35fc7527b009550490b4e
+```
+
+Your CLIENT_ID and CLIENT_SECRET should be from a Discord Application's
+OAuth2 client information.
+
+<img width="1912" height="920" alt="msedge_5Rp4GPZ62g" src="https://github.com/user-attachments/assets/7c54dafd-fe1e-4679-8781-a54a9fb0944f"/>
+
+And your SECRET_KEY can be anything, I used the code `os.urandom(12).hex()` to generate one.
+
+### 🍪 Roblox Cookie
+
+The script-hub functionality will prompt you to load a Roblox cookie to automatically upload any RBXMX files.
+
+It's not necessary, but its highly recommended while running this service.
+
+This will be prompted to you from the command line and will be stored in the file `cookie.pkl`.
