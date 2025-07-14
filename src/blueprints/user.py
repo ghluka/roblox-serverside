@@ -6,7 +6,6 @@ import requests_cache
 from flask import Blueprint, jsonify, request
 
 from blueprints.auth import DB_PATH
-from utils.inputs import PATH
 from utils.session import Session
 
 user = Blueprint("user", __name__)
@@ -17,7 +16,7 @@ def roblox_id_exists(roblox_id):
         cursor.execute("SELECT 1 FROM users WHERE roblox_id = ?", (roblox_id,))
         return cursor.fetchone() is not None
 
-@user.route('/api/whitelist', methods=['GET'])
+@user.route("/api/whitelist", methods=["GET"])
 def whitelist_check():
     roblox_id = request.args.get("userid")
     game_id = request.args.get("gameid")
@@ -33,7 +32,7 @@ def whitelist_check():
 
     return "false"
 
-@user.route('/api/roblox_data', methods=['GET'])
+@user.route("/api/roblox_data", methods=["GET"])
 def roblox_data():
     user_id = request.args.get("userid")
 

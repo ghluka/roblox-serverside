@@ -7,7 +7,7 @@ PATH = pathlib.Path(__file__).parent.parent.resolve()
 def select_rbxmx() -> str:
     """Opens a file dialog to select a Roblox XML model file."""
     root = tk.Tk()
-    root.wm_attributes('-topmost', 1)
+    root.wm_attributes("-topmost", 1)
     root.withdraw()
 
     file = filedialog.askopenfilename(

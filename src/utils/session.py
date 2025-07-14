@@ -10,7 +10,7 @@ class Session:
         self.auth_cookie = auth_cookie
         self.headers = {"User-Agent": "Roblox/WinInet"}
         self.session = requests.session()
-        self.pfp_session = requests_cache.CachedSession('roblox_userdata', expire_after=timedelta(hours=1))
+        self.pfp_session = requests_cache.CachedSession("roblox_userdata", expire_after=timedelta(hours=1))
         self.session.cookies.update({
             ".ROBLOSECURITY": self.auth_cookie
         })
