@@ -2,6 +2,9 @@
 
 List of ideas and features to implement in the future with their priority and a description of their application.
 
+- ### FIREWALL.
+    - Priority: HIGH
+    - > make it so api endpoints that should be only accessible by Roblox, are only accessible by Roblox IPs
 - ### Game list and review panel
     - Priority: high
     - > Tab in dashboard for list of games with search bar and sort (active players, total players, etc)
@@ -17,6 +20,3 @@ List of ideas and features to implement in the future with their priority and a 
     - Priority: low
     - > Accessible in user panel
     - > Dark mode, light mode, Chinese flag colour scheme mode
-- ### Automatically obfuscate `backdoor.lua` when fetched
-    - Priority: low
-    - > Use [Prometheus](https://github.com/prometheus-lua/Prometheus)?

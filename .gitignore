@@ -17,6 +17,13 @@ src/modules/*
 !src/modules/template
 id.txt
 
+# Prometheus files
+prometheus.exe
+lua51.dll
+/src/prometheus/lua
+source.lua
+source.obfuscated.lua
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -46,3 +46,21 @@ The script-hub functionality will prompt you to load a Roblox cookie to automati
 It's not necessary, but its highly recommended while running this service.
 
 This will be prompted to you from the command line and will be stored in the file `cookie.pkl`.
+
+### 🛡️ Prometheus Setup
+
+Download [prometheus-windows.zip](https://github.com/prometheus-lua/Prometheus/releases/tag/v0.2.6) and put it in the [`/src/prometheus`](/src/prometheus) directory.
+
+If Prometheus is present, then the backdoor script will be automatically obfuscated when fetched, otherwise it won't be obfuscated.
+
+#### ⚙️ Editing Prometheus configuration
+
+Edit the Prometheus configuration located in [`/src/prometheus/config.lua`](/src/prometheus/config.lua).
+
+You can visit [Prometheus' configuration guide](https://levno-710.gitbook.io/prometheus/getting-started/writing-a-custom-config-file) if you don't know how to work with it already.
+
+I haven't tested it too much, if you do wish to change it, do not enable the following steps, otherwise it breaks:
+- Vmify
+- SplitStrings
+- EncryptStrings
+- ConstantArray

