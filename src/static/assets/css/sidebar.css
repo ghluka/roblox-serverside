@@ -36,6 +36,7 @@
     color: #fff;
     font-size: 100%;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .sidebar .logo-details .logo_name {
@@ -301,7 +302,7 @@
 
 .home-section {
     position: relative;
-    min-height: 100vh;
+    min-height: 100svh;
     top: 0;
     left: 78px;
     width: calc(100% - 78px);

@@ -146,14 +146,14 @@ button:after {
 
 .player-list-container {
     width: 30%;
-    height: calc(100vh - 2em);
+    height: calc(100svh - 2em);
 }
 
 #player-actions {
     width: 70%;
     overflow-y: scroll;
     overflow-x: hidden;
-    height: calc(100vh - 2em);
+    height: calc(100svh - 2em);
 }
 
 #player-actions::-webkit-scrollbar-track {
@@ -168,7 +168,7 @@ button:after {
 
 .scripthub-container {
     overflow-y: scroll;
-    height: calc(100vh - 2em);
+    height: calc(100svh - 2em);
 }
 
 .scripthub-container::-webkit-scrollbar-track {
@@ -189,13 +189,13 @@ button:after {
 
     .player-list-container {
         width: 100%!important;
-        height: calc(30vh - 20px)!important;
+        height: calc(30svh - 20px)!important;
         margin: 10px 5px;
     }
 
     #player-actions {
         width: 100%!important;
-        height: calc(70vh - 25px)!important;
+        height: calc(70svh - 25px)!important;
         margin: 10px 5px;
     }
 

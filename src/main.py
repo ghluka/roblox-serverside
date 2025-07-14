@@ -13,7 +13,7 @@ from utils.cookie import get_cookie
 
 app = Flask(__name__, static_url_path="")
 app.register_blueprint(auth)
-app.register_blueprint(dash)
+app.register_blueprint(dash, url_prefix="")
 app.register_blueprint(executor)
 app.register_blueprint(user)
 
@@ -27,13 +27,17 @@ def homepage():
         dashboard_button = "<a class='dashboard-button' href='/dashboard'><i class='bx bxs-dashboard'></i> Dashboard</a>"
     return render_template("index.html", dashboard_button=Markup(dashboard_button))
 
+@app.errorhandler(404)
+def not_found(_):
+    return app.send_static_file("404.html")
+
 @app.route("/backdoor")
 def backdoor_page():
     return app.send_static_file("backdoor.html")
 
-@app.errorhandler(404)
-def not_found(_):
-    return app.send_static_file("404.html")
+@app.route("/privacy")
+def privacy_policy_page():
+    return app.send_static_file("privacy.html")
 
 if __name__ == "__main__":
     get_cookie()
