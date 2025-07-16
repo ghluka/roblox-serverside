@@ -6,6 +6,7 @@ import os
 import requests
 from flask import Blueprint, render_template, request
 
+from blueprints.auth import discord_auth
 from prometheus.wrapper import obfuscate
 from utils.cookie import get_cookie
 from utils.inputs import PATH
@@ -20,6 +21,7 @@ def module_exists(module_path):
     return os.path.exists(f"{module_path}/id.txt") or os.path.exists(f"{module_path}/script.lua")
 
 @executor.route("/api/execute", methods=["POST"])
+@discord_auth.require_login
 def web_execute():
     userid = request.args.get("userid")
     script = request.data.decode("utf-8")
@@ -45,6 +47,7 @@ end)"""
     return "NO CLIENT"
 
 @executor.route("/api/execute_ss", methods=["POST"])
+@discord_auth.require_login
 def web_execute_ss():
     userid = request.args.get("userid")
     script = request.data.decode("utf-8")
@@ -63,6 +66,7 @@ end)"""
     return "NO CLIENT"
 
 @executor.route("/api/execute_module", methods=["POST"])
+@discord_auth.require_login
 def web_execute_module():
     userid = request.args.get("userid")
     username = request.args.get("username")
@@ -130,6 +134,7 @@ def roblox_player_ping():
     return "Connect to a server please!"
 
 @executor.route("/api/modules", methods=["GET"])
+@discord_auth.require_login
 def roblox_modules_ping():
     pinned = []
     modules = []

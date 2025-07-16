@@ -128,25 +128,35 @@
                 </div>
             </div>
             <h4 style="width: 100%; margin: 10px 0 0 10px;">Essential Actions</h4>
-            <div class="grid-container avatar-container" style="border: none; margin: 0; padding: 0;">
-              <div style="border: none; margin: 0; padding: 0!important;">
+            <div class="grid-container avatar-container action-buttons">
+              <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 50%;" onclick="executePlayerAction('target:Kick()');">Kick</button>
                 <button style="width: 50%;" onclick="executePlayerAction('targetchar:Destroy()');">Punish</button>
               </div>
-              <div style="border: none; margin: 0; padding: 0!important;">
+              <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 50%;" onclick="executePlayerAction('require(6861971724).convert(target.Name)');">R6</button>
                 <button style="width: 50%;" onclick="executePlayerAction('refresh(target)');">Refresh</button>
               </div>
-              <div style="border: none; margin: 0; padding: 0!important;">
+              <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 50%;" onclick="executePlayerAction('if not plrchar.PrimaryPart then plrchar.PrimaryPart = plrchar:FindFirstChild([[HumanoidRootPart]]) end; plrchar:SetPrimaryPartCFrame(targetchar.PrimaryPart.CFrame)');">Goto</button>
                 <button style="width: 50%;" onclick="executePlayerAction('if not plrchar.PrimaryPart then plrchar.PrimaryPart = plrchar:FindFirstChild([[HumanoidRootPart]]) end; if not targetchar.PrimaryPart then plrchar.PrimaryPart = targetchar:FindFirstChild([[HumanoidRootPart]]) end;targetchar:SetPrimaryPartCFrame(plrchar.PrimaryPart.CFrame)');">Bring</button>
               </div>
             </div>
             <h4 style="width: 100%; margin: 10px 0 0 10px;">Fun Actions</h4>
-            <div class="grid-container avatar-container" style="border: none; margin: 0; padding: 0;">
-              <div style="border: none; margin: 0; padding: 0!important;">
+            <div class="grid-container avatar-container action-buttons">
+
+              <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('targethum.Health = 0');">Kill</button>
+                <button style="width: 33%;" onclick="executePlayerAction('targetchar.HumanoidRootPart.Anchored = true');">Freeze</button>
+                <button style="width: 33%;" onclick="executePlayerAction('targetchar.HumanoidRootPart.Anchored = false');">Thaw</button>
               </div>
+              
+              <div class="action-buttons" style="padding: 0!important;">
+                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Explosion\', workspace).Position = targetchar.HumanoidRootPart.Position');">Explode</button>
+                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'ForceField\', targetchar)');">Forcefield</button>
+                <button style="width: 33%;" onclick="executePlayerAction('targetchar:FindFirstChildOfClass(\'ForceField\'):Destroy()');">No Forcefield</button>
+              </div>
+
             </div>
           </div>
         </div>

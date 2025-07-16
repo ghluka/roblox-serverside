@@ -76,6 +76,7 @@ def logout():
     return redirect(url_for("homepage"))
 
 @auth.route("/api/update_id", methods=["GET"])
+@discord_auth.require_login
 def update_id():
     try:
         user = session["user"]

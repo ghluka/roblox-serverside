@@ -5,6 +5,7 @@ html {
 #editor {
     flex-grow: 1;
     margin-bottom: 8px;
+    border-radius: 8px;
 }
 
 .preview-img {
@@ -261,4 +262,20 @@ button:after {
 
 body {
     overflow-y: hidden;
+}
+
+.swal2-confirm {
+    border: 2px solid #bc49db;
+}
+
+.action-buttons {
+    border: none!important;
+    margin: 0!important;
+}
+
+.action-buttons button {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0!important;
 }

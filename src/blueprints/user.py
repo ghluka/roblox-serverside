@@ -5,7 +5,7 @@ import requests
 import requests_cache
 from flask import Blueprint, jsonify, request
 
-from blueprints.auth import DB_PATH
+from blueprints.auth import DB_PATH, discord_auth
 from utils.session import Session
 
 user = Blueprint("user", __name__)
@@ -33,6 +33,7 @@ def whitelist_check():
     return "false"
 
 @user.route("/api/roblox_data", methods=["GET"])
+@discord_auth.require_login
 def roblox_data():
     user_id = request.args.get("userid")
 
