@@ -3,7 +3,7 @@ return {
 
     VarNamePrefix = "NETT_WTF_";
 
-    NameGenerator = "MangledShuffled";
+    NameGenerator = "Il";
 
     PrettyPrint = false;
 
@@ -11,20 +11,21 @@ return {
 
     Steps = {
         {
+            Name="SplitStrings";
+            Settings = {
+                MinLength = 2;
+                ConcatenationType = "strcat";
+                CustomFunctionType = "inline";
+            }
+        },
+        {
             Name="ProxifyLocals";
         },
         {
-            Name="WrapInFunction";
-            Settings = {
-                Iterations = 2;
-            }
+            Name = "NumbersToExpressions";
         },
         {
-            Name="SplitStrings";
-            Settings = {
-                Treshold = 1;
-                ConcatenationType = "strcat";
-            }
+            Name="WrapInFunction";
         },
     }
 }
