@@ -184,7 +184,7 @@
               
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'BodyForce\', targetchar.HumanoidRootPart).Force = Vector3.new(12550821, 12550821, 0)');">Fling</button>
-                <button style="width: 33%;" onclick="executePlayerAction('local meteor = game:GetService(\'InsertService\'):LoadAsset(86374494):GetChildren()[1]:GetChildren()[1]; meteor.Parent = workspace; meteor.CFrame = targetchar.HumanoidRootPart.CFrame + Vector3.new(0,100,0); game:GetService(\'Debris\'):AddItem(meteor, 10); meteor.Touched:Connect(function(p) pcall(function() if p.Locked then return end p.Anchored = false p.Parent:BreakJoints() end) end)');">Meteor</button>
+                <button style="width: 33%;" onclick="executePlayerAction('local meteor = game:GetService(\'InsertService\'):LoadAsset(86374494):GetChildren()[1]:GetChildren()[1]; meteor.Parent = workspace; meteor.CFrame = targetchar.HumanoidRootPart.CFrame + Vector3.new(0,100,0); game:GetService(\'Debris\'):AddItem(meteor, 10); meteor.Touched:Connect(function(p) pcall(function() p.Parent:BreakJoints() end) pcall(function() if p.Locked then return end p.Anchored = false end) end)');">Meteor</button>
                 <button style="width: 33%;" onclick="executePlayerAction('local car = game:GetService(\'InsertService\'):LoadAsset(59524622):GetChildren()[1]; car.PrimaryPart = car.StamperFloor; car:SetPrimaryPartCFrame(targetchar.HumanoidRootPart.CFrame * CFrame.new(10,0,0) * CFrame.Angles(0, math.rad(180), 0)); car.Parent = workspace; car:MakeJoints()');">Car</button>
               </div>
               
