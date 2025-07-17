@@ -32,7 +32,7 @@ def whitelist_check():
             cursor = conn.cursor()
             cursor.execute("SELECT whitelist FROM users WHERE roblox_id = ?", (roblox_id,))
             whitelist = cursor.fetchone()[0]
-            
+
             if whitelist >= whitelist_limit:
                 return "true"
 

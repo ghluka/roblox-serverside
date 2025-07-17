@@ -80,6 +80,22 @@ function updatePlayers() {
         method: "GET"
     }).then(response => response.text()).then(function(response) {
         document.getElementById("player-list").innerHTML = response;
+        if (response == "") {
+            document.getElementById("player-action-warning").innerHTML = `
+            <h3>Waiting For Game...</h3>
+            <br>
+            <h5>To load the player list, your linked Roblox account must be in a whitelisted game.</h5>
+            <h5>If you set your Roblox Id in the dashboard while in-game, rejoin.</h5>
+            `;
+            document.getElementById("player-action-warning").style.display = "flex";
+            document.getElementById("player-actions-container").style.display = "none";
+            return;
+        }
+        document.getElementById("player-action-warning").innerHTML = `
+            <h3 class="found">Game Found!</h3>
+            <br>
+            <h5>Select a player on the left to see information and a list of scripts you can perform on them.</h5>
+            `;
     }).catch(error => console.error('Error:', error));
     setTimeout(updatePlayers, 10000);
 }
@@ -117,6 +133,7 @@ function setPlayer(event) {
     while (dataNode.nodeName !== "A") {
         dataNode = dataNode.parentNode;
     }
+    document.getElementById("player-action-warning").style.display = "none";
     var data = JSON.parse(dataNode.getAttribute("data").replaceAll("'", "\""));
     document.getElementById("player-action-avatar").src = data["AvatarUrl"];
     document.getElementById("player-action-displayname").innerHTML = data["DisplayName"] + twemoji.parse(getFlagEmoji(data["Country"]));

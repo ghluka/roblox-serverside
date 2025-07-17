@@ -102,3 +102,26 @@
     transition: all 0.5s ease;
     color: #2B2B2B;
 }
+
+#player-action-warning {
+    display: flex;
+    text-align: center;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#player-action-warning h3 {
+    animation: waiting 1s linear 0s infinite alternate;
+}
+
+@keyframes waiting {
+    0% { color: #e791ff; }
+    100% { color: #8520a1; }
+}
+
+.found {
+    animation: none!important;
+    color: #bc49db!important;
+}
