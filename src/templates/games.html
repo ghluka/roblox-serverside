@@ -1,0 +1,7 @@
+{%for v in games%}
+    <div class="module" onclick='window.open(`{{v["url"]}}`);'>
+        <img src='{{v["thumbnail"]}}' class="preview-img">
+        <h3>{{v["data"][0]["name"]}}</h3>
+        <h5><i class='bx bxs-user'></i> {{"{:,}".format(v["data"][0]["visits"])}} visits</h5>
+    </div>
+{%endfor%}

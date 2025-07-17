@@ -64,3 +64,19 @@ I haven't tested it too much, if you do wish to change it, do not enable the fol
 - SplitStrings (only if ConcatenationType is set to "table" and not "strcat")
 - EncryptStrings
 - ConstantArray
+
+### 🛂 Game Review
+
+Theres currently no game review panel, so you have to manually add `review.json` games to `games.json` in the [`/src/games`](/src/games) directory.
+
+Games.json entries should be formatted like:
+```json
+{
+    placeid: {
+        "placeid": placeid,
+        "universeid": universeid,
+        "url": "https://www.roblox.com/games/{placeid}",
+        "whitelist": whitelist
+    }
+}
+```

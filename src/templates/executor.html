@@ -31,6 +31,13 @@
                 <span class="tooltip">Dashboard</span>
             </li>
             <li>
+                <a onclick="openTab(event, 'games')">
+                    <i class='bx bx-game'></i>
+                    <span class="links_name">Games</span>
+                </a>
+                <span class="tooltip">Games</span>
+            </li>
+            <li>
                 <a class="exec-tab" onclick="openTab(event, 'executor')">
                     <i class='bx bx-code-alt'></i>
                     <span class="links_name">Executor</span>
@@ -94,6 +101,12 @@
                 </div>
               </div>
           </div>
+        </div>
+      </div>
+    </section>
+    <section class="home-section" id="games">
+      <div class="script-container scripthub-container">
+        <div class="grid-container" id="games_list">
         </div>
       </div>
     </section>
@@ -184,7 +197,7 @@
       <div class="script-container scripthub-container">
         <div class="centered">
           <input id="module-username" value="" placeholder="Target's username (or me, all, others)">
-        </div>  
+        </div>
         <div class="grid-container" id="modules">
         </div>
       </div>

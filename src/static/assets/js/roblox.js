@@ -96,6 +96,17 @@ function updateModules() {
 }
 updateModules();
 
+function updateGames() {
+    const url = "/api/games";
+    fetch(url, {
+        method: "GET"
+    }).then(response => response.text()).then(function(response) {
+        document.getElementById("games_list").innerHTML = response;
+    }).catch(error => console.error('Error:', error));
+    setTimeout(updateGames, 60000);
+}
+updateGames();
+
 function getFlagEmoji(countryCode) {
     const codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
     return String.fromCodePoint(...codePoints);

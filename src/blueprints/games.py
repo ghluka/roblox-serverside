@@ -1,0 +1,92 @@
+import json
+import os
+import sqlite3
+from datetime import timedelta
+
+import requests_cache
+from flask import Blueprint, render_template, request, session
+
+from blueprints.auth import DB_PATH, discord_auth
+from utils.inputs import PATH
+
+games = Blueprint("games", __name__)
+
+game_session = requests_cache.CachedSession("roblox_gamedata", expire_after=timedelta(hours=24))
+headers = {"User-Agent": "Roblox/WinInet"}
+
+def initialize():
+    if not os.path.exists(f"{PATH}/games"):
+        os.makedirs(f"{PATH}/games")
+
+    if not os.path.exists(f"{PATH}/games/games.json"):
+        with open(f"{PATH}/games/games.json", "x", encoding="utf8") as f:
+            f.write("{}")
+    if not os.path.exists(f"{PATH}/games/review.json"):
+        with open(f"{PATH}/games/review.json", "x", encoding="utf8") as f:
+            f.write("{}")
+
+@games.route("/api/game", methods=["POST"])
+def games_ping():
+    try:
+        placeid = "".join(filter(str.isdigit, request.args.get("placeid")))
+        url = f"https://www.roblox.com/games/{placeid}"
+
+        with open(f"{PATH}/games/games.json", encoding="utf8") as games_file:
+            games_json = json.loads(games_file.read())
+        with open(f"{PATH}/games/review.json", encoding="utf8") as review_file:
+            review_json = json.loads(review_file.read())
+
+        if games_json.get(placeid):
+            return "EXISTS"
+        if review_json.get(placeid):
+            review_json[placeid]["reports"] += 1
+            with open(f"{PATH}/games/review.json", "w", encoding="utf8") as review_file:
+                json.dump(review_json, review_file, ensure_ascii=False, indent=4)
+            return "EXISTS"
+
+        review_json[placeid] = {
+            "url": url,
+            "reports": 1,
+        }
+
+        with open(f"{PATH}/games/review.json", "w", encoding="utf8") as review_file:
+            json.dump(review_json, review_file, ensure_ascii=False, indent=4)
+
+        return "DONE"
+    except:
+        return "FAILED"
+
+@games.route("/api/games", methods=["GET"])
+@discord_auth.require_login
+def games_list():
+    user = session["user"]
+
+    with open(f"{PATH}/games/games.json", encoding="utf8") as games_file:
+        games_json = json.loads(games_file.read())
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT whitelist FROM users WHERE discord_id = ?", (user["id"],))
+        result = cursor.fetchone()
+    whitelist = result[0]
+
+    games_data = []
+    for _,game in games_json.items():
+        try:
+            if whitelist < game.get("whitelist", 0):
+                continue
+            universeid = game["universeid"]
+
+            details = game_session.get(f"https://games.roblox.com/v1/games?universeIds={universeid}", headers=headers, timeout=5).json()
+            thumbnail = game_session.get(f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false", headers=headers, timeout=5).json()
+
+            image = thumbnail["data"][0]["thumbnails"][0]["imageUrl"]
+            game = {**game, **details, "thumbnail":image}
+
+            games_data.append(game)
+        except:
+            continue
+
+    return render_template("games.html", games=games_data)
+
+initialize()

@@ -1,3 +1,4 @@
+import json
 import os
 import sqlite3
 
@@ -6,6 +7,7 @@ import requests_cache
 from flask import Blueprint, jsonify, request
 
 from blueprints.auth import DB_PATH, discord_auth
+from utils.inputs import PATH
 from utils.session import Session
 
 user = Blueprint("user", __name__)
@@ -21,13 +23,17 @@ def whitelist_check():
     roblox_id = request.args.get("userid")
     game_id = request.args.get("gameid")
 
+    with open(f"{PATH}/games/games.json", encoding="utf8") as games_file:
+        games_json = json.loads(games_file.read())
+    whitelist_limit = games_json[str(game_id)]["whitelist"]
+
     if roblox_id_exists(roblox_id):
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT whitelist FROM users WHERE roblox_id = ?", (roblox_id,))
             whitelist = cursor.fetchone()[0]
             
-            if whitelist > 0:
+            if whitelist >= whitelist_limit:
                 return "true"
 
     return "false"

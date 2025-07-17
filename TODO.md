@@ -5,9 +5,8 @@ List of ideas and features to implement in the future with their priority and a 
 - ### FIREWALL.
     - Priority: HIGH
     - > make it so api endpoints that should be only accessible by Roblox, are only accessible by Roblox IPs
-- ### Game list and review panel
+- ### Game review panel
     - Priority: high
-    - > Tab in dashboard for list of games with search bar and sort (active players, total players, etc)
     - > Add report button in dashboard for any game incase the SS was removed
     - > Review panel for administrators to see if any games uploaded by `/api/game?placeid=` to manually check if game has SS
 - ### Discord bot or admin panel

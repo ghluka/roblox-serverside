@@ -27,9 +27,11 @@ end
 local function cleanupExecutionThreads(userId)
     if executionThreads[userId] then
         for i, thread in ipairs(executionThreads[userId]) do
-            if coroutine.status(thread) ~= "dead" then
-                coroutine.close(thread)
-            end
+            pcall(function()
+                if coroutine.status(thread) ~= "dead" then
+                    coroutine.close(thread)
+                end
+            end)
         end
         executionThreads[userId] = {}
     end
@@ -83,7 +85,9 @@ local function plrRemoving(plr)
         end)
         local userId = tostring(plr.UserId)
         cleanupExecutionThreads(userId)
-        coroutine.close(threads[userId])
+        pcall(function()
+            coroutine.close(threads[userId])
+        end)
         threads[userId] = nil
         executionThreads[userId] = nil
     end

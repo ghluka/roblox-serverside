@@ -71,7 +71,7 @@ function executePlayerAction(script) {
 function FileInput(f) {
     let input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.lua,.txt';
+    input.accept = '.lua,.luau,.txt';
     input.onchange = e => {
         var file = e.target.files[0];
         if (!file) {

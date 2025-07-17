@@ -8,6 +8,7 @@ from markupsafe import Markup
 from blueprints.auth import auth
 from blueprints.dashboard import dash
 from blueprints.executor import executor
+from blueprints.games import games
 from blueprints.user import user
 from utils.cookie import get_cookie
 
@@ -15,6 +16,7 @@ app = Flask(__name__, static_url_path="")
 app.register_blueprint(auth)
 app.register_blueprint(dash, url_prefix="")
 app.register_blueprint(executor)
+app.register_blueprint(games)
 app.register_blueprint(user)
 
 load_dotenv()
