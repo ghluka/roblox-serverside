@@ -58,6 +58,15 @@
                 </a>
                 <span class="tooltip">Script Hub</span>
             </li>
+            {%if whitelist == 255%}
+            <li>
+                <a onclick="openTab(event, 'admin')">
+                    <i class='bx bx-key'></i>
+                    <span class="links_name">Admin</span>
+                </a>
+                <span class="tooltip">Admin</span>
+            </li>
+            {%endif%}
         </ul>
         <div class="logo-details discord-profile" onclick="window.location.href = '/logout'">
           <img class="avatar" src="{{discord_avatar}}">
@@ -87,7 +96,7 @@
                 <img class="avatar" src="/assets/svg/shield.svg">
                 <div>
                   <h3 style="color: #606070;">Whitelist Type</h3>
-                  <h3>{{whitelist}}</h3>
+                  <h3>{{whitelist_status}}</h3>
                 </div>
               </div>
           </div>
@@ -189,6 +198,11 @@
                 <button style="width: 33%;" onclick="executePlayerAction('local car = game:GetService(\'InsertService\'):LoadAsset(59524622):GetChildren()[1]; car.PrimaryPart = car.StamperFloor; car:SetPrimaryPartCFrame(targetchar.HumanoidRootPart.CFrame * CFrame.new(10,0,0) * CFrame.Angles(0, math.rad(180), 0)); car.Parent = workspace; car:MakeJoints()');">Car</button>
               </div>
               
+              <div class="action-buttons" style="padding: 0!important;">
+                <button style="width: 33%;" onclick="executePlayerAction('local mob = game:GetService(\'InsertService\'):LoadAsset(95401558):GetChildren()[1]; mob.PrimaryPart = mob.Torso; mob:SetPrimaryPartCFrame(targetchar.Head.CFrame); mob.Parent = workspace');">Shade</button>
+                <button style="width: 33%;" onclick="executePlayerAction('local mob = game:GetService(\'InsertService\'):LoadAsset(94251705):GetChildren()[1]; mob.PrimaryPart = mob.Torso; mob:SetPrimaryPartCFrame(targetchar.Head.CFrame); mob.Parent = workspace');">Ghost</button>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -203,6 +217,15 @@
         </div>
       </div>
     </section>
+    {%if whitelist == 255%}
+    <section class="home-section" id="admin">
+      <div class="script-container executor-container">
+        <div class="grid-container">
+          <h2>Admin panel</h2>
+        </div>
+      </div>
+    </section>
+    {%endif%}
 
     <script src="/assets/js/sidebar.js"></script>
     <script src="/assets/js/roblox.js"></script>

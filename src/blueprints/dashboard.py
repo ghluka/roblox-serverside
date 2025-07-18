@@ -34,6 +34,6 @@ def dashboard():
 
     return render_template(
         "executor.html",
-        roblox_id=roblox_id, user_id=user_id, whitelist=whitelist_status,
-        discord_avatar=avatar_url, discord_username=username,
+        roblox_id=roblox_id, user_id=user_id, whitelist_status=whitelist_status,
+        whitelist=whitelist, discord_avatar=avatar_url, discord_username=username,
     )

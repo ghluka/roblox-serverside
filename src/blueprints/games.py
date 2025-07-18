@@ -11,7 +11,7 @@ from utils.inputs import PATH
 
 games = Blueprint("games", __name__)
 
-game_session = requests_cache.CachedSession("roblox_gamedata", expire_after=timedelta(hours=24))
+game_session = requests_cache.CachedSession("roblox_gamedata", expire_after=timedelta(hours=2))
 headers = {"User-Agent": "Roblox/WinInet"}
 
 def initialize():
