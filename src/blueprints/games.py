@@ -57,6 +57,7 @@ def games_ping():
         return "FAILED"
 
 @games.route("/api/games", methods=["GET"])
+@discord_auth.require_agreement
 @discord_auth.require_login
 def games_list():
     user = session["user"]

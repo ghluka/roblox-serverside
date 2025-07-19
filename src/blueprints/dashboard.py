@@ -32,8 +32,24 @@ def dashboard():
         whitelists = json.loads(f.read())
     whitelist_status = whitelists.get(str(whitelist), "None")
 
+    tos_updated = False
+    new_user = False
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT tos_version FROM users WHERE discord_id = ?", (discord_id,))
+        result = cursor.fetchone()[0]
+
+        with open(f"{PATH}/static/terms.html", "r", encoding="utf8") as f:
+            version = int(f.read().split("version=\"")[1].split("\"")[0])
+
+        if result == 0:
+            new_user = True
+        elif result != version:
+            tos_updated = True
+
     return render_template(
         "executor.html",
         roblox_id=roblox_id, user_id=user_id, whitelist_status=whitelist_status,
         whitelist=whitelist, discord_avatar=avatar_url, discord_username=username,
+        tos_updated=tos_updated, new_user=new_user
     )

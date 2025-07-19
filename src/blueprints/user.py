@@ -39,6 +39,7 @@ def whitelist_check():
     return "false"
 
 @user.route("/api/roblox_data", methods=["GET"])
+@discord_auth.require_agreement
 @discord_auth.require_login
 def roblox_data():
     user_id = request.args.get("userid")

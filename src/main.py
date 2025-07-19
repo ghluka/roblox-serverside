@@ -33,13 +33,21 @@ def homepage():
 def not_found(_):
     return app.send_static_file("404.html")
 
-@app.route("/backdoor")
-def backdoor_page():
-    return app.send_static_file("backdoor.html")
+@app.route("/script")
+def admin_script_page():
+    return app.send_static_file("script.html")
 
 @app.route("/privacy")
 def privacy_policy_page():
     return app.send_static_file("privacy.html")
+
+@app.route("/terms")
+def tos_page():
+    return app.send_static_file("terms.html")
+
+@app.route("/eula")
+def eula_page():
+    return app.send_static_file("eula.html")
 
 if __name__ == "__main__":
     get_cookie()

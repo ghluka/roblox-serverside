@@ -4,13 +4,12 @@ from datetime import datetime
 
 from flask import Blueprint, redirect, request, session, url_for
 
-from utils.auth import DiscordAuth
+from utils.auth import DB_PATH, DiscordAuth
+from utils.inputs import PATH
 
 auth = Blueprint("auth", __name__)
 
 discord_auth = DiscordAuth(os.getenv("CLIENT_ID"), os.getenv("CLIENT_SECRET"), "https://nett.wtf/callback")
-
-DB_PATH = "users.db"
 
 def init_db():
     """Initialize database if it doesn't exist."""
@@ -23,7 +22,8 @@ def init_db():
                 username TEXT,
                 roblox_id INTEGER,
                 whitelist INTEGER,
-                signup_date TEXT
+                signup_date TEXT,
+                tos_version INTEGER
             )
         """)
         conn.commit()
@@ -42,8 +42,8 @@ def signup(user_info):
         if not existing_user:
             email = user_info.get("email", "none")
             cursor.execute(
-                "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, signup_date) VALUES (?, ?, ?, ?, ?, ?)",
-                (discord_id, email, username, 1, 0, signup_date)
+                "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, signup_date, tos_version) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (discord_id, email, username, 1, 0, signup_date, 0)
             )
             conn.commit()
         else:
@@ -55,6 +55,7 @@ def signup(user_info):
 
 @auth.route("/login")
 def login():
+    #return "Service under maintenance, our login system is currently offline."
     return redirect(discord_auth.get_auth_url())
 
 @auth.route("/callback")
@@ -76,6 +77,7 @@ def logout():
     return redirect(url_for("homepage"))
 
 @auth.route("/api/update_id", methods=["GET"])
+@discord_auth.require_agreement
 @discord_auth.require_login
 def update_id():
     try:
@@ -97,5 +99,23 @@ def update_id():
     except:
         pass
     return "Done!"
+
+@auth.route("/api/agree")
+@discord_auth.require_login
+def agree_to_terms():
+    user = session["user"]
+    discord_id = user.get("id")
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        with open(f"{PATH}/static/terms.html", "r", encoding="utf8") as f:
+            version = int(f.read().split("version=\"")[1].split("\"")[0])
+
+        cursor.execute(
+            "UPDATE users SET tos_version = ? WHERE discord_id = ?",
+            (version, discord_id)
+        )
+
+    return "You have confirmed that you agree to our Terms of Service."
 
 init_db()
