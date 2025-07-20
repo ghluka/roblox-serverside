@@ -1,3 +1,8 @@
+{%if message != ""%}
+<p style="width: 100%; text-align: center;">{{message}}</p>
+<br>
+<br>
+{%endif%}
 {%for v in games%}
     <div class="module" onclick='window.open(`{{v["url"]}}`);'>
         <img src='{{v["thumbnail"]}}' class="preview-img">

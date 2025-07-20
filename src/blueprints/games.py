@@ -72,13 +72,16 @@ def games_list():
     whitelist = result[0]
 
     games_data = []
+    visits = 0
     for _,game in games_json.items():
         try:
-            if whitelist < game.get("whitelist", 0):
-                continue
             universeid = game["universeid"]
-
             details = game_session.get(f"https://games.roblox.com/v1/games?universeIds={universeid}", headers=headers, timeout=5).json()
+
+            if whitelist < game.get("whitelist", 0):
+                visits += details["data"][0].get("visits", 0)
+                continue
+
             thumbnail = game_session.get(f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false", headers=headers, timeout=5).json()
 
             image = thumbnail["data"][0]["thumbnails"][0]["imageUrl"]
@@ -88,6 +91,11 @@ def games_list():
         except:
             continue
 
-    return render_template("games.html", games=games_data)
+    message = ""
+    diff = len(games_json.items()) - len(games_data)
+    if diff > 0:
+        message = f"Due to your whitelist status, you're missing out on {diff} games with a total of {visits:,} visits."
+
+    return render_template("games.html", message=message, games=games_data)
 
 initialize()
