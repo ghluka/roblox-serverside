@@ -1,10 +1,7 @@
-# 🎮 Roblox Serverside
-Roblox serverside proof of concept demonstration with web execution.
+# 🎮 Roblox Administration Tool 
+Nett Administration is an open-source admin program for Roblox, offering a wide array of features and commands to improve the experience for both players and developers.
 
 [![GitHub license](https://img.shields.io/github/license/ghluka/roblox-ss)](LICENSE)
-
-> [!WARNING]  
-> I am not liable for any problems/consequences that may arise from using this program. This program solely serves as a proof of concept.
 
 > Live demonstration available at [nett.wtf](https://nett.wtf).
 
@@ -57,13 +54,7 @@ If Prometheus is present, then the backdoor script will be automatically obfusca
 
 Edit the Prometheus configuration located in [`/src/prometheus/config.lua`](/src/prometheus/config.lua).
 
-You can visit [Prometheus' configuration guide](https://levno-710.gitbook.io/prometheus/getting-started/writing-a-custom-config-file) if you don't know how to work with it already.
-
-I haven't tested it too much, if you do wish to change it, do not enable the following steps, otherwise it breaks:
-- Vmify
-- SplitStrings (only if ConcatenationType is set to "table" and not "strcat")
-- EncryptStrings
-- ConstantArray
+You can visit [Prometheus' configuration guide](https://levno-710.gitbook.io/prometheus/getting-started/writing-a-custom-config-file) if you don't know how to work with it already, however many features like Vmify do not work with vLua, so many sure you test your configuration before deploying it.
 
 ### 🛂 Game Review
 
@@ -72,11 +63,11 @@ Theres currently no game review panel, so you have to manually add `review.json`
 Games.json entries should be formatted like:
 ```json
 {
-    placeid: {
-        "placeid": placeid,
-        "universeid": universeid,
-        "url": "https://www.roblox.com/games/{placeid}",
-        "whitelist": whitelist
-    }
+    "1818": {
+        "placeid": 1818,
+        "universeid": 13058,
+        "url": "https://www.roblox.com/games/1818",
+        "whitelist": 1
+    },
 }
 ```
