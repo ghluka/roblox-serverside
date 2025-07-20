@@ -25,7 +25,7 @@ def whitelist_check():
 
     with open(f"{PATH}/games/games.json", encoding="utf8") as games_file:
         games_json = json.loads(games_file.read())
-    whitelist_limit = games_json[str(game_id)]["whitelist"]
+    whitelist_limit = games_json[str(game_id)].get("whitelist")
 
     if roblox_id_exists(roblox_id):
         with sqlite3.connect(DB_PATH) as conn:

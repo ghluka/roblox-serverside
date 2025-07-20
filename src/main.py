@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 from dotenv import load_dotenv
-from flask import Flask, render_template, session
+from flask import Flask, render_template, request, session
 from markupsafe import Markup
 
 from blueprints.auth import auth
@@ -28,6 +28,14 @@ def homepage():
     if "user" in session:
         dashboard_button = "<a class='dashboard-button' href='/dashboard'><i class='bx bxs-dashboard'></i> Dashboard</a>"
     return render_template("index.html", dashboard_button=Markup(dashboard_button))
+
+@app.before_request
+def check_user_agent():
+    embeds = ["discordbot", "twitterbot"]
+    user_agent = request.headers.get('User-Agent', '').lower()
+    for embed in embeds:
+        if embed in user_agent:
+            return app.send_static_file("404.html")
 
 @app.errorhandler(404)
 def not_found(_):
