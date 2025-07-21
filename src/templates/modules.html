@@ -1,12 +1,14 @@
 {%for v in modules%}
     <div class="module" onclick='executeRequire(`{{v["module"]}}`);'>
         <img src='{{v["image"]}}' class="preview-img">
-        <h3>{{v["name"]}}</h3>
-        <div class="badges">
-            {%for badge in v["badges"]%}
-                <h5>{{badge}}</h5>
-            {%endfor%}
-        </div>
+        <h3>
+            {{v["name"]}}
+            <div class="badges">
+                {%for badge in v["badges"]%}
+                    <h5>{{badge}}</h5>
+                {%endfor%}
+            </div>
+        </h3>
         <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
         <h5 class="description">{{v["description"]}}
             {%if v["controls"]%}<a class="module-controls" onclick='

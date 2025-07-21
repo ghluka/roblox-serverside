@@ -112,6 +112,7 @@ button:after {
     display: flex;
     align-items: left;
     flex-direction: row;
+    display: inline-block;
 }
 
 .badges * {
