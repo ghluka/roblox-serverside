@@ -136,46 +136,6 @@ def roblox_player_ping():
 
     return "Connect to a server please!"
 
-@executor.route("/api/modules", methods=["GET"])
-@discord_auth.require_agreement
-@discord_auth.require_login
-def roblox_modules_ping():
-    pinned = []
-    modules = []
-    auth_cookie = None
-    session = None
-
-    for module_path in glob.glob(f"{PATH}/modules/*"):
-        if not module_exists(module_path) and not module_path.endswith("template"):
-            with open(f"{module_path}/data.json", encoding="utf8") as data_file:
-                info = json.load(data_file)
-
-            if auth_cookie is None:
-                auth_cookie = get_cookie()
-                session = Session(auth_cookie)
-
-            info["rbxmx"] = f"{module_path}/{info['rbxmx']}"
-            asset_id = session.upload(info["rbxmx"], info)
-
-            with open(f"{module_path}/id.txt", "w", encoding="utf8") as id_file:
-                id_file.write(str(asset_id))
-
-        if module_exists(module_path) and not module_path.endswith("template"):
-            with open(f"{module_path}/data.json", encoding="utf8") as data_file:
-                info = json.load(data_file)
-
-            try:
-                with open(f"{module_path}/{info['image']}", "rb") as image_file:
-                    info["image"] = "data:image/png;base64," + base64.b64encode(image_file.read()).decode("utf-8")
-            except FileNotFoundError:
-                pass
-
-            info["module"] = os.path.basename(module_path)
-
-            (pinned if info.get("pinned") else modules).append(info)
-
-    return render_template("modules.html", modules=[*pinned, *modules])
-
 @executor.route("/api/close", methods=["POST"])
 def roblox_close():
     userid = request.headers.get("user-id")
