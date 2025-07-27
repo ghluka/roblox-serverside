@@ -1,5 +1,5 @@
-#editor {
-    height: 100svh;
+#container {
+    height: 100svh!important;
 }
 
 html, body {

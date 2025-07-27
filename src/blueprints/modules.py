@@ -50,11 +50,14 @@ def roblox_modules():
                 auth_cookie = get_cookie()
                 session = Session(auth_cookie)
 
-            info["rbxmx"] = f"{module_path}/{info['rbxmx']}"
-            asset_id = session.upload(info["rbxmx"], info)
+            try:
+                info["rbxmx"] = f"{module_path}/{info['rbxmx']}"
+                asset_id = session.upload(info["rbxmx"], info)
 
-            with open(f"{module_path}/id.txt", "w", encoding="utf8") as id_file:
-                id_file.write(str(asset_id))
+                with open(f"{module_path}/id.txt", "w", encoding="utf8") as id_file:
+                    id_file.write(str(asset_id))
+            except FileNotFoundError:
+                pass
 
         if module_exists(module_path) and not module_path.endswith("template"):
             with open(f"{module_path}/data.json", encoding="utf8") as data_file:

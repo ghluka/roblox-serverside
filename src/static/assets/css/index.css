@@ -4,7 +4,7 @@ html, body {
     background-color: #111;
 }
 
-*:not(#editor, #editor *, #code, #code *, p, i, a, span) {
+*:not(#container, #container *, #code, #code *, p, i, a, span) {
     font-family: Inter, sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;

