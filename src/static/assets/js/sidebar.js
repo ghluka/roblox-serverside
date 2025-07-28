@@ -20,6 +20,7 @@ function openTab(evt, tabName) {
     for (var i = 0; i < tabcontent.length; i++) {
         const tab = tabcontent[i];
         if (tab.id == tabName) {
+            document.title = "NettSS " + evt.target.innerText;
             tabcontent[i].style.display = "flex";
         }
         else {
