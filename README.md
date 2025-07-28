@@ -63,11 +63,20 @@ Theres currently no game review panel, so you have to manually add `review.json`
 Games.json entries should be formatted like:
 ```json
 {
+    "0": {
+        "placeid": 0,
+        "universeid": 0,
+        "url": "https://www.roblox.com/games/0",
+        "whitelist": 255
+    },
     "1818": {
         "placeid": 1818,
         "universeid": 13058,
         "url": "https://www.roblox.com/games/1818",
         "whitelist": 1
-    },
+    }
 }
 ```
+The 0 placeid is necessary if you want to test within a local Studio file thats not published.
+
+It will be automatically added when you first run, so you don't have to worry about adding it.

@@ -20,13 +20,16 @@ def initialize():
 
     if not os.path.exists(f"{PATH}/games/games.json"):
         with open(f"{PATH}/games/games.json", "x", encoding="utf8") as f:
-            f.write("{}")
+            f.write(json.dumps({
+                "0":{"placeid":0,"universeid":0,"url":"https://www.roblox.com/games/0","whitelist":255}
+            }, indent=4))
     if not os.path.exists(f"{PATH}/games/review.json"):
         with open(f"{PATH}/games/review.json", "x", encoding="utf8") as f:
             f.write("{}")
 
 @games.route("/api/game", methods=["POST"])
 def games_ping():
+    initialize()
     try:
         placeid = "".join(filter(str.isdigit, request.args.get("placeid")))
         url = f"https://www.roblox.com/games/{placeid}"
@@ -60,6 +63,7 @@ def games_ping():
 @discord_auth.require_agreement
 @discord_auth.require_login
 def games_list():
+    initialize()
     user = session["user"]
 
     with open(f"{PATH}/games/games.json", encoding="utf8") as games_file:
@@ -73,10 +77,15 @@ def games_list():
 
     games_data = []
     visits = 0
-    for _,game in games_json.items():
+    del_zero = False
+    for placeid,game in games_json.items():
         try:
             universeid = game["universeid"]
             details = game_session.get(f"https://games.roblox.com/v1/games?universeIds={universeid}", headers=headers, timeout=5).json()
+
+            if placeid == "0":
+                del_zero = True
+                continue
 
             if whitelist < game.get("whitelist", 0):
                 visits += details["data"][0].get("visits", 0)
@@ -90,6 +99,9 @@ def games_list():
             games_data.append(game)
         except:
             continue
+
+    if del_zero:
+        del games_json["0"]
 
     message = ""
     diff = len(games_json.items()) - len(games_data)
