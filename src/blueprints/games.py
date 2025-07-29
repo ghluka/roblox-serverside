@@ -91,6 +91,14 @@ def games_list():
                 visits += details["data"][0].get("visits", 0)
                 continue
 
+            if game.get("data"):
+                try:
+                    for i,v in game["data"][0].items():
+                        details["data"][0][i] = v
+                except:
+                    pass
+                del game["data"]
+
             thumbnail = game_session.get(f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false", headers=headers, timeout=5).json()
 
             image = thumbnail["data"][0]["thumbnails"][0]["imageUrl"]
