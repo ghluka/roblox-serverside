@@ -17,8 +17,12 @@ executor = Blueprint("executor", __name__)
 users = {}
 users_players = {}
 
+
 def module_exists(module_path):
-    return os.path.exists(f"{module_path}/id.txt") or os.path.exists(f"{module_path}/script.luau")
+    return os.path.exists(f"{module_path}/id.txt") or os.path.exists(
+        f"{module_path}/script.luau"
+    )
+
 
 @executor.route("/api/execute", methods=["POST"])
 @discord_auth.require_agreement
@@ -29,9 +33,13 @@ def web_execute():
 
     with open(f"{PATH}/static/assets/lua/header.luau", encoding="utf8") as convert_file:
         header = convert_file.read()
-    with open(f"{PATH}/static/assets/lua/convert.luau", encoding="utf8") as convert_file:
+    with open(
+        f"{PATH}/static/assets/lua/convert.luau", encoding="utf8"
+    ) as convert_file:
         convert = convert_file.read()
-    with open(f"{PATH}/static/assets/lua/functions.luau", encoding="utf8") as functions_file:
+    with open(
+        f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
+    ) as functions_file:
         functions = functions_file.read()
 
     script = f"""pcall(function()
@@ -47,6 +55,7 @@ end)"""
         return "OK"
     return "NO CLIENT"
 
+
 @executor.route("/api/execute_ss", methods=["POST"])
 @discord_auth.require_agreement
 @discord_auth.require_login
@@ -54,7 +63,9 @@ def web_execute_ss():
     userid = request.args.get("userid")
     script = request.data.decode("utf-8")
 
-    with open(f"{PATH}/static/assets/lua/functions.luau", encoding="utf8") as functions_file:
+    with open(
+        f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
+    ) as functions_file:
         functions = functions_file.read()
 
     script = f"""pcall(function()
@@ -66,6 +77,7 @@ end)"""
         users[userid].append(script)
         return "OK"
     return "NO CLIENT"
+
 
 @executor.route("/api/execute_module", methods=["POST"])
 @discord_auth.require_agreement
@@ -87,7 +99,9 @@ local target = "{username}"
         elif os.path.exists(f"{module_path}/id.txt"):
             with open(f"{module_path}/id.txt", encoding="utf8") as id_file:
                 module_id = id_file.read()
-            with open(f"{PATH}/static/assets/lua/require.luau", encoding="utf8") as require_file:
+            with open(
+                f"{PATH}/static/assets/lua/require.luau", encoding="utf8"
+            ) as require_file:
                 require_script = require_file.read()
                 script += f"local m = require({module_id})\n{require_script}"
 
@@ -95,6 +109,7 @@ local target = "{username}"
         users[userid].append(script)
         return "OK"
     return "NO CLIENT"
+
 
 @executor.route("/api/ping", methods=["GET"])
 def roblox_ping():
@@ -108,14 +123,18 @@ def roblox_ping():
 
     return scripts_to_return
 
+
 @executor.route("/admin.luau", methods=["GET"])
 def admin_script():
     with open(f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8") as vlua_script:
         vlua_script = vlua_script.read()
-    rendered = render_template("assets/lua/admin.luau", endpoint=request.headers.get("Host"), vlua=vlua_script)
+    rendered = render_template(
+        "assets/lua/admin.luau", endpoint=request.headers.get("Host"), vlua=vlua_script
+    )
     obfuscated = obfuscate(rendered) or rendered
 
-    return send_file(obfuscated, mimetype='text/plain')
+    return send_file(obfuscated, mimetype="text/plain")
+
 
 @executor.route("/api/players", methods=["GET", "POST"])
 def roblox_player_ping():
@@ -135,6 +154,7 @@ def roblox_player_ping():
             return "OK"
 
     return "Connect to a server please!"
+
 
 @executor.route("/api/close", methods=["POST"])
 def roblox_close():

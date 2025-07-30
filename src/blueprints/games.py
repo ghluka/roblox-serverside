@@ -11,8 +11,11 @@ from utils.inputs import PATH
 
 games = Blueprint("games", __name__)
 
-game_session = requests_cache.CachedSession("roblox_gamedata", expire_after=timedelta(hours=2))
+game_session = requests_cache.CachedSession(
+    "roblox_gamedata", expire_after=timedelta(hours=2)
+)
 headers = {"User-Agent": "Roblox/WinInet"}
+
 
 def initialize():
     if not os.path.exists(f"{PATH}/games"):
@@ -20,12 +23,23 @@ def initialize():
 
     if not os.path.exists(f"{PATH}/games/games.json"):
         with open(f"{PATH}/games/games.json", "x", encoding="utf8") as f:
-            f.write(json.dumps({
-                "0":{"placeid":0,"universeid":0,"url":"https://www.roblox.com/games/0","whitelist":255}
-            }, indent=4))
+            f.write(
+                json.dumps(
+                    {
+                        "0": {
+                            "placeid": 0,
+                            "universeid": 0,
+                            "url": "https://www.roblox.com/games/0",
+                            "whitelist": 255,
+                        }
+                    },
+                    indent=4,
+                )
+            )
     if not os.path.exists(f"{PATH}/games/review.json"):
         with open(f"{PATH}/games/review.json", "x", encoding="utf8") as f:
             f.write("{}")
+
 
 @games.route("/api/game", methods=["POST"])
 def games_ping():
@@ -59,6 +73,7 @@ def games_ping():
     except:
         return "FAILED"
 
+
 @games.route("/api/games", methods=["GET"])
 @discord_auth.require_agreement
 @discord_auth.require_login
@@ -71,17 +86,23 @@ def games_list():
 
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT whitelist FROM users WHERE discord_id = ?", (user["id"],))
+        cursor.execute(
+            "SELECT whitelist FROM users WHERE discord_id = ?", (user["id"],)
+        )
         result = cursor.fetchone()
     whitelist = result[0]
 
     games_data = []
     visits = 0
     del_zero = False
-    for placeid,game in games_json.items():
+    for placeid, game in games_json.items():
         try:
             universeid = game["universeid"]
-            details = game_session.get(f"https://games.roblox.com/v1/games?universeIds={universeid}", headers=headers, timeout=5).json()
+            details = game_session.get(
+                f"https://games.roblox.com/v1/games?universeIds={universeid}",
+                headers=headers,
+                timeout=5,
+            ).json()
 
             if placeid == "0":
                 del_zero = True
@@ -93,16 +114,20 @@ def games_list():
 
             if game.get("data"):
                 try:
-                    for i,v in game["data"][0].items():
+                    for i, v in game["data"][0].items():
                         details["data"][0][i] = v
                 except:
                     pass
                 del game["data"]
 
-            thumbnail = game_session.get(f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false", headers=headers, timeout=5).json()
+            thumbnail = game_session.get(
+                f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false",
+                headers=headers,
+                timeout=5,
+            ).json()
 
             image = thumbnail["data"][0]["thumbnails"][0]["imageUrl"]
-            game = {**game, **details, "thumbnail":image}
+            game = {**game, **details, "thumbnail": image}
 
             games_data.append(game)
         except:
@@ -117,5 +142,6 @@ def games_list():
         message = f"Due to your whitelist status, you're missing out on {diff} games with a total of {visits:,} visits."
 
     return render_template("games.html", message=message, games=games_data)
+
 
 initialize()

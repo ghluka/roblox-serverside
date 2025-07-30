@@ -9,12 +9,19 @@ from utils.inputs import PATH
 
 auth = Blueprint("auth", __name__)
 
-discord_auth = DiscordAuth(os.getenv("CLIENT_ID"), os.getenv("CLIENT_SECRET"), "https://nett.wtf/callback")
+with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
+    domain = f.read()
+
+discord_auth = DiscordAuth(
+    os.getenv("CLIENT_ID"), os.getenv("CLIENT_SECRET"), f"https://{domain}/callback"
+)
+
 
 def init_db():
     """Initialize database if it doesn't exist."""
     with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("""
+        conn.execute(
+            """
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 discord_id INTEGER UNIQUE,
@@ -25,8 +32,10 @@ def init_db():
                 signup_date TEXT,
                 tos_version INTEGER
             )
-        """)
+        """
+        )
         conn.commit()
+
 
 def signup(user_info):
     """Save user's data to database, if they already are a user, update it."""
@@ -43,20 +52,22 @@ def signup(user_info):
             email = user_info.get("email", "none")
             cursor.execute(
                 "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, signup_date, tos_version) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (discord_id, email, username, 1, 0, signup_date, 0)
+                (discord_id, email, username, 1, 0, signup_date, 0),
             )
             conn.commit()
         else:
             email = user_info.get("email", existing_user[2])
             cursor.execute(
                 "UPDATE users SET email = ?, username = ? WHERE discord_id = ?",
-                (email, username, discord_id)
+                (email, username, discord_id),
             )
+
 
 @auth.route("/login")
 def login():
-    #return "Service under maintenance, our login system is currently offline."
+    # return "Service under maintenance, our login system is currently offline."
     return redirect(discord_auth.get_auth_url())
+
 
 @auth.route("/callback")
 def callback():
@@ -71,10 +82,12 @@ def callback():
         pass
     return redirect(url_for("dash.dashboard"))
 
+
 @auth.route("/logout")
 def logout():
     session.pop("user", None)
     return redirect(url_for("homepage"))
+
 
 @auth.route("/api/update_id", methods=["GET"])
 @discord_auth.require_agreement
@@ -85,7 +98,9 @@ def update_id():
         discord_id = user["id"]
 
         with sqlite3.connect(DB_PATH) as conn:
-            user_id = int("".join(c for c in request.args.get("userid") if c.isdigit())) or 0
+            user_id = (
+                int("".join(c for c in request.args.get("userid") if c.isdigit())) or 0
+            )
 
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM users WHERE discord_id = ?", (discord_id,))
@@ -94,11 +109,12 @@ def update_id():
             if existing_user:
                 cursor.execute(
                     "UPDATE users SET roblox_id = ? WHERE discord_id = ?",
-                    (user_id, discord_id)
+                    (user_id, discord_id),
                 )
     except:
         pass
     return "Done!"
+
 
 @auth.route("/api/agree")
 @discord_auth.require_login
@@ -109,13 +125,14 @@ def agree_to_terms():
         cursor = conn.cursor()
 
         with open(f"{PATH}/static/terms.html", "r", encoding="utf8") as f:
-            version = int(f.read().split("version=\"")[1].split("\"")[0])
+            version = int(f.read().split('version="')[1].split('"')[0])
 
         cursor.execute(
             "UPDATE users SET tos_version = ? WHERE discord_id = ?",
-            (version, discord_id)
+            (version, discord_id),
         )
 
     return "You have confirmed that you agree to our Terms of Service."
+
 
 init_db()

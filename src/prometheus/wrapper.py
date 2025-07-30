@@ -8,6 +8,7 @@ PROMETHEUS = f"{PATH}/prometheus/"
 SOURCE = f"{PROMETHEUS}source.lua"
 OBFUSCATED = f"{PROMETHEUS}source.obfuscated.lua"
 
+
 def obfuscate(script):
     """
     Obfuscates a LuaU script with Prometheus.
@@ -26,5 +27,5 @@ def obfuscate(script):
     with open(SOURCE, "w", encoding="utf-8") as f:
         f.write(script)
 
-    os.system(f"{PROMETHEUS}prometheus.exe --config \"{PROMETHEUS}config.lua\" {SOURCE}")
+    os.system(f'{PROMETHEUS}prometheus.exe --config "{PROMETHEUS}config.lua" {SOURCE}')
     return OBFUSCATED
