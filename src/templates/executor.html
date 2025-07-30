@@ -235,9 +235,16 @@
     <script>
       Swal.fire({
         title:"Updated Terms of Service",
-        html:`We updated our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "Accept", you confirm that you have read and agree to our updated terms of service.`,
+        html:`We updated our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "I agree", you confirm that you have read and agree to our updated terms of service.<br><br><input type="checkbox" id="tos_agree" name="tos_agree" value="I agree"><label for="tos_agree"> I agree</label>`,
         confirmButtonText: "Accept",
-        allowOutsideClick: false
+        allowOutsideClick: false,
+        preConfirm: () => {
+          if (!document.getElementById("tos_agree").checked) {
+            //Swal.showValidationMessage("");
+            return false;
+          }
+          return true;
+      }
       }).then((result) => {
         if (result.isConfirmed) {
           fetch("/api/agree").then(() => {
@@ -251,9 +258,16 @@
     <script>
       Swal.fire({
         title:"Terms of Service",
-        html:`To continue using our service, you must agree to our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "Accept", you confirm that you have read and agree to our terms of service.`,
+        html:`To continue using our service, you must agree to our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "I agree", you confirm that you have read and agree to our terms of service.<br><br><input type="checkbox" id="tos_agree" name="tos_agree" value="I agree"><label for="tos_agree"> I agree</label>`,
         confirmButtonText: "Accept",
-        allowOutsideClick: false
+        allowOutsideClick: false,
+        preConfirm: () => {
+          if (!document.getElementById("tos_agree").checked) {
+            //Swal.showValidationMessage("");
+            return false;
+          }
+          return true;
+        }
       }).then((result) => {
         if (result.isConfirmed) {
           fetch("/api/agree").then(() => {
