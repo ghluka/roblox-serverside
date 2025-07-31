@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  set-domain:
+  set-cname:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +22,10 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
           # Only commit if file was changed
-          if ! git diff --quiet src/DOMAIN; then
-            git add src/DOMAIN
-            git commit -m "Set DOMAIN to production [skip ci]"
+          if ! git diff --quiet src/CNAME; then
+            git add src/CNAME
+            git commit -m "Set CNAME to production default [skip ci]"
             git push
           else
-            echo "No changes to DOMAIN file."
+            echo "No changes to CNAME file."
           fi
