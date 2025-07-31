@@ -26,7 +26,7 @@ load_dotenv()
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
-    domain = f.read()
+    domain = f.read().strip()
 
 
 @app.route("/")

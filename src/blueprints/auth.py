@@ -10,7 +10,7 @@ from utils.inputs import PATH
 auth = Blueprint("auth", __name__)
 
 with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
-    domain = f.read()
+    domain = f.read().strip()
 
 discord_auth = DiscordAuth(
     os.getenv("CLIENT_ID"), os.getenv("CLIENT_SECRET"), f"https://{domain}/callback"
