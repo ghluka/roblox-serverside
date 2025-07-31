@@ -1,0 +1,31 @@
+name: Set Production CNAME
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  set-domain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set CNAME to production default
+        run: echo "nett.wtf" > src/CNAME
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Only commit if file was changed
+          if ! git diff --quiet src/DOMAIN; then
+            git add src/DOMAIN
+            git commit -m "Set DOMAIN to production [skip ci]"
+            git push
+          else
+            echo "No changes to DOMAIN file."
+          fi
