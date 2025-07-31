@@ -18,7 +18,7 @@ $ pip install -r requirements.txt
 $ python3 main.py
 ```
 
-### 🪪 Auth Prerequisites
+## 🪪 Auth Prerequisites
 
 Before running the script, ensure that you have your `/src/.env` file populated,
 it should look like this:
@@ -44,19 +44,25 @@ It's not necessary, but its highly recommended while running this service.
 
 This will be prompted to you from the command line and will be stored in the file `cookie.pkl`.
 
-### 🛡️ Prometheus Setup
+## 🧪 Developing on production
+
+The [`/src/CNAME`](/src/CNAME) file allows you to edit the domain while testing, you should have it on `localhost:5000` if you want to test, however, after you commit there is a safeguard put in place that sets it back to the production default.
+
+If you accidentally commit after modifying the CNAME property, don't worry about it, just make sure you fetch and pull the repository.
+
+## 🛡️ Prometheus Setup
 
 Download [prometheus-windows.zip](https://github.com/prometheus-lua/Prometheus/releases/tag/v0.2.6) and put it in the [`/src/prometheus`](/src/prometheus) directory.
 
 If Prometheus is present, then the backdoor script will be automatically obfuscated when fetched, otherwise it won't be obfuscated.
 
-#### ⚙️ Editing Prometheus configuration
+### ⚙️ Editing Prometheus configuration
 
 Edit the Prometheus configuration located in [`/src/prometheus/config.lua`](/src/prometheus/config.lua).
 
 You can visit [Prometheus' configuration guide](https://levno-710.gitbook.io/prometheus/getting-started/writing-a-custom-config-file) if you don't know how to work with it already, however many features like Vmify do not work with vLua, so many sure you test your configuration before deploying it.
 
-### 🛂 Game Review
+## 🛂 Game Review
 
 Theres currently no game review panel, so you have to manually add `review.json` games to `games.json` in the [`/src/games`](/src/games) directory.
 
