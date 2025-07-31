@@ -25,7 +25,7 @@ jobs:
           if ! git diff --quiet src/CNAME; then
             git add src/CNAME
             git commit -m "Set CNAME to production default [skip ci]"
-            git push
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
           else
             echo "No changes to CNAME file."
           fi
