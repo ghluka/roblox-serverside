@@ -3,6 +3,7 @@ import sqlite3
 
 from flask import (
     Blueprint,
+    Response,
     redirect,
     render_template,
     request,
@@ -160,9 +161,10 @@ def admin_script():
         "assets/lua/admin.luau", endpoint=request.headers.get("Host"), vlua=vlua_script
     )
     obfuscated = obfuscate(rendered)
+
     if obfuscated:
         return send_file(obfuscate(rendered), mimetype="text/plain")
-    return rendered
+    return Response(rendered, mimetype="text/plain")
 
 
 @executor.route("/api/players", methods=["GET", "POST"])
