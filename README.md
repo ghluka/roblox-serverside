@@ -1,5 +1,7 @@
 # 🎮 Roblox Administration Tool 
-Nett Administration is an open-source admin program for Roblox, offering a wide array of features and commands to improve the experience for both players and developers.
+NettSS is an open-source Roblox Administration Tool, offering a wide array of features and commands to improve the experience for both players and developers.
+
+It allows for in-game code execution, providing developers with a superior debugging and quality assurance experience for their games.
 
 [![GitHub license](https://img.shields.io/github/license/ghluka/roblox-ss)](LICENSE)
 
@@ -23,7 +25,7 @@ $ python3 main.py
 Before running the script, ensure that you have your `/src/.env` file populated,
 it should look like this:
 
-```sh
+```env
 CLIENT_ID=1015334465989529701
 CLIENT_SECRET=J7WXgwrmN4zD4D4P2Ncl9fZpj-vwrL-J
 SECRET_KEY=d2e35fc7527b009550490b4e
@@ -45,7 +47,7 @@ If you accidentally commit after modifying the CNAME property, don't worry about
 ### 🔬 Disabling user authentication
 
 Another thing to note is you should enable `DEV_AUTH` in your `/src/.env` file by adding this line:
-```sh
+```env
 DEV_AUTH=true
 ```
 
