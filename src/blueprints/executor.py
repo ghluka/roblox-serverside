@@ -40,7 +40,7 @@ def web_execute():
         cursor.execute(
             "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
         )
-        userid = cursor.fetchone()[0]
+        userid = str(cursor.fetchone()[0])
 
     script = request.data.decode("utf-8")
 
@@ -80,7 +80,7 @@ def web_execute_ss():
         cursor.execute(
             "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
         )
-        userid = cursor.fetchone()[0]
+        userid = str(cursor.fetchone()[0])
 
     script = request.data.decode("utf-8")
 
@@ -111,7 +111,7 @@ def web_execute_module():
         cursor.execute(
             "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
         )
-        userid = cursor.fetchone()[0]
+        userid = str(cursor.fetchone()[0])
 
     username = request.args.get("username")
     module_name = request.data.decode("utf-8")
@@ -169,7 +169,6 @@ def admin_script():
 
 @executor.route("/api/players", methods=["GET", "POST"])
 def roblox_player_ping():
-    userid = request.args.get("userid")
     sesh = Session(None)
 
     if request.method == "GET":
@@ -183,7 +182,7 @@ def roblox_player_ping():
             cursor.execute(
                 "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
             )
-            userid = cursor.fetchone()[0]
+            userid = str(cursor.fetchone()[0])
 
         players = users_players.get(userid, {})
         for player in players:
@@ -192,6 +191,7 @@ def roblox_player_ping():
         return render_template("players.html", players=players)
 
     elif request.method == "POST":
+        userid = request.args.get("userid")
         if users.get(userid) is not None:
             users_players[userid] = request.json
             return "OK"
