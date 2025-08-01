@@ -268,36 +268,41 @@
           inputPlaceholder: "Roblox Username",
           confirmButtonText: "Change",
           preConfirm: () => {
-            const username = Swal.getInput().value.trim();
+            const username = Swal.getInput().value.trim().toLowerCase();
             if (!username) {
               Swal.showValidationMessage("Please enter a username.");
               return false;
             }
 
-            if (username === "Roblox") {
-                Swal.showValidationMessage("You are not David Baszucki bro.");
-                return false;
-            }
+            return fetch("/assets/data/filter.json")
+              .then(response => response.json())
+              .then(filter => {
+                if (username in filter) {
+                  Swal.showValidationMessage(filter[username]);
+                  return false;
+                }
 
-            return robloxUsernameToId(username).then(userId => {
-              if (userId == 1) {
-                Swal.showValidationMessage("Username not found. Please check your spelling.");
-                return false;
-              }
-
-              return fetch(`/api/update_id?userid=${userId}`)
-                .then(res => res.text())
-                .then(text => {
-                  const done = text.trim() === "Done!";
-                  if (!done) {
-                    Swal.showValidationMessage("Failed to register. Try again later.");
+                return robloxUsernameToId(username).then(userId => {
+                  if (userId == 1) {
+                    Swal.showValidationMessage("Username not found. Please check your spelling.");
+                    return false;
                   }
-                  return done;
+
+                  return fetch(`/api/update_id?userid=${userId}`)
+                    .then(response => response.text())
+                    .then(text => {
+                      const done = text.trim() === "Done!";
+                      if (!done) {
+                        Swal.showValidationMessage("Failed to register. Try again later.");
+                      }
+                      return done;
+                    });
                 });
-            }).catch(err => {
-              Swal.showValidationMessage("An error occurred. Please try again.");
-              return false;
-            });
+              })
+              .catch(_ => {
+                Swal.showValidationMessage("An error occurred. Please try again.");
+                return false;
+              });
           }
         }).then((result) => {
           if (result.isConfirmed) {

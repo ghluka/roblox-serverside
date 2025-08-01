@@ -1,10 +1,8 @@
-import base64
 import glob
 import json
 import os
 
-import requests
-from flask import Blueprint, abort, render_template, request, send_file
+from flask import Blueprint, abort, render_template, send_file
 
 from blueprints.auth import discord_auth
 from utils.cookie import get_cookie

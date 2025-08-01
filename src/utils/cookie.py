@@ -2,7 +2,7 @@ import getpass
 import os
 import pickle
 
-from utils.inputs import PATH, bool_input
+from utils.inputs import PATH
 
 
 def get_cookie() -> str:

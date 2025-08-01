@@ -1,7 +1,7 @@
 import json
 import sqlite3
 
-from flask import Blueprint, jsonify, render_template, request, session
+from flask import Blueprint, render_template, session
 
 from blueprints.auth import DB_PATH, discord_auth, signup
 from utils.inputs import PATH

@@ -1,9 +1,7 @@
 import json
-import os
 import sqlite3
 
 import requests
-import requests_cache
 from flask import Blueprint, jsonify, request
 
 from blueprints.auth import DB_PATH, discord_auth
