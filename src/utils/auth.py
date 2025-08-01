@@ -9,8 +9,6 @@ from flask import redirect, session, url_for
 from utils.inputs import PATH
 
 DB_PATH = "users.db"
-load_dotenv()
-DEV_AUTH = bool(os.getenv("DEV_AUTH"))
 
 
 class DiscordAuth:
@@ -32,7 +30,7 @@ class DiscordAuth:
             "response_type": "code",
             "scope": self.scope,
         }
-        if DEV_AUTH:
+        if dev_auth():
             return self.redirect_uri
         return f"{self.auth_base}/authorize?{urlencode(params)}"
 
@@ -45,8 +43,8 @@ class DiscordAuth:
             "code": code,
             "redirect_uri": self.redirect_uri,
         }
-        if DEV_AUTH:
-            return {"access_token": "DEV_AUTH"}
+        if dev_auth():
+            return {"access_token": "dev_auth()"}
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         return requests.post(
             f"{self.auth_base}/token", data=payload, headers=headers, timeout=5
@@ -54,7 +52,7 @@ class DiscordAuth:
 
     def fetch_user(self, access_token):
         """Fetch the user info using the access token."""
-        if DEV_AUTH:
+        if dev_auth():
             return {
                 "id": "1081004946872352958",
                 "username": "Clyde",
@@ -69,6 +67,11 @@ class DiscordAuth:
         def wrapped(*args, **kwargs):
             if "user" not in session:
                 return redirect(url_for("auth.login"))
+            if (
+                not dev_auth()
+                and session["user"].get("id", "1") == "1081004946872352958"
+            ):
+                return redirect(url_for("auth.logout"))
             return func(*args, **kwargs)
 
         wrapped.__name__ = func.__name__
@@ -100,3 +103,12 @@ class DiscordAuth:
 
         wrapped.__name__ = func.__name__
         return wrapped
+
+
+def dev_auth() -> bool:
+    """Returns whether or not dev_auth is enabled."""
+    load_dotenv(override=True)
+    auth_str = os.getenv("DEV_AUTH", "faux").strip().lower()
+    if auth_str == "true":
+        return True
+    return False

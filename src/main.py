@@ -10,6 +10,7 @@ from blueprints.executor import executor
 from blueprints.games import games
 from blueprints.modules import scripthub
 from blueprints.user import user
+from utils.auth import dev_auth
 from utils.cookie import get_cookie
 from utils.inputs import PATH
 
@@ -31,7 +32,7 @@ with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
 @app.route("/")
 def homepage():
     dashboard_button = "<a class='discord-button' href='/dashboard'><i class='bx bxl-discord-alt'></i> Log in with Discord</a>"
-    if "user" in session:
+    if dev_auth() or "user" in session:
         dashboard_button = "<a class='dashboard-button' href='/dashboard'><i class='bx bxs-dashboard'></i> Dashboard</a>"
     return render_template(
         "index.html", dashboard_button=Markup(dashboard_button), domain=domain
