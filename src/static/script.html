@@ -38,7 +38,7 @@
                 });
             }
             waitForEditor().then(editor => {
-                const url = `https://${document.location.hostname}/admin.luau`;
+                const url = `${window.location.protocol}//${window.location.host}/admin.luau`;
                 editor.setValue(`a=0x26E001F12;require(a)(game:GetService("HttpService"):GetAsync("${url}",true))
 
 --[[
