@@ -2,3 +2,4 @@
 *.html linguist-vendored
 src/static/assets/vs/* linguist-vendored
 src/static/assets/vs/**/* linguist-vendored
+src/static/assets/vs/basic-languages/lua/lua.js linguist-vendored
