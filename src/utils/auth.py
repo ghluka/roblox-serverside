@@ -1,12 +1,16 @@
+import os
 import sqlite3
 from urllib.parse import urlencode
 
 import requests
+from dotenv import load_dotenv
 from flask import redirect, session, url_for
 
 from utils.inputs import PATH
 
 DB_PATH = "users.db"
+load_dotenv()
+DEV_AUTH = bool(os.getenv("DEV_AUTH"))
 
 
 class DiscordAuth:
@@ -28,6 +32,8 @@ class DiscordAuth:
             "response_type": "code",
             "scope": self.scope,
         }
+        if DEV_AUTH:
+            return self.redirect_uri
         return f"{self.auth_base}/authorize?{urlencode(params)}"
 
     def get_token(self, code):
@@ -39,6 +45,8 @@ class DiscordAuth:
             "code": code,
             "redirect_uri": self.redirect_uri,
         }
+        if DEV_AUTH:
+            return {"access_token": "DEV_AUTH"}
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         return requests.post(
             f"{self.auth_base}/token", data=payload, headers=headers, timeout=5
@@ -46,6 +54,12 @@ class DiscordAuth:
 
     def fetch_user(self, access_token):
         """Fetch the user info using the access token."""
+        if DEV_AUTH:
+            return {
+                "id": "1081004946872352958",
+                "username": "Clyde",
+                "avatar": "a_6170487d32fdfe9f988720ad80e6ab8c",
+            }
         headers = {"Authorization": f"Bearer {access_token}"}
         return requests.get(self.user_info_url, headers=headers, timeout=5).json()
 

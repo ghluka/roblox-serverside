@@ -36,6 +36,24 @@ OAuth2 client information.
 
 And your SECRET_KEY can be anything, I used the code `os.urandom(12).hex()` to generate one.
 
+## 🧪 Setup for testing
+
+The [`/src/CNAME`](/src/CNAME) file allows you to edit the domain for testing, you should have it on `localhost:5000` if you want to test, however, after you commit there is a safeguard put in place that sets it back to the production default.
+
+If you accidentally commit after modifying the CNAME property, don't worry about it, just make sure you fetch and pull the repository.
+
+### 🔬 Disabling user authentication
+
+Another thing to note is you should enable `DEV_AUTH` in your `/src/.env` file by adding this line:
+```sh
+DEV_AUTH=true
+```
+
+> [!CAUTION]
+> Enabling `DEV_AUTH` means anyone can log in and everyone is under one account. Leaving it enabled in a publicly accessible website is very risky. It is recommended to only use it in a LAN only.
+
+This is only if you don't want to use the Discord authentication, enabling this will bypass that.
+
 ### 🍪 Roblox Cookie
 
 The script-hub functionality will prompt you to load a Roblox cookie to automatically upload any RBXMX files.
@@ -44,17 +62,11 @@ It's not necessary, but its highly recommended while running this service.
 
 This will be prompted to you from the command line and will be stored in the file `cookie.pkl`.
 
-## 🧪 Developing on production
-
-The [`/src/CNAME`](/src/CNAME) file allows you to edit the domain while testing, you should have it on `localhost:5000` if you want to test, however, after you commit there is a safeguard put in place that sets it back to the production default.
-
-If you accidentally commit after modifying the CNAME property, don't worry about it, just make sure you fetch and pull the repository.
-
 ## 🛡️ Prometheus Setup
 
 Download [prometheus-windows.zip](https://github.com/prometheus-lua/Prometheus/releases/tag/v0.2.6) and put it in the [`/src/prometheus`](/src/prometheus) directory.
 
-If Prometheus is present, then the backdoor script will be automatically obfuscated when fetched, otherwise it won't be obfuscated.
+If Prometheus is present, then the admin script will be automatically obfuscated when fetched, otherwise it won't be obfuscated.
 
 ### ⚙️ Editing Prometheus configuration
 
