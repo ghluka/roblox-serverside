@@ -1,0 +1,10 @@
+{
+    /*
+    Designed for using Samuel Colvin's Better Jinja extension on VSCode
+    https://marketplace.visualstudio.com/items?itemName=samuelcolvin.jinjahtml
+    */
+    "files.associations": {
+        "**/templates/*.html": "jinja-html",
+        "**/templates/**/*.luau": "jinja-lua"
+    }
+}

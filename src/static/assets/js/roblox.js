@@ -1,9 +1,3 @@
-function getUserId() {
-    if (document.getElementById("userid"))
-        return document.getElementById("userid").value
-    return "1";
-}
-
 function userIdAlert(userid) {
     const url = "/api/roblox_data?userid=" + userid
     fetch(url, {
@@ -51,8 +45,7 @@ function getCookie(cname) {
 }
 
 function updateUserInfoDashboard() {
-    var userid = getUserId()
-    const url = "/api/roblox_data?userid=" + userid;
+    const url = "/api/roblox_data?userid=" + getUserId();
     fetch(url, {
         method: "GET"
     }).then(response => response.json()).then(function(response) {
@@ -71,8 +64,7 @@ function updateUserInfoDashboard() {
 updateUserInfoDashboard();
 
 function updatePlayers() {
-    var userid = getUserId()
-    const url = "/api/players?userid=" + userid;
+    const url = "/api/players";
     fetch(url, {
         method: "GET"
     }).then(response => response.text()).then(function(response) {
@@ -82,7 +74,7 @@ function updatePlayers() {
             <h3>Waiting For Game...</h3>
             <br>
             <h5>To load the player list, your linked Roblox account must be in a whitelisted game.</h5>
-            <h5>If you set your Roblox Id in the dashboard while in-game, rejoin.</h5>
+            <h5>If you set your Roblox username in the dashboard while in-game, rejoin.</h5>
             `;
             document.getElementById("player-action-warning").style.display = "flex";
             document.getElementById("player-actions-container").style.display = "none";

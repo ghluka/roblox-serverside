@@ -1,14 +1,18 @@
-import base64
-import glob
-import json
 import os
+import sqlite3
 
-import requests
-from flask import Blueprint, render_template, request, send_file
+from flask import (
+    Blueprint,
+    redirect,
+    render_template,
+    request,
+    send_file,
+    session,
+    url_for,
+)
 
-from blueprints.auth import discord_auth
+from blueprints.auth import DB_PATH, discord_auth
 from prometheus.wrapper import obfuscate
-from utils.cookie import get_cookie
 from utils.inputs import PATH
 from utils.session import Session
 
@@ -28,7 +32,15 @@ def module_exists(module_path):
 @discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute():
-    userid = request.args.get("userid")
+    user = session["user"]
+    discord_id = user.get("id")
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
+        )
+        userid = cursor.fetchone()[0]
+
     script = request.data.decode("utf-8")
 
     with open(f"{PATH}/static/assets/lua/header.luau", encoding="utf8") as convert_file:
@@ -60,7 +72,15 @@ end)"""
 @discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute_ss():
-    userid = request.args.get("userid")
+    user = session["user"]
+    discord_id = user.get("id")
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
+        )
+        userid = cursor.fetchone()[0]
+
     script = request.data.decode("utf-8")
 
     with open(
@@ -83,7 +103,15 @@ end)"""
 @discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute_module():
-    userid = request.args.get("userid")
+    user = session["user"]
+    discord_id = user.get("id")
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
+        )
+        userid = cursor.fetchone()[0]
+
     username = request.args.get("username")
     module_name = request.data.decode("utf-8")
 
@@ -139,12 +167,24 @@ def admin_script():
 @executor.route("/api/players", methods=["GET", "POST"])
 def roblox_player_ping():
     userid = request.args.get("userid")
-    session = Session(None)
+    sesh = Session(None)
 
     if request.method == "GET":
+        if "user" not in session:
+            return redirect(url_for("auth.login"))
+
+        user = session["user"]
+        discord_id = user.get("id")
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
+            )
+            userid = cursor.fetchone()[0]
+
         players = users_players.get(userid, {})
         for player in players:
-            players[player]["AvatarUrl"] = session.get_pfp(players[player]["UserId"])
+            players[player]["AvatarUrl"] = sesh.get_pfp(players[player]["UserId"])
 
         return render_template("players.html", players=players)
 

@@ -171,4 +171,3 @@ def agree_to_terms():
 
 
 init_db()
-init_db()
