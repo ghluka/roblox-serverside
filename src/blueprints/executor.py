@@ -159,9 +159,10 @@ def admin_script():
     rendered = render_template(
         "assets/lua/admin.luau", endpoint=request.headers.get("Host"), vlua=vlua_script
     )
-    obfuscated = obfuscate(rendered) or rendered
-
-    return send_file(obfuscated, mimetype="text/plain")
+    obfuscated = obfuscate(rendered)
+    if obfuscated:
+        return send_file(obfuscate(rendered), mimetype="text/plain")
+    return rendered
 
 
 @executor.route("/api/players", methods=["GET", "POST"])
