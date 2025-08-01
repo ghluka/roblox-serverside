@@ -1,3 +1,9 @@
+function getUserId() {
+    if (document.getElementById("userid"))
+        return document.getElementById("userid").value
+    return "1";
+}
+
 function userIdAlert(userid) {
     const url = "/api/roblox_data?userid=" + userid
     fetch(url, {
@@ -45,7 +51,7 @@ function getCookie(cname) {
 }
 
 function updateUserInfoDashboard() {
-    var userid = document.getElementById("userid").value;
+    var userid = getUserId()
     const url = "/api/roblox_data?userid=" + userid;
     fetch(url, {
         method: "GET"
@@ -58,15 +64,6 @@ function updateUserInfoDashboard() {
         }
     }).catch(error => console.error('Error:', error));
 }
-function updateUserDashboard() {
-    var userid = document.getElementById("userid").value;
-    //setCookie("userid", userid, 30);
-    const url = "/api/update_id?userid=" + userid;
-    fetch(url, {
-        method: "GET"
-    })
-    updateUserInfoDashboard();
-}
 //let user = getCookie("userid");
 //if (user != "") {
 //    document.getElementById("userid").value = user;
@@ -74,7 +71,7 @@ function updateUserDashboard() {
 updateUserInfoDashboard();
 
 function updatePlayers() {
-    var userid = document.getElementById("userid").value;
+    var userid = getUserId()
     const url = "/api/players?userid=" + userid;
     fetch(url, {
         method: "GET"
@@ -96,7 +93,7 @@ function updatePlayers() {
             <br>
             <h5>Select a player on the left to see information and a list of scripts you can perform on them.</h5>
             `;
-    }).catch(error => console.error('Error:', error));
+    }).catch(_ => { });
     setTimeout(updatePlayers, 10000);
 }
 updatePlayers();
@@ -142,3 +139,22 @@ function setPlayer(event) {
     document.getElementById("player-actions-container").style.display = "flex";
 }
 document.getElementById("player-actions-container").style.display = "none";
+
+function resetRobloxId() {
+    const url = "/api/update_id?userid=1";
+    fetch(url, {
+        method: "GET"
+    }).then((_) => {
+        location.reload();
+    })
+}
+
+async function robloxUsernameToId(username) {
+    const res = await fetch("/api/roblox-user-id", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username })
+    });
+    const data = await res.json();
+    return data?.data?.[0]?.id ?? 1;
+}

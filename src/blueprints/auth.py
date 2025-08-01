@@ -2,7 +2,8 @@ import os
 import sqlite3
 from datetime import datetime
 
-from flask import Blueprint, redirect, request, session, url_for
+import requests
+from flask import Blueprint, jsonify, redirect, request, session, url_for
 
 from utils.auth import DB_PATH, DiscordAuth
 from utils.inputs import PATH
@@ -89,6 +90,40 @@ def logout():
     return redirect(url_for("homepage"))
 
 
+@auth.route("/api/roblox-user-id", methods=["POST"])
+@discord_auth.require_agreement
+@discord_auth.require_login
+def roblox_user_id():
+    data = request.get_json()
+    username = data.get("username")
+
+    if not username:
+        return jsonify({"error": "Missing username"}), 400
+
+    url = "https://users.roblox.com/v1/usernames/users"
+    payload = {"usernames": [username], "excludeBannedUsers": False}
+
+    try:
+        resp = requests.post(url, json=payload)
+        resp.raise_for_status()
+        result = resp.json()
+        return jsonify(result)
+    except:
+        return jsonify(
+            {
+                "data": [
+                    {
+                        "requestedUsername": "Roblox",
+                        "hasVerifiedBadge": True,
+                        "id": 1,
+                        "name": "Roblox",
+                        "displayName": "Roblox",
+                    }
+                ]
+            }
+        )
+
+
 @auth.route("/api/update_id", methods=["GET"])
 @discord_auth.require_agreement
 @discord_auth.require_login
@@ -112,7 +147,7 @@ def update_id():
                     (user_id, discord_id),
                 )
     except:
-        pass
+        return "Failed!"
     return "Done!"
 
 
@@ -135,4 +170,5 @@ def agree_to_terms():
     return "You have confirmed that you agree to our Terms of Service."
 
 
+init_db()
 init_db()

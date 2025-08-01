@@ -9,7 +9,7 @@
   <link rel="stylesheet" media="screen" href="/assets/css/index.css">
   <link rel="stylesheet" media="screen" href="/assets/css/players.css">
   <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
@@ -18,12 +18,12 @@
     <div class="sidebar">
         <div class="logo-details">
             <div class="logo_name" onclick="window.location.href = '/'"><span style="color: #bc49db;">Nett</span><span>SS</span></div>
-            <i class='bx bx-menu' id="btn"></i>
+            <i class="bx bx-menu" id="btn"></i>
         </div>
         <ul class="nav-list">
             <li>
                 <a id="tab-selected" onclick="openTab(event, 'dashboard')">
-                    <i class='bx bxs-dashboard'></i>
+                    <i class="bx bxs-dashboard"></i>
                     <span class="links_name">Dashboard</span>
                 </a>
                 <span class="tooltip">Dashboard</span>
@@ -83,8 +83,9 @@
               <div>
                 <img id="avatar" class="avatar">
                 <div>
-                  <h3 id="username">Roblox</h3>
-                  <input oninput="updateUserDashboard()" type="number" id="userid" value="{{roblox_id|safe}}" placeholder="Your userid">
+                  <h3 id="username">_</h3>
+                  <button onclick="resetRobloxId()" style="width: max-content;">Set Username</button>
+                  <input id="userid" value="{{roblox_id|safe}}" disabled style="display: none;">
                 </div>
               </div>
           </div>
@@ -231,22 +232,26 @@
     <script src="/assets/js/sidebar.js"></script>
     <script src="/assets/js/roblox.js"></script>
     <script src="/assets/js/execute.js"></script>
-    {%if tos_updated%}
+    {%if tos_updated or new_user%}
     <script>
       Swal.fire({
+        {%if tos_updated%}
         title:"Updated Terms of Service",
-        html:`We updated our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "I agree", you confirm that you have read and agree to our updated terms of service.<br><br><input type="checkbox" id="tos_agree" name="tos_agree" value="I agree"><label for="tos_agree"> I agree</label>`,
+        html:`We updated our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "I agree", you confirm that you have read and agree to our updated terms of service.`,
+        {%endif%}
+        {%if new_user%}
+        title:"Terms of Service",
+        html:`To continue using our service, you must agree to our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "I agree", you confirm that you have read and agree to our terms of service.`,
+        {%endif%}
         confirmButtonText: "Accept",
         allowOutsideClick: false,
-        preConfirm: () => {
-          if (!document.getElementById("tos_agree").checked) {
-            //Swal.showValidationMessage("");
-            return false;
-          }
-          return true;
-      }
+        input: "checkbox",
+        inputPlaceholder: "I agree",
+        preConfirm: (result) => {
+          return Swal.getInput().checked;
+        }
       }).then((result) => {
-        if (result.isConfirmed) {
+         if (result.isConfirmed) {
           fetch("/api/agree").then(() => {
             location.reload();
           });
@@ -254,25 +259,52 @@
       });
     </script>
     {%endif%}
-    {%if new_user%}
+    {%if roblox_id == 1 and not tos_updated and not new_user%}
     <script>
       Swal.fire({
-        title:"Terms of Service",
-        html:`To continue using our service, you must agree to our <a href="/terms">Terms of Service</a>, you can exit this page now, but this message will re-appear until it is accepted. By clicking "I agree", you confirm that you have read and agree to our terms of service.<br><br><input type="checkbox" id="tos_agree" name="tos_agree" value="I agree"><label for="tos_agree"> I agree</label>`,
-        confirmButtonText: "Accept",
+        title: "Register your Roblox account",
+        text: `Please enter your Roblox username to get it whitelisted. You can always change this later.`,
+        confirmButtonText: "Change",
         allowOutsideClick: false,
+        input: "text",
+        inputPlaceholder: "Roblox Username",
+        confirmButtonText: "Change",
         preConfirm: () => {
-          if (!document.getElementById("tos_agree").checked) {
-            //Swal.showValidationMessage("");
+          const username = Swal.getInput().value.trim();
+          if (!username) {
+            Swal.showValidationMessage("Please enter a username.");
             return false;
           }
-          return true;
+
+          if (username === "Roblox") {
+              Swal.showValidationMessage("You are not David Baszucki bro.");
+              return false;
+          }
+
+          return robloxUsernameToId(username).then(userId => {
+            console.log(userId)
+            if (userId == 1) {
+              Swal.showValidationMessage("Username not found. Please check your spelling.");
+              return false;
+            }
+
+            return fetch(`/api/update_id?userid=${userId}`)
+              .then(res => res.text())
+              .then(text => {
+                const done = text.trim() === "Done!";
+                if (!done) {
+                  Swal.showValidationMessage("Failed to register. Try again later.");
+                }
+                return done;
+              });
+          }).catch(err => {
+            Swal.showValidationMessage("An error occurred. Please try again.");
+            return false;
+          });
         }
       }).then((result) => {
         if (result.isConfirmed) {
-          fetch("/api/agree").then(() => {
-            location.reload();
-          });
+          location.reload();
         }
       });
     </script>

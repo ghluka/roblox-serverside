@@ -17,7 +17,8 @@ function menuBtnChange() {
 
 function openTab(evt, tabName) {
     var tabcontent = document.getElementsByClassName("home-section");
-    document.title = "NettSS " + evt.target.innerText;
+    if (evt)
+        document.title = "NettSS " + evt.target.innerText;
     
     for (var i = 0; i < tabcontent.length; i++) {
         const tab = tabcontent[i];

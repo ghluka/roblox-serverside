@@ -13,10 +13,14 @@ from utils.session import Session
 
 scripthub = Blueprint("modules", __name__)
 
-def module_exists(module_path):
-    return os.path.exists(f"{module_path}/id.txt") or os.path.exists(f"{module_path}/script.luau")
 
-@scripthub.route('/api/module/<module_name>.png')
+def module_exists(module_path):
+    return os.path.exists(f"{module_path}/id.txt") or os.path.exists(
+        f"{module_path}/script.luau"
+    )
+
+
+@scripthub.route("/api/module/<module_name>.png")
 @discord_auth.require_agreement
 @discord_auth.require_login
 def module_image(module_name):
@@ -28,9 +32,12 @@ def module_image(module_name):
 
     try:
         with open(f"{PATH}/modules/{module_name}/{info['image']}", "rb") as _:
-            return send_file(f"{PATH}/modules/{module_name}/{info['image']}", mimetype='image/png')
+            return send_file(
+                f"{PATH}/modules/{module_name}/{info['image']}", mimetype="image/png"
+            )
     except FileNotFoundError:
         abort(404)
+
 
 @scripthub.route("/api/modules", methods=["GET"])
 @discord_auth.require_agreement

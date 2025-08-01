@@ -83,6 +83,7 @@ button:after {
     border: 2px solid #50407040;
     border-radius: 8px;
     background-color: #0f0f0f;
+    aspect-ratio: 1 / 1;
 }
 
 .avatar-container > div {
