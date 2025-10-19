@@ -2,7 +2,7 @@ import glob
 import json
 import os
 
-from flask import Blueprint, abort, render_template, send_file
+from flask import Blueprint, abort, jsonify, render_template, request, send_file
 
 from blueprints.auth import discord_auth
 from utils.cookie import get_cookie
@@ -35,6 +35,9 @@ def module_image(module_name):
             )
     except FileNotFoundError:
         abort(404)
+    except KeyError:
+        pass
+    return ""
 
 
 @scripthub.route("/api/modules", methods=["GET"])
@@ -74,3 +77,43 @@ def roblox_modules():
             (pinned if info.get("pinned") else modules).append(info)
 
     return render_template("modules.html", modules=[*pinned, *modules])
+
+
+@scripthub.route("/api/modules.json", methods=["GET"])
+@discord_auth.require_agreement
+@discord_auth.require_login
+def roblox_modules_list():
+    modules = {}
+
+    for module_path in glob.glob(f"{PATH}/modules/*"):
+        if module_exists(module_path) and not module_path.endswith("template"):
+            with open(f"{module_path}/data.json", encoding="utf8") as data_file:
+                info = json.load(data_file)
+
+            modules[module_path.replace("\\", "/").split("/")[-1]] = info["name"]
+
+    return jsonify(modules)
+
+
+@scripthub.route("/api/report_module", methods=["POST"])
+@discord_auth.require_agreement
+@discord_auth.require_login
+def report_module():
+    module = request.get_data(as_text=True)
+
+    if module_exists(f"{PATH}/modules/{module}"):
+        filename = f"{PATH}/reports.json"
+
+        if not os.path.exists(filename):
+            with open(filename, "w") as f:
+                json.dump({}, f, indent=4)
+
+        with open(filename, "r") as f:
+            data = json.load(f)
+
+        data[module] = data.get(module, 0) + 1
+
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
+
+    return "Done!"

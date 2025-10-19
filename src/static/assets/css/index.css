@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
+:root {
+    --bg: #1a1a1a;
+}
+
 html, body {
-    background-color: #111;
+    background-color: var(--bg);
 }
 
 *:not(#container, #container *, #code, #code *, p, i, a, span) {
@@ -55,7 +59,7 @@ img {
     margin: 5px;
     border: 2px solid #50407040;
     border-radius: 8px;
-    background-color: #111;
+    background-color: var(--bg);
 }
 
 .script-container {
@@ -63,7 +67,7 @@ img {
     margin: 5px;
     border: 2px solid #50407040;
     border-radius: 8px;
-    background-color: #111;
+    background-color: var(--bg);
 }
 
 .executor-container {
@@ -94,7 +98,7 @@ button, input {
 }
 
 button:hover, input:hover {
-    background-color: #111111;
+    background-color: #111;
 }
 
 button:active, input:active {
@@ -186,4 +190,9 @@ input {
 
 a, a:visited {
     color: #bc49db;
+}
+
+#report-button {
+    text-decoration: underline;
+    cursor: pointer;
 }

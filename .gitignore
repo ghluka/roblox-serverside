@@ -8,6 +8,7 @@ roblox_userdata.sqlite
 roblox_gamedata.sqlite
 games.json
 review.json
+reports.json
 
 # Testing files
 *.rbxl*
