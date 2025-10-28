@@ -69,6 +69,7 @@ function updatePlayers() {
         method: "GET"
     }).then(response => response.text()).then(function(response) {
         document.getElementById("player-list").innerHTML = response;
+        document.getElementById("playersearch").dispatchEvent(new Event("input"));
         if (response == "") {
             document.getElementById("player-action-warning").innerHTML = `
             <h3>Waiting For Game...</h3>
@@ -86,7 +87,9 @@ function updatePlayers() {
             <h5>Select a player on the left to see information and a list of scripts you can perform on them.</h5>
             `;
     }).catch(_ => { });
+    document.getElementById("playersearch").dispatchEvent(new Event("input"));
     setTimeout(updatePlayers, 10000);
+    document.getElementById("playersearch").dispatchEvent(new Event("input"));
 }
 updatePlayers();
 
@@ -97,7 +100,7 @@ function updateModules() {
     }).then(response => response.text()).then(function(response) {
         document.getElementById("modules").innerHTML = response;
     }).catch(error => console.error('Error:', error));
-    setTimeout(updateModules, 60000);
+    setTimeout(updateModules, 60000 * 5);
 }
 updateModules();
 
@@ -106,9 +109,16 @@ function updateGames() {
     fetch(url, {
         method: "GET"
     }).then(response => response.text()).then(function(response) {
+        let tc = "";
+        if (document.getElementById("gamesearch")) {
+            tc = document.getElementById("gamesearch").value;
+            console.log(tc);
+        }
         document.getElementById("games_list").innerHTML = response;
+        document.getElementById("gamesearch").value = tc;
+        document.getElementById("gamesearch").dispatchEvent(new Event("input"));
     }).catch(error => console.error('Error:', error));
-    setTimeout(updateGames, 60000);
+    setTimeout(updateGames, 60000 * 5);
 }
 updateGames();
 

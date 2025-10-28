@@ -120,11 +120,16 @@ button:after {
     color: #fff!important;
 }
 
-#module-username {
+.search {
     padding: 10px;
-    max-width: 500px;
     border-radius: 40px;
     width: 100%;
+    text-align: left;
+}
+
+#module-username {
+    max-width: 500px;
+    text-align: center;
 }
 
 #report-button {

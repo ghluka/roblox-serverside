@@ -1,8 +1,47 @@
+<section>
+    <h2><b>Games</b></h2>
+    <h3 style="color: #9e9ea8;">Updates every 5 minutes</h3>
+    <br>
+</section>
 {%if message != ""%}
-<p style="width: 100%; text-align: center;">{{message}}</p>
-<br>
-<br>
+<p style="width: 100%; text-align: center;"><i class="bx bx-error"></i> {{message}}</p>
 {%endif%}
+<br>
+<br>
+<section class="centered game-stats">
+    <div>
+        <img class="avatar" src="/assets/svg/game.svg">
+        <div>
+            <h3 style="color: #606070;">Total Games</h3>
+            <h3>{{games | length}}</h3>
+        </div>
+    </div>
+    <div>
+        <img class="avatar" src="/assets/svg/joins.svg">
+        <div>
+            <h3 style="color: #606070;">Total Visits</h3>
+            <h3>{{"{:,}".format(games | map(attribute='data.0.visits') | sum)}}</h3>
+        </div>
+    </div>
+    <div>
+        <img class="avatar" src="/assets/svg/users.svg">
+        <div>
+            <h3 style="color: #606070;">Total Playing</h3>
+            <h3>{{"{:,}".format(games | map(attribute='data.0.playing') | sum)}}</h3>
+        </div>
+    </div>
+</section>
+<section class="centered">
+    <input class="search" id="gamesearch" value="" placeholder="Search Games" oninput="
+    const val = this.value.toLowerCase();
+    const games = this.parentElement.parentElement.querySelectorAll('.game');
+    games.forEach(g => {
+        const h3 = g.querySelector('h3');
+        const match = h3 && h3.textContent.toLowerCase().includes(val);
+        g.style.display = match ? '' : 'none';
+    });
+">
+</section>
 {%for v in games%}
     <div class="game" onclick='window.open(`{{v["url"]}}`);'>
         <img src='{{v["thumbnail"]}}' class="preview-img">

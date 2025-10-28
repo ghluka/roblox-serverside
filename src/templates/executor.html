@@ -134,6 +134,18 @@
       <div class="player-container">
         <div class="script-container player-list-container">
           <h3>Player list</h3>
+          <section class="centered">
+    <input class="search" id="playersearch" value="" placeholder="Search Players" oninput="
+        const val = this.value.toLowerCase();
+        const players = document.querySelectorAll('.players');
+        players.forEach(p => {
+            const name = p.querySelector('h3')?.textContent.toLowerCase() || '';
+            const username = p.querySelector('h5')?.textContent.toLowerCase() || '';
+            const match = name.includes(val) || username.includes(val);
+            p.style.display = match ? '' : 'none';
+        });
+    ">
+</section>
           <ul id="player-list">
           </ul>
         </div>
@@ -211,7 +223,7 @@
     <section class="home-section" id="scripthub">
       <div class="script-container scripthub-container">
         <div class="centered">
-          <input id="module-username" value="" placeholder="Target's username">
+          <input class="search" id="module-username" value="" placeholder="Target's username">
           <a id="report-button">report a script as broken</a>
         </div>
         <div class="grid-container" id="modules">

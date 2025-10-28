@@ -53,7 +53,6 @@ img {
 
 .grid-container {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -110,11 +109,11 @@ input {
     background-color: var(--dark-hov);
 }
 
-button:hover:not(.play-button), input:hover {
+button:hover:not(.play-button), input:hover:not(.search) {
     transform: scale(1.05);
 }
 
-button:active:not(.play-button), input:active {
+button:active:not(.play-button), input:active:not(.search) {
     transform: scale(1.05);
 }
 
@@ -232,4 +231,56 @@ a, a:visited {
 }
 .monaco-editor .margin {
     background-color: var(--dark)!important;
+}
+
+#games_list p {
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    background-color: var(--selected);
+    border: var(--nett) 2px solid;
+    padding: 8px;
+    box-sizing: content-box;
+    display: block !important;
+}
+
+.game-stats {
+    display: flex;
+    flex-direction: row;
+}
+
+.game-stats > div {
+    display: inline-flex;
+    flex-direction: row;
+    position: relative;
+    margin: 5px;
+    border: 2px solid #50407040;
+    border-radius: 8px;
+    background-color: var(--dark-hov);
+    padding: 4px;
+    flex: 1 1 33.333%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 999px) {
+    .game-stats {
+        display: flex;
+        flex-direction: column;
+    }
+     .game-stats > div {
+        flex: 1;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.game-stats > div > * {
+    border: none;
+    text-align: center;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    margin: 4px;
 }
