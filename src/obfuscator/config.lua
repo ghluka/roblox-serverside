@@ -11,13 +11,6 @@ return {
 
     Steps = {
         {
-            Name="SplitStrings";
-            Settings = {
-                MinLength = 1;
-                MaxLength = 2;
-            }
-        },
-        {
             Name="ProxifyLocals";
         },
         {
