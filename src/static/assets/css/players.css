@@ -64,12 +64,12 @@
 .players li a {
     display: flex;
     height: 100%;
-    width: 100%;
+    width: calc(100% - 4px);
     border-radius: 12px;
     align-items: center;
     text-decoration: none;
     transition: all 0.4s ease;
-    background: #0f0f0f;
+    background: var(--dark);
     cursor: pointer;
     border: 2px solid #50407040;
 }
@@ -79,7 +79,7 @@
 }
 
 .players li a:hover {
-    background: #272727;
+    background: var(--dark-hov);
 }
 
 .players li a .links_name {

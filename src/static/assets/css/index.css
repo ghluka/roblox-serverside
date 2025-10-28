@@ -1,7 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 :root {
-    --bg: #1a1a1a;
+    --bg: rgba(30, 30, 45, 1);
+    --lite: rgba(30, 30, 45, 0.9);
+    --monaco: rgba(25, 25, 40, 0.9);
+    --dark: rgba(20, 20, 35, 0.2);
+    --dark-hov: rgba(20, 20, 35, 0.5);
+    --darker-hov: rgba(20, 20, 35, 1);
+    --side: rgba(20, 20, 35, 1);
+    --nett: #bc49db;
+    --selected: rgba(188, 73, 219, 0.1);
 }
 
 html, body {
@@ -28,15 +36,15 @@ html, body {
 }
   
 ::-webkit-scrollbar-track {
-    background: #000000; 
+    background: var(--dark-hov); 
 }
    
 ::-webkit-scrollbar-thumb {
-    background: #33063f; 
+    background: var(--dark-hov); 
 }
   
 ::-webkit-scrollbar-thumb:hover {
-    background: #330440; 
+    background: var(--dark-hov); 
 }
 
 img {
@@ -59,7 +67,7 @@ img {
     margin: 5px;
     border: 2px solid #50407040;
     border-radius: 8px;
-    background-color: var(--bg);
+    background-color: var(--lite);
 }
 
 .script-container {
@@ -67,7 +75,7 @@ img {
     margin: 5px;
     border: 2px solid #50407040;
     border-radius: 8px;
-    background-color: var(--bg);
+    background-color: var(--lite);
 }
 
 .executor-container {
@@ -87,7 +95,7 @@ img {
 button, input {
     border: 2px solid #50407040;
     border-radius: 4px;
-    background-color: #0a0a0a;
+    background-color: var(--dark);
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
@@ -95,14 +103,19 @@ button, input {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-button:hover, input:hover {
-    background-color: #111;
+input {
+    background-color: var(--dark-hov);
 }
 
-button:active, input:active {
-    background-color: #000000;
+button:hover:not(.play-button), input:hover {
+    transform: scale(1.05);
+}
+
+button:active:not(.play-button), input:active {
+    transform: scale(1.05);
 }
 
 input {
@@ -175,7 +188,7 @@ input {
 }
 
 .dashboard-button {
-    background-color: #bc49db;
+    background-color: var(--nett);
     border: none;
     color: white!important;
     padding: 15px 32px;
@@ -189,10 +202,33 @@ input {
 }
 
 a, a:visited {
-    color: #bc49db;
+    color: var(--nett);
 }
 
 #report-button {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.play-button {
+    padding: 0!important;
+    margin-top: 4px!important;
+}
+
+.play-button, .play-button::before, .play-button::after {
+    background-color: #335fff;
+    background: #335fff;
+    filter: none;
+    transition: none;
+}
+
+.play-button .bx-play {
+    font-size: 2em;
+}
+
+.monaco-editor, .monaco-editor-background, .monaco-editor .inputarea.ime-input {
+    background-color: var(--monaco)!important;
+}
+.monaco-editor .margin {
+    background-color: var(--dark)!important;
 }
