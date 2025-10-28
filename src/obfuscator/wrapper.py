@@ -1,12 +1,14 @@
 import os
+import subprocess
 
 from utils.inputs import PATH
 
 UPDATE_EACH_TIME = False
 
 PROMETHEUS = f"{PATH}/prometheus/"
-SOURCE = f"{PROMETHEUS}source.lua"
-OBFUSCATED = f"{PROMETHEUS}source.obfuscated.lua"
+CONFIG = f"{PATH}/obfuscator/"
+SOURCE = f"{CONFIG}source.lua"
+OBFUSCATED = f"{CONFIG}source.obfuscated.lua"
 
 
 def obfuscate(script):
@@ -14,7 +16,13 @@ def obfuscate(script):
     Obfuscates a LuaU script with Prometheus.
     Returns the path to the obfuscated script.
     """
-    if not os.path.exists(f"{PROMETHEUS}prometheus.exe"):
+    try:
+        version = subprocess.run(
+            ["lua", "-v"], capture_output=True, text=True, check=True
+        )
+        if "Lua 5.1" not in version.stderr:
+            return None
+    except Exception:
         return None
     if UPDATE_EACH_TIME and os.path.exists(OBFUSCATED):
         os.remove(OBFUSCATED)
@@ -27,5 +35,6 @@ def obfuscate(script):
     with open(SOURCE, "w", encoding="utf-8") as f:
         f.write(script)
 
-    os.system(f'{PROMETHEUS}prometheus.exe --config "{PROMETHEUS}config.lua" {SOURCE}')
+    # print(f'lua {PROMETHEUS}cli.lua --config "{CONFIG}config.lua" {SOURCE}')
+    os.system(f'lua {PROMETHEUS}cli.lua --config "{CONFIG}config.lua" {SOURCE}')
     return OBFUSCATED

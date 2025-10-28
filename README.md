@@ -66,9 +66,7 @@ This will be prompted to you from the command line and will be stored in the fil
 
 ## 🛡️ Prometheus Setup
 
-Download [prometheus-windows.zip](https://github.com/prometheus-lua/Prometheus/releases/tag/v0.2.6) and put it in the [`/src/prometheus`](/src/prometheus) directory.
-
-If Prometheus is present, then the admin script will be automatically obfuscated when fetched, otherwise it won't be obfuscated.
+If you have Lua 5.1 installed and set as the default for the command "lua", then whenever the main LuaU script is called, it will be returned obfuscated.
 
 ### ⚙️ Editing Prometheus configuration
 
