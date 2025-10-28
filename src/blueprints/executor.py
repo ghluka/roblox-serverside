@@ -13,7 +13,7 @@ from flask import (
 )
 
 from blueprints.auth import DB_PATH, discord_auth
-from prometheus.wrapper import obfuscate
+from obfuscator.wrapper import obfuscate
 from utils.inputs import PATH
 from utils.session import Session
 
