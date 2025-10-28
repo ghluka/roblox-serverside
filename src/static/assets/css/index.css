@@ -212,7 +212,7 @@ a, a:visited {
 
 .play-button {
     padding: 0!important;
-    margin-top: 4px!important;
+    margin-top: auto!important;
 }
 
 .play-button, .play-button::before, .play-button::after {
