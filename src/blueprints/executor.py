@@ -155,6 +155,11 @@ def roblox_ping():
 
 @executor.route("/admin.luau", methods=["GET"])
 def admin_script():
+    with open(f"{PATH}/obfuscator/watermark.luau", encoding="utf8") as watermark_script:
+        watermark = watermark_script.read() + "\n"
+    if "Roblox" not in request.headers.get("User-Agent", ""):
+        return Response(watermark + 'print("Hello World!")', mimetype="text/x-lua")
+
     with open(f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8") as vlua_script:
         vlua_script = vlua_script.read()
     rendered = render_template(
@@ -163,8 +168,11 @@ def admin_script():
     obfuscated = obfuscate(rendered)
 
     if obfuscated:
-        return send_file(obfuscate(rendered), mimetype="text/plain")
-    return Response(rendered, mimetype="text/plain")
+        with open(
+            f"{PATH}/obfuscator/source.obfuscated.lua", encoding="utf8"
+        ) as obfuscated_script:
+            return Response(watermark + obfuscated_script.read(), mimetype="text/x-lua")
+    return Response(watermark + rendered, mimetype="text/x-lua")
 
 
 @executor.route("/api/players", methods=["GET", "POST"])

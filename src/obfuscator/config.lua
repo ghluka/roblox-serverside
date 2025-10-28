@@ -13,9 +13,8 @@ return {
         {
             Name="SplitStrings";
             Settings = {
-                MinLength = 2;
-                ConcatenationType = "strcat";
-                CustomFunctionType = "inline";
+                MinLength = 1;
+                MaxLength = 2;
             }
         },
         {
