@@ -139,6 +139,7 @@ function setPlayer(event) {
     document.getElementById("player-action-username").innerHTML = "@" + data["Username"];
     document.getElementById("player-actions").setAttribute("userid", data["UserId"]);
     document.getElementById("player-actions-container").style.display = "flex";
+    document.getElementById("walkspeed").value = data["WalkSpeed"];
 }
 document.getElementById("player-actions-container").style.display = "none";
 

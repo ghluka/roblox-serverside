@@ -6,6 +6,8 @@
     --monaco: rgba(25, 25, 40, 0.9);
     --dark: rgba(20, 20, 35, 0.2);
     --dark-hov: rgba(20, 20, 35, 0.5);
+    --dark-btn: rgba(25, 25, 40, 1);
+    --dark-btn-hov: rgba(20, 20, 35, 1);
     --darker-hov: rgba(20, 20, 35, 1);
     --side: rgba(20, 20, 35, 1);
     --nett: #bc49db;

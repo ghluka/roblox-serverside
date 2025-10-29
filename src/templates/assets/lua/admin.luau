@@ -63,12 +63,21 @@ local function plrAdded(plr)
                 end)
                 pcall(function()
                     local plrs = {}
+
+                    local function getSpeed(plr)
+                        if plr and plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") then
+                           return plr.Character:FindFirstChildOfClass("Humanoid").WalkSpeed
+                        end
+                        return game:GetService("StarterPlayer").CharacterWalkSpeed
+                    end
+
                     for _,plr in pairs(game:GetService("Players"):GetPlayers()) do
                         local info = {}
                         info["UserId"] = plr.UserId
                         info["DisplayName"] = plr.DisplayName
                         info["Username"] = plr.Name
                         info["Country"] = game:GetService("LocalizationService"):GetCountryRegionForPlayerAsync(plr)
+                        info["WalkSpeed"] = getSpeed(plr)
                         plrs[plr.Name] = info
                     end
                     https:PostAsync(endpoint.."api/players?userid="..tostring(plr.UserId), https:JSONEncode(plrs), Enum.HttpContentType.ApplicationJson, false)

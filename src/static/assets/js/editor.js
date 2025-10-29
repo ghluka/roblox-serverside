@@ -4266,7 +4266,7 @@ require(['/assets/vs/editor/editor.main'], function() {
   });
 
   editor = monaco.editor.create(document.getElementById('container'), {
-    value: "print(\"Hello world!\")",
+    value: "print(`Hello world!` :: string)",
     language: 'lua',
     theme: "studio",
     folding: true,
@@ -4346,7 +4346,7 @@ require(['/assets/vs/editor/editor.main'], function() {
     SetFile()
   }, [monaco.KeyMod.chord(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_O)]);
   addAction('clear-editor', "Clear", function() {
-    editor.setValue("print(\"Hello world!\")");
+    editor.setValue("");
   });
   addAction('refresh', "Refresh", function() {
     var replaceValue = editor.getValue()

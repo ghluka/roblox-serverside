@@ -2,159 +2,147 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+/*
+	Modified by Nett.WTF to support LuaU syntax.
+*/
 define(["require", "exports"], function (require, exports) {
-	'use strict';
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.conf = {
-		comments: {
-			lineComment: '--',
-			blockComment: ['--[[', ']]'],
-		},
-		brackets: [
-			['{', '}'],
-			['[', ']'],
-			['(', ')'],
-		],
-		autoClosingPairs: [
-			{ open: '{', close: '}' },
-			{ open: '[', close: ']' },
-			{ open: '(', close: ')' },
-			{ open: '"', close: '"' },
-			{ open: "'", close: "'" },
-			{ open: '`', close: '`' },
-		],
-		surroundingPairs: [
-			{ open: '{', close: '}' },
-			{ open: '[', close: ']' },
-			{ open: '(', close: ')' },
-			{ open: '"', close: '"' },
-			{ open: "'", close: "'" },
-			{ open: '`', close: '`' },
-		],
-		folding: {
-			markers: {
-				start: new RegExp("^\\s*--\\s*(?:(?:#?region\\b)|(?:<editor-fold\\b))"),
-				end: new RegExp("^\\s*--\\s*(?:(?:#?endregion\\b)|(?:</editor-fold>))")
-			}
-		},
-	};
+    exports.conf = {
+        comments: {
+            lineComment: "--",
+            blockComment: ["--[[", "]]"],
+        },
+        brackets: [
+            ["{", "}"],
+            ["[", "]"],
+            ["(", ")"],
+        ],
+        autoClosingPairs: [
+            { open: "{", close: "}" },
+            { open: "[", close: "]" },
+            { open: "(", close: ")" },
+            { open: '"', close: '"', notIn: ["string"] },
+            { open: "'", close: "'", notIn: ["string"] },
+            { open: "`", close: "`", notIn: ["string"] },
+            { open: "[[", close: "]]", notIn: ["string"] },
+        ],
+        surroundingPairs: [
+            { open: "{", close: "}" },
+            { open: "[", close: "]" },
+            { open: "(", close: ")" },
+            { open: '"', close: '"' },
+            { open: "'", close: "'" },
+            { open: "`", close: "`" },
+            { open: "[[", close: "]]" },
+        ],
+    };
 
-	exports.language = {
-		defaultToken: '',
-		tokenPostfix: '.luau',
+    exports.language = {
+        defaultToken: "",
+        tokenPostfix: ".luau",
 
-		keywords: [
-			'and', 'break', 'continue', 'do', 'else', 'elseif',
-			'end', 'false', 'for', 'function', 'if', 'in',
-			'local', 'nil', 'not', 'or', 'repeat', 'return',
-			'then', 'true', 'until', 'while',
+        keywords: [
+            "and", "break", "do", "else", "elseif", "end", "false", "for", "function",
+            "goto", "if", "in", "local", "nil", "not", "or", "repeat", "return",
+            "then", "true", "until", "while", "continue",
+        ],
 
-			'export', 'type', 'typeof', 'declare',
-		],
+        builtins: [
+            "print", "warn", "error", "assert", "pcall", "xpcall", "type", "next",
+            "pairs", "ipairs", "select", "tonumber", "tostring", "unpack",
+            "math", "string", "table", "coroutine", "os", "debug", "game",
+            "workspace", "script", "Instance", "Vector3", "CFrame", "UDim2",
+        ],
 
-		brackets: [
-			{ token: 'delimiter.bracket', open: '{', close: '}' },
-			{ token: 'delimiter.array', open: '[', close: ']' },
-			{ token: 'delimiter.parenthesis', open: '(', close: ')' }
-		],
+        typeKeywords: [
+            "any", "boolean", "number", "string", "table", "thread", "userdata",
+        ],
 
-		globals: [
-			'print', 'warn', 'error', 'require', 'game', 'workspace', 'script',
-			'assert', 'pcall', 'xpcall', 'typeof', 'type', 'task', 'table', 'math',
-			'string', 'os', 'utf8', 'bit32', 'coroutine',
-			'spawn', 'delay', 'wait', 'tick', 'time', 'collectgarbage',
-			'Instance', 'Vector3', 'CFrame', 'Color3', 'Enum', '_G',
-		],
+        operators: [
+            "+", "-", "*", "/", "%", "^", "#", "==", "~=", "<=", ">=", "<", ">",
+            "=", ";", ":", ".", "..", ",", "(", ")", "{", "}", "[", "]",
+        ],
 
-		types: [
-			'number', 'string', 'boolean', 'nil', 'any', 'unknown',
-			'thread', 'userdata', 'table', 'function', 'never',
+        symbols: /[=><!~?:&|+\-*\/\^%#]+/,
+        escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{2}|u\{[0-9A-Fa-f]+\})/,
 
-			'Axes', 'BrickColor', 'CatalogSearchParams', 'CFrame', 'Color3', 'ColorSequence',
-			'ColorSequenceKeypoint', 'DateTime', 'DockWidgetPluginGuiInfo', 'Faces', 'Instance',
-			'NumberRange', 'NumberSequence', 'NumberSequenceKeypoint', 'PathWaypoint',
-			'PhysicalProperties', 'Random', 'Ray', 'RaycastParams', 'RaycastResult', 'Rect',
-			'Region3', 'Region3int16', 'TweenInfo', 'UDim', 'UDim2', 'Vector2', 'Vector2int16',
-			'Vector3', 'Vector3int16',
-		],
+        tokenizer: {
+            root: [
+                [/[a-zA-Z_]\w*/, {
+                    cases: {
+                        "@keywords": "keyword",
+                        "@builtins": "type.identifier",
+                        "@typeKeywords": "type",
+                        "@default": "identifier",
+                    },
+                }],
 
-		operators: [
-			'+', '-', '*', '/', '%', '^', '#', '..',
-			'==', '~=', '<=', '>=', '<', '>', 'or', 'and', 'not',
-			'=', '+=', '-=', '*=', '/=', '%=', '^=', '..=',
-		],
+                { include: "@whitespace" },
 
-		symbols: /[=><!~?:&|+\-*\/\^%]+/,
-		escapes: /\\(?:[abfnrtv\\"'`]|x[0-9A-Fa-f]{1,4})/,
+                [/\d*\.\d+([eE][\-+]?\d+)?/, "number.float"],
+                [/\d+/, "number"],
 
-		tokenizer: {
-			root: [
-				[/[a-zA-Z_]\w*/, {
-					cases: {
-						'@keywords': { token: 'keyword.$0' },
-						'@globals': { token: 'global' },
-						'@types': { token: 'type' },
-						'@default': 'identifier'
-					}
-				}],
+                [/"([^"\\]|\\.)*$/, "string.invalid"],
+                [/'([^'\\]|\\.)*$/, "string.invalid"],
+                [/"/, "string", "@string_double"],
+                [/'/, "string", "@string_single"],
 
-				{ include: '@whitespace' },
+                [/\[=*\[/, { token: "string", next: "@multiString" }],
 
-				[/(,)(\s*)([a-zA-Z_]\w*)(\s*)(:)(?!:)/, ['delimiter', '', 'key', '', 'delimiter']],
-				[/({)(\s*)([a-zA-Z_]\w*)(\s*)(:)(?!:)/, ['@brackets', '', 'key', '', 'delimiter']],
+                [/`/, { token: "string.quote", next: "@templateString" }],
 
-				[/[{}()\[\]]/, '@brackets'],
+                [/@symbols/, {
+                    cases: {
+                        "@operators": "operator",
+                        "@default": "",
+                    },
+                }],
 
-				[/@symbols/, {
-					cases: {
-						'@operators': 'delimiter',
-						'@default': ''
-					}
-				}],
+                [/[{}()\[\]]/, "@brackets"],
+                [/[;,.:]/, "delimiter"],
+            ],
 
-				[/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
-				[/0[xX][0-9a-fA-F_]*[0-9a-fA-F]/, 'number.hex'],
-				[/\d+/, 'number'],
+            whitespace: [
+                [/[ \t\r\n]+/, ""],
+                [/--\[=*\[/, "comment", "@commentBlock"],
+                [/--.*$/, "comment"],
+            ],
 
-				[/[;,.]/, 'delimiter'],
+            string_double: [
+                [/[^\\"]+/, "string"],
+                [/@escapes/, "string.escape"],
+                [/\\./, "string.escape.invalid"],
+                [/"/, "string", "@pop"],
+            ],
 
-				[/"([^"\\]|\\.)*$/, 'string.invalid'],
-				[/'([^'\\]|\\.)*$/, 'string.invalid'],
-				[/`([^`\\]|\\.)*$/, 'string.invalid'],
-				[/"/, 'string', '@string."'],
-				[/'/, 'string', '@string.\''],
-				[/`/, 'string', '@string.`'],
-			],
+            string_single: [
+                [/[^\\']+/, "string"],
+                [/@escapes/, "string.escape"],
+                [/\\./, "string.escape.invalid"],
+                [/'/, "string", "@pop"],
+            ],
 
-			whitespace: [
-				[/[ \t\r\n]+/, ''],
-				[/--\[([=]*)\[/, 'comment', '@comment.$1'],
-				[/--[tT][oO][-]?[dD][oO].*$/, 'comment.todo'],
-				[/--.*$/, 'comment'],
-			],
+            multiString: [
+                [/\]=*\]/, { token: "string", next: "@pop" }],
+                [/./, "string"],
+            ],
 
-			comment: [
-				[/[^\]]+/, 'comment'],
-				[/\]([=]*)\]/, {
-					cases: {
-						'$1==$S2': { token: 'comment', next: '@pop' },
-						'@default': 'comment'
-					}
-				}],
-				[/./, 'comment']
-			],
+            commentBlock: [
+                [/\]=*\]/, { token: "comment", next: "@pop" }],
+                [/./, "comment"],
+            ],
 
-			string: [
-				[/[^\\"'`]+/, 'string'],
-				[/@escapes/, 'string.escape'],
-				[/\\./, 'string.escape.invalid'],
-				[/["'`]/, {
-					cases: {
-						'$#==$S2': { token: 'string', next: '@pop' },
-						'@default': 'string'
-					}
-				}]
-			],
-		},
-	};
+            templateString: [
+                [/[^\\`{]+/, "string"],
+                [/\\./, "string.escape"],
+                [/\{/, { token: "delimiter.bracket", next: "@templateExpression" }],
+                [/`/, { token: "string.quote", next: "@pop" }],
+            ],
+
+            templateExpression: [
+                [/\{/, { token: "delimiter.bracket", next: "@templateExpression" }],
+                [/\}/, { token: "delimiter.bracket", next: "@pop" }],
+                { include: "root" },
+            ],
+        },
+    };
 });
