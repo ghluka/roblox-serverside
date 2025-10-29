@@ -141,14 +141,16 @@ def games_list():
                     pass
                 del game["data"]
 
-            thumbnail = game_session.get(
-                f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false",
-                headers=headers,
-                timeout=5,
-            ).json()
+            if not game.get("thumbnail"):
+                thumbnail = game_session.get(
+                    f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false",
+                    headers=headers,
+                    timeout=5,
+                ).json()
 
-            image = thumbnail["data"][0]["thumbnails"][0]["imageUrl"]
-            game = {**game, **details, "thumbnail": image}
+                image = thumbnail["data"][0]["thumbnails"][0]["imageUrl"]
+                game["thumbnail"] = image
+            game = {**game, **details}
 
             games_data.append(game)
         except:
@@ -157,18 +159,21 @@ def games_list():
     if del_zero:
         del games_json["0"]
 
-    games_data.sort(
-        key=lambda g: (
-            9999999999999999999
-            if str(g.get("placeid")) == "91979118006611"
-            else (
-                g.get("data", [{}])[0].get("playing", 0)
-                if isinstance(g.get("data"), list)
-                else g.get("playing", 0)
-            )
-        ),
-        reverse=True,
-    )
+    try:
+        games_data.sort(
+            key=lambda g: (
+                9999999999999999999
+                if g.get("pinned", False) == True
+                else (
+                    g.get("data", [{}])[0].get("playing", 0)
+                    if isinstance(g.get("data"), list)
+                    else g.get("playing", 0)
+                )
+            ),
+            reverse=True,
+        )
+    except:
+        pass
 
     message = ""
     diff = len(games_json.items()) - len(games_data)

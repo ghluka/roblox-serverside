@@ -96,3 +96,23 @@ Games.json entries should be formatted like:
 The 0 placeid is necessary if you want to test within a local Studio file thats not published.
 
 It will be automatically added when you first run, so you don't have to worry about adding it.
+
+You can also add custom data to a game like this:
+```json
+{
+    "118658761980417": {
+        "placeid": 118658761980417,
+        "url": "https://www.roblox.com/games/118658761980417",
+        "whitelist": 0,
+        "thumbnail": "https://nett.wtf/assets/img/baseplate.webp",
+        "pinned": true,
+        "data": [
+            {
+                "name": "Free Testing",
+                "visits": 9999
+            }
+        ],
+        "universeid": 9056360344
+    }
+}
+```
