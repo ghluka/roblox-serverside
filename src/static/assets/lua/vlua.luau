@@ -1,6 +1,6 @@
 local _env = getfenv()
 local Loader = require(tonumber("136871543208848"))
-local Ception = require(tonumber("86277566190608"))
+local Ception = require(tonumber("78342552407113"))
 
 local function ValidLuauBytecode(bytecode)
     if type(bytecode) ~= "string" or #bytecode == 0 then
