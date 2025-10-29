@@ -36,6 +36,27 @@ def initialize():
                     indent=4,
                 )
             )
+    else:
+        with open(f"{PATH}/games/games.json", encoding="utf8") as f:
+            games_json = json.load(f)
+
+        updated = False
+        for placeid, game in games_json.items():
+            if not game.get("universeid") and placeid != "0":
+                try:
+                    resp = game_session.get(
+                        f"https://apis.roblox.com/universes/v1/places/{placeid}/universe",
+                        headers=headers,
+                        timeout=5,
+                    )
+                    game["universeid"] = resp.json().get("universeId", 0)
+                    updated = True
+                except:
+                    pass
+
+        if updated:
+            with open(f"{PATH}/games/games.json", "w", encoding="utf8") as f:
+                json.dump(games_json, f, ensure_ascii=False, indent=4)
     if not os.path.exists(f"{PATH}/games/review.json"):
         with open(f"{PATH}/games/review.json", "x", encoding="utf8") as f:
             f.write("{}")

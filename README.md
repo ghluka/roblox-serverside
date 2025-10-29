@@ -83,13 +83,11 @@ Games.json entries should be formatted like:
 {
     "0": {
         "placeid": 0,
-        "universeid": 0,
         "url": "https://www.roblox.com/games/0",
         "whitelist": 255
     },
     "1818": {
         "placeid": 1818,
-        "universeid": 13058,
         "url": "https://www.roblox.com/games/1818",
         "whitelist": 1
     }
