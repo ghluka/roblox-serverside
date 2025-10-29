@@ -1,5 +1,5 @@
 return {
-    LuaVersion = "LuaU";
+    LuaVersion = "Lua51";
 
     VarNamePrefix = "NETT_WTF_";
 
@@ -10,12 +10,6 @@ return {
     Seed = 0;
 
     Steps = {
-        {
-            Name="ProxifyLocals";
-        },
-        {
-            Name = "NumbersToExpressions";
-        },
         {
             Name="WrapInFunction";
         },
