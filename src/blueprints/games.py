@@ -157,6 +157,19 @@ def games_list():
     if del_zero:
         del games_json["0"]
 
+    games_data.sort(
+        key=lambda g: (
+            9999999999999999999
+            if str(g.get("placeid")) == "91979118006611"
+            else (
+                g.get("data", [{}])[0].get("playing", 0)
+                if isinstance(g.get("data"), list)
+                else g.get("playing", 0)
+            )
+        ),
+        reverse=True,
+    )
+
     message = ""
     diff = len(games_json.items()) - len(games_data)
     if diff > 0:
