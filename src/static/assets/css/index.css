@@ -69,7 +69,7 @@ img {
     background-color: var(--lite);
 }
 
-.grid-container > .game {
+.grid-container > .game, .grid-container > .module {
     flex: 0 0 calc(25% - 2px)!important;
     max-width: calc(25% - 2px)!important;
     min-width: 240px!important;
