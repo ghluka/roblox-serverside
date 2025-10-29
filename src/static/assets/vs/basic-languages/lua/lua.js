@@ -23,7 +23,6 @@ define(["require", "exports"], function (require, exports) {
             { open: '"', close: '"', notIn: ["string"] },
             { open: "'", close: "'", notIn: ["string"] },
             { open: "`", close: "`", notIn: ["string"] },
-            { open: "[[", close: "]]", notIn: ["string"] },
         ],
         surroundingPairs: [
             { open: "{", close: "}" },
@@ -32,7 +31,6 @@ define(["require", "exports"], function (require, exports) {
             { open: '"', close: '"' },
             { open: "'", close: "'" },
             { open: "`", close: "`" },
-            { open: "[[", close: "]]" },
         ],
     };
 
@@ -47,13 +45,27 @@ define(["require", "exports"], function (require, exports) {
         ],
 
         builtins: [
-            "print", "warn", "error", "assert", "pcall", "xpcall", "type", "next",
-            "pairs", "ipairs", "select", "tonumber", "tostring", "unpack",
-            "math", "string", "table", "coroutine", "os", "debug", "game",
-            "workspace", "script", "Instance", "Vector3", "CFrame", "UDim2",
+            "print", "error", "warn", "require", "game", "assert",
+            "rawset", "rawget", "rawequal",
+            "coroutine", "debug", "table", "pairs", "ipairs", "bit", "bit32", "math", "utf8", "os",
+            "collectgarbage", "getfenv", "getmetatable",
+            "loadfile", "loadstring", "newproxy", "next",
+            "pcall", "select", "setfenv",
+            "setmetatable", "tonumber", "tostring", "type", "xpcall", "_G",
+            "shared", "delay", "spawn", "tick", "typeof", "wait",
+            "Enum", "script", "workspace", "printidentity",
         ],
 
         typeKeywords: [
+            "number", "string", "boolean", "nil", "any", "unknown",
+            "thread", "userdata", "table", "function", "never",
+            "Axes", "BrickColor", "CatalogSearchParams", "CFrame", "Color3", "ColorSequence",
+            "ColorSequenceKeypoint", "DateTime", "Drawing", "DockWidgetPluginGuiInfo", "Faces",
+            "Instance", "NumberRange", "NumberSequence", "NumberSequenceKeypoint", "PathWaypoint",
+            "PhysicalProperties", "Random", "Ray", "RaycastParams", "RaycastResult", "Rect",
+            "Region3", "Region3int16", "TweenInfo", "UDim", "UDim2", "Vector2", "Vector2int16",
+            "Vector3", "Vector3int16",
+			
             "any", "boolean", "number", "string", "table", "thread", "userdata",
         ],
 
@@ -62,8 +74,8 @@ define(["require", "exports"], function (require, exports) {
             "=", ";", ":", ".", "..", ",", "(", ")", "{", "}", "[", "]",
         ],
 
-        symbols: /[=><!~?:&|+\-*\/\^%#]+/,
-        escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{2}|u\{[0-9A-Fa-f]+\})/,
+        symbols: /[=><!?:&|+\-*\/\^%#]+/,
+        escapes: /\\(?:[abfnrtv\\"'`]|x[0-9A-Fa-f]{2}|u\{[0-9A-Fa-f]+\})/,
 
         tokenizer: {
             root: [
@@ -78,6 +90,7 @@ define(["require", "exports"], function (require, exports) {
 
                 { include: "@whitespace" },
 
+                [/0[xX][0-9A-Fa-f_]*[0-9A-Fa-f]/, "number.hex"],
                 [/\d*\.\d+([eE][\-+]?\d+)?/, "number.float"],
                 [/\d+/, "number"],
 
