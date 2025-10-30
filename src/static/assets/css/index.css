@@ -183,7 +183,7 @@ input {
 
 .discord-button {
     background-color: #5865F2;
-    border: none;
+    border: 2px solid #5865F2;
     color: white!important;
     padding: 15px 32px;
     text-align: center;
@@ -197,7 +197,7 @@ input {
 
 .dashboard-button {
     background-color: var(--nett);
-    border: none;
+    border: 2px solid var(--nett);
     color: white!important;
     padding: 15px 32px;
     text-align: center;

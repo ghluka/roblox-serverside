@@ -16,7 +16,7 @@ with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
 discord_auth = DiscordAuth(
     os.getenv("CLIENT_ID"),
     os.getenv("CLIENT_SECRET"),
-    f"http{'s' if not domain.startswith('localhost') else ''}://{domain}/callback",
+    f"http{'s' if not (domain.startswith('localhost') or domain.startswith('127.0.0.1')) else ''}://{domain}/callback",
 )
 
 

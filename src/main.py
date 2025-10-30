@@ -31,11 +31,14 @@ with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
 
 @app.route("/")
 def homepage():
-    dashboard_button = "<a class='discord-button' href='/dashboard'><i class='bx bxl-discord-alt'></i> Log in with Discord</a>"
-    if dev_auth() or "user" in session:
-        dashboard_button = "<a class='dashboard-button' href='/dashboard'><i class='bx bxs-dashboard'></i> Dashboard</a>"
+    dashboard_button = "<a class='discord-button' href='/dashboard'><i class='bx bxl-discord-alt'></i> log in with discord</a>"
+    if "user" in session:
+        dashboard_button = "<a class='dashboard-button' href='/dashboard'><i class='bx bxs-dashboard'></i> dashboard</a>"
     return render_template(
-        "index.html", dashboard_button=Markup(dashboard_button), domain=domain
+        "index.html",
+        dashboard_button=Markup(dashboard_button),
+        domain=domain,
+        whitelisted="user" in session,
     )
 
 

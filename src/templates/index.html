@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>NettSS</title>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="/assets/css/home.css">
         <link rel="stylesheet" href="/assets/css/index.css">
-        <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
+        <link rel="stylesheet" href="/assets/css/sidebar.css">
         <meta content="NettSS" property="og:title">
         <meta content="Nett Administration is an open-source admin program for Roblox, offering a wide array of features and commands to improve the experience for both players and developers." property="og:description">
         <meta content="https://{{domain}}/" property="og:url">
@@ -14,23 +15,33 @@
         <meta name="color-scheme" content="dark">
     </head>
     <body>
-        <div style="text-align: center;">
-            <h1><div class="logo_name"><span style="color: #bc49db;">Nett</span><span>SS</span></div></h1>
-            <p>Website under construction but fully functional!</p>
-            <p>Since May 20th, 2024.</p>
-            {{dashboard_button}}
-            <br>
-            <br>
-            <p>we are now in public beta! our whitelist is public for a limited time.</p>
-            <br>
-            <br>
-            <br>
+        <header class="banner"><i class='bx bxs-rocket'></i> We are now in public beta! Our whitelist is open for a limited time.</header>
+        <nav class="navbar">
+            <div class="logo"><div class="logo_name" onclick="window.location.href = '/'"><span style="color: #bc49db;">Nett</span><span>SS</span></div></div>
+            <div>
+                <ul class="nav-links">
+                    <li>
+                        <a href="#">home</a>
+                        <a href="/script">script</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="/dashboard" class="btn-dashboard">{% if whitelisted %}dashboard{% else %}use for free{% endif %}</a>
+        </nav>
+        <section class="hero">
+            <h1 style="max-width: 700px;">a <span>fully free</span><br>roblox serverside</h1>
+            <p>since may 20th, 2024. no downloads, no payment, no bs.</p>
+            <div class="hero-buttons">
+                {{dashboard_button}}
+            </div>
+        </section>
+        <footer class="footer">
             <a style="color: #606070;" href="mailto:legal@{{domain}}">legal@nett.wtf</a><br>
             <a href="/privacy">privacy policy</a>
             &#9642;
             <a href="/terms">terms of service</a>
             <br>
             <a href="/eula">end-user license agreement</a>
-        </div>
+        </footer>
     </body>
 </html>
