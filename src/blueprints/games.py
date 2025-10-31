@@ -154,26 +154,10 @@ def games_list():
 
             games_data.append(game)
         except:
-            continue
+            pass
 
     if del_zero:
         del games_json["0"]
-
-    try:
-        games_data.sort(
-            key=lambda g: (
-                9999999999999999999
-                if g.get("pinned", False) == True
-                else (
-                    g.get("data", [{}])[0].get("playing", 0)
-                    if isinstance(g.get("data"), list)
-                    else g.get("playing", 0)
-                )
-            ),
-            reverse=True,
-        )
-    except:
-        pass
 
     message = ""
     diff = len(games_json.items()) - len(games_data)
