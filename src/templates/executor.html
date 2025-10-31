@@ -185,46 +185,53 @@
                 <button style="width: 50%;" onclick="executePlayerAction('if not plrchar.PrimaryPart then plrchar.PrimaryPart = plrchar:FindFirstChild([[HumanoidRootPart]]) end; if not targetchar.PrimaryPart then plrchar.PrimaryPart = targetchar:FindFirstChild([[HumanoidRootPart]]) end;targetchar:SetPrimaryPartCFrame(plrchar.PrimaryPart.CFrame)');">Bring</button>
               </div>
             </div>
+
             <h4 style="width: 100%; margin: 10px 0 0 10px;">Fun Actions</h4>
             <div class="grid-container avatar-container action-buttons">
-
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('targethum.Health = 0');">Kill</button>
                 <button style="width: 33%;" onclick="executePlayerAction('targetchar.HumanoidRootPart.Anchored = true');">Freeze</button>
                 <button style="width: 33%;" onclick="executePlayerAction('targetchar.HumanoidRootPart.Anchored = false');">Thaw</button>
               </div>
-              
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Explosion\', workspace).Position = targetchar.HumanoidRootPart.Position');">Explode</button>
                 <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'ForceField\', targetchar)');">Forcefield</button>
                 <button style="width: 33%;" onclick="executePlayerAction('targetchar:FindFirstChildOfClass(\'ForceField\'):Destroy()');">No Forcefield</button>
               </div>
-              
               <div class="action-buttons" style="padding: 0!important;">
-                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Smoke\', targetchar.HumanoidRootPart)');">Smoke</button>
-                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Sparkles\', targetchar.HumanoidRootPart)');">Sparkles</button>
-                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Fire\', targetchar.HumanoidRootPart)');">Fire</button>
+                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Smoke\', targetchar.HumanoidRootPart):SetAttribute(\'NettEmitter\', true)');">Smoke</button>
+                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Sparkles\', targetchar.HumanoidRootPart):SetAttribute(\'NettEmitter\', true)');">Sparkles</button>
+                <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'Fire\', targetchar.HumanoidRootPart):SetAttribute(\'NettEmitter\', true)');">Fire</button>
               </div>
-              
               <div class="action-buttons" style="padding: 0!important;">
+                <button style="width: 33%;" onclick="executePlayerAction('for _,v in pairs(targetchar.HumanoidRootPart:GetChildren()) do if v:GetAttribute(\'NettEmitter\') then v:Destroy() end end');">Remove Emitters</button>
                 <button style="width: 33%;" onclick="executePlayerAction('targethum.Health = targethum.MaxHealth');">Heal</button>
                 <button style="width: 33%;" onclick="executePlayerAction('targethum.Health = math.huge; targethum.MaxHealth = math.huge');">God</button>
-                <button style="width: 33%;" onclick="executePlayerAction('targethum.Sit = true');">Sit</button>
               </div>
-              
               <div class="action-buttons" style="padding: 0!important;">
+              <button style="width: 33%;" onclick="executePlayerAction('for _,v in pairs(targetchar:GetDescendants()) do if v:IsA(\'BasePart\') and v.Transparency ~= 1 then v:SetAttribute(\'OgTransparency\', v.Transparency) v.Transparency = 1 end end');">Invisible</button>
+                <button style="width: 33%;" onclick="executePlayerAction('targethum.Sit = true');">Sit</button>
                 <button style="width: 33%;" onclick="executePlayerAction('Instance.new(\'BodyForce\', targetchar.HumanoidRootPart).Force = Vector3.new(12550821, 12550821, 0)');">Fling</button>
+              </div>
+              <div class="action-buttons" style="padding: 0!important;">
+                <button style="width: 33%;" onclick="executePlayerAction('for _,v in pairs(targetchar:GetDescendants()) do if v:IsA(\'BasePart\') and v:GetAttribute(\'OgTransparency\') then v.Transparency = v:GetAttribute(\'OgTransparency\') end end');">Visible</button>
                 <button style="width: 33%;" onclick="executePlayerAction('local meteor = game:GetService(\'InsertService\'):LoadAsset(86374494):GetChildren()[1]:GetChildren()[1]; meteor.Parent = workspace; meteor.CFrame = targetchar.HumanoidRootPart.CFrame + Vector3.new(0,100,0); game:GetService(\'Debris\'):AddItem(meteor, 10); meteor.Touched:Connect(function(p) pcall(function() p.Parent:BreakJoints() end) pcall(function() if p.Locked then return end p.Anchored = false end) end)');">Meteor</button>
                 <button style="width: 33%;" onclick="executePlayerAction('local car = game:GetService(\'InsertService\'):LoadAsset(6418239833):FindFirstChild(\'Sedan (red)\'); car:SetPrimaryPartCFrame(targetchar.HumanoidRootPart.CFrame * CFrame.new(10,0,0)); car.Parent = workspace; car:MakeJoints()');">Car</button>
               </div>
-              
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('local mob = game:GetService(\'InsertService\'):LoadAsset(95401558):GetChildren()[1]; mob.PrimaryPart = mob.Torso; mob:SetPrimaryPartCFrame(targetchar.Head.CFrame); mob.Parent = workspace');">Shade</button>
                 <button style="width: 33%;" onclick="executePlayerAction('local mob = game:GetService(\'InsertService\'):LoadAsset(94251705):GetChildren()[1]; mob.PrimaryPart = mob.Torso; mob:SetPrimaryPartCFrame(targetchar.Head.CFrame); mob.Parent = workspace');">Ghost</button>
                 <button style="width: 33%;" onclick="executePlayerAction('local mob = game:GetService(\'InsertService\'):LoadAsset(187789986):GetChildren()[1]; mob.PrimaryPart = mob.Torso; mob:SetPrimaryPartCFrame(targetchar.Head.CFrame); mob.Parent = workspace');">Zombie</button>
               </div>
-              
             </div>
+
+            <h4 style="width: 100%; margin: 10px 0 0 10px;">Tools Actions</h4>
+            <div class="grid-container avatar-container action-buttons">
+              <div class="action-buttons" style="padding: 0!important;">
+                <button style="width: 33%;" onclick="executePlayerAction('require(580330877)().Parent = target.Backpack');">F3X</button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
