@@ -78,6 +78,31 @@ img {
     box-sizing: border-box!important;
 }
 
+
+@media only screen and (max-width: 1295px) {
+    .grid-container > .game, .grid-container > .module {
+        flex: 0 0 calc(33% - 2px)!important;
+        max-width: calc(33% - 2px)!important;
+    }
+}
+
+@media only screen and (max-width: 1053px) {
+    .grid-container > .game, .grid-container > .module {
+        flex: 0 0 calc(50% - 2px)!important;
+        max-width: calc(50% - 2px)!important;
+        min-width: 0px!important;
+    }
+}
+/* 811px - 1 item */
+@media only screen and (max-width: 789px) {
+    .grid-container > .game, .grid-container > .module {
+        flex: 0 0 100%!important;
+        max-width: 100%!important;
+        min-width: 0px!important;
+    }
+}
+
+
 .script-container {
     padding: 16px 16px 8px 16px;
     margin: 5px;
