@@ -93,9 +93,16 @@ img {
         min-width: 0px!important;
     }
 }
-/* 811px - 1 item */
+
 @media only screen and (max-width: 789px) {
-    .grid-container > .game, .grid-container > .module {
+    .grid-container > .game {
+        flex: 0 0 100%!important;
+        max-width: 100%!important;
+        min-width: 0px!important;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .grid-container > .module {
         flex: 0 0 100%!important;
         max-width: 100%!important;
         min-width: 0px!important;
