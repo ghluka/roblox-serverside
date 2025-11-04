@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
+}
+
+h1, h1 > span, .title {
+    font-family: "Outfit", sans-serif!important;
+    font-weight: 800!important;
 }
 
 body {
@@ -37,7 +43,6 @@ body > *:not(.footer) {
 
 .navbar {
     position: fixed;
-    top: 34px;
     left: 0;
     width: 100%;
     z-index: 1000;
@@ -45,9 +50,15 @@ body > *:not(.footer) {
     justify-content: space-between;
     align-items: center;
     padding: 20px 60px;
-    background: var(--darker-hov);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
+    background: var(--dark-hov);
+    top: 32px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+@media only screen and (max-width: 449px) {
+    .navbar {
+        top: 50px;
+    }
 }
 
 .logo {
@@ -109,9 +120,27 @@ body > *:not(.footer) {
 }
 
 .hero {
-    margin-top: 180px;
+    margin-top: 60px;
     text-align: center;
     padding: 0 20px;
+    position: relative;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--nett);
+    filter: blur(10em);
+    z-index: 0;
+    border-radius: 100%;
+}
+
+.hero > *:not(.hero-bg) {
+    position: relative;
+    z-index: 1;
 }
 
 .hero h1 {
@@ -139,10 +168,11 @@ body > *:not(.footer) {
     gap: 16px;
 }
 
-.hero-buttons > .dashboard-button, .hero-buttons > .discord-button {
+.hero-buttons > .dashboard-button, .hero-buttons > .discord-button, .btn-hollow {
     padding: 10px 24px;
     border-radius: 999px;
-    background-color: transparent!important;
+    background-color: var(--dark-hov)!important;
+    backdrop-filter: blur(16px);
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s, color 0.3s;
@@ -173,41 +203,15 @@ body > *:not(.footer) {
     transform: scale(1.05);
 }
 
-.features {
-    margin-top: 100px;
-    text-align: center;
-    background: rgba(255,255,255,0.03);
-    padding: 60px 20px;
-    border-radius: 20px;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.features h2 {
-    font-size: 1.8rem;
-    margin-bottom: 16px;
-}
-
-.features p {
-    color: #bcbcbc;
-    max-width: 600px;
-    margin: 0 auto 30px;
-}
-
-.screenshot-placeholder {
-    width: 100%;
-    height: 250px;
-    background: linear-gradient(90deg, #2a273b, #322c47);
-    border-radius: 10px;
-}
-
 .footer {
     margin-top: auto;
     text-align: center;
     padding: 50px 20px;
     color: #9b86cf;
     font-size: 0.9rem;
+    background-color: var(--dark-hov);
+    backdrop-filter: blur(4px);
+    width: 100%;
 }
 .footer a {
     color: var(--nett);
@@ -226,4 +230,120 @@ body > *:not(.footer) {
     .nav-links {
         display: none;
     }
+}
+
+@media only screen and (max-width: 619px) {
+    .hide-on-small {
+        display: none;
+    }
+}
+
+#backgroundCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: var(--bg);
+}
+html, body {
+    background-color: transparent!important;
+}
+
+.features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.feature {
+    flex: 0 1 280px;
+    max-width: 320px;
+    border-radius: 12px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--dark-hov);
+    backdrop-filter: blur(16px);
+}
+
+.pricing {
+    padding: 80px 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.pricing-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pricing-card {
+    background-color: var(--card);
+    backdrop-filter: blur(16px);
+    border-radius: 16px;
+    padding: 40px 20px;
+    flex: 0 1 280px;
+    max-width: 320px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.pricing-card:hover {
+    transform: translateY(-8px);
+}
+
+.pricing-card.highlighted {
+    background-color: var(--card-dark);
+    color: #fff;
+}
+
+.pricing-card h2 {
+    font-family: "Outfit", sans-serif;
+    font-weight: 800;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.pricing-card .price {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.pricing-card .price span {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #bcbcbc;
+}
+
+.pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.pricing-card ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.pricing-card ul li.disabled {
+    opacity: 0.4;
+    text-decoration: line-through;
+}
+
+.pricing-card .btn-primary {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
 }

@@ -9,12 +9,15 @@
         <link rel="stylesheet" href="/assets/css/index.css">
         <link rel="stylesheet" href="/assets/css/sidebar.css">
         <meta content="NettSS" property="og:title">
-        <meta content="Nett Administration is an open-source admin program for Roblox, offering a wide array of features and commands to improve the experience for both players and developers." property="og:description">
+        <meta content="A fully free Roblox serverside. Use our script executor to get admin and use Ultimate Trolling GUI and more." property="og:description">
+        <meta content="roblox ss, roblox serverside, roblox cheat, roblox exploit, roblox fe, fe bypass, server side, john doe" name="keywords">
         <meta content="https://{{domain}}/" property="og:url">
         <meta content="#bc49db" data-react-helmet="true" name="theme-color">
         <meta name="color-scheme" content="dark">
+        <meta name="robots" content="index, follow">
     </head>
     <body>
+        <canvas id="backgroundCanvas"></canvas>
         <header class="banner"><i class='bx bxs-rocket'></i> We are now in public beta! Our whitelist is open for a limited time.</header>
         <nav class="navbar">
             <div class="logo"><div class="logo_name" onclick="window.location.href = '/'"><span style="color: #bc49db;">Nett</span><span>SS</span></div></div>
@@ -28,13 +31,70 @@
             </div>
             <a href="/dashboard" class="btn-dashboard">{% if whitelisted %}dashboard{% else %}use for free{% endif %}</a>
         </nav>
-        <section class="hero">
+        <section class="hero" style="margin-top: 180px;">
             <h1 style="max-width: 700px;">a <span>fully free</span><br>roblox serverside</h1>
             <p>since may 20th, 2024. no downloads, no payment, no bs.</p>
             <div class="hero-buttons">
                 {{dashboard_button}}
             </div>
         </section>
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3 class="title"><i class='bx bxs-shield' ></i> Bypass Byfron</h3>
+                    <p>We don't tamper or inject anything. You can never get banned or detected.</p>
+                </div>
+                <div class="feature">
+                    <h3 class="title"><i class='bx bx-cloud-download'></i> No Downloads</h3>
+                    <p>We run fully on the cloud, you can use us on any device with no download.</p>
+                </div>
+                <div class="feature">
+                    <h3 class="title"><i class='bx bxs-lock-open-alt'></i> FE Bypass</h3>
+                    <p>What you do shows for everyone, you can use old scripts again like Grab Knife.</p>
+                </div>
+            </div>
+        </section>
+        <section class="pricing">
+            <h1>Pricing</h1>
+            <br>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h2>Free</h2>
+                    <p class="price">$0<span>/lifetime</span></p>
+                    <ul>
+                        <li>Script Hub</li>
+                        <li>Instant Script Execution</li>
+                        <li>No Limitations</li>
+                        <li>Standard Support</li>
+                    </ul>
+                    <a href="/dashboard" class="btn-primary btn-hollow">Start for Free</a>
+                </div>
+                <div class="pricing-card highlighted hide-on-small">
+                    <h2>Standard</h2>
+                    <p class="price">$0<span>/lifetime</span></p>
+                    <ul>
+                        <li>Script Hub</li>
+                        <li>Instant Script Execution</li>
+                        <li>No Limitations</li>
+                        <li>Standard Support</li>
+                    </ul>
+                    <a href="/dashboard" class="btn-primary btn-hollow">Start for Free</a>
+                </div>
+                <div class="pricing-card hide-on-small">
+                    <h2>Premium</h2>
+                    <p class="price">$0<span>/lifetime</span></p>
+                    <ul>
+                        <li>Script Hub</li>
+                        <li>Instant Script Execution</li>
+                        <li>No Limitations</li>
+                        <li>Standard Support</li>
+                    </ul>
+                    <a href="/dashboard" class="btn-primary btn-hollow">Start for Free</a>
+                </div>
+            </div>
+        </section>
+
         <footer class="footer">
             <a style="color: #606070;" href="mailto:legal@{{domain}}">legal@nett.wtf</a><br>
             <a href="/privacy">privacy policy</a>
@@ -43,5 +103,6 @@
             <br>
             <a href="/eula">end-user license agreement</a>
         </footer>
+        <script src="/assets/js/particles.js"></script>
     </body>
 </html>

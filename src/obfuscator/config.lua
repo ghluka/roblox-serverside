@@ -11,6 +11,9 @@ return {
 
     Steps = {
         {
+            Name="AddVararg";
+        },
+        {
             Name="WrapInFunction";
         },
     }

@@ -12,6 +12,8 @@
     --side: rgba(20, 20, 35, 1);
     --nett: #bc49db;
     --selected: rgba(188, 73, 219, 0.1);
+    --card: rgba(20, 20, 35, 0.1);
+    --card-dark: rgba(188, 73, 219, 0.1);
 }
 
 html, body {
