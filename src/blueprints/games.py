@@ -12,7 +12,7 @@ from utils.inputs import PATH
 games = Blueprint("games", __name__)
 
 game_session = requests_cache.CachedSession(
-    "roblox_gamedata", expire_after=timedelta(hours=2)
+    "roblox_gamedata", expire_after=timedelta(minutes=5)
 )
 headers = {"User-Agent": "Roblox/WinInet"}
 
@@ -140,6 +140,11 @@ def games_list():
                 except:
                     pass
                 del game["data"]
+
+            if game.get("minPlaying"):
+                details["data"][0]["playing"] = max(
+                    details["data"][0]["playing"], game.get("minPlaying")
+                )
 
             if not game.get("thumbnail"):
                 thumbnail = game_session.get(

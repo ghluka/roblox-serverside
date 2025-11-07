@@ -161,3 +161,34 @@ async function robloxUsernameToId(username) {
     const data = await res.json();
     return data?.data?.[0]?.id ?? 1;
 }
+
+function activateSwapGroup(group) {
+    if (group.dataset.swapInit) return;
+    group.dataset.swapInit = "true";
+    const items = group.querySelectorAll('.swap-item');
+    if (items.length === 0) return;
+    let index = 0;
+    items[index].classList.add('active');
+    setInterval(() => {
+        items[index].classList.remove('active');
+        index = (index + 1) % items.length;
+        items[index].classList.add('active');
+    }, 5000);
+}
+
+document.querySelectorAll('.swap-group').forEach(activateSwapGroup);
+
+const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+            if (node.classList && node.classList.contains('swap-group')) {
+                activateSwapGroup(node);
+            }
+            if (node.querySelectorAll) {
+                node.querySelectorAll('.swap-group').forEach(activateSwapGroup);
+            }
+        });
+    });
+});
+
+observer.observe(document.body, { childList: true, subtree: true });

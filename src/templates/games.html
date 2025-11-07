@@ -46,7 +46,10 @@
     <div class="game" onclick='window.open(`{{v["url"]}}`);'>
         <img src='{{v["thumbnail"]}}' class="preview-img">
         <h3>{{v["data"][0]["name"]}}</h3>
-        <h5><i class='bx bxs-user'></i> {{"{:,}".format(v["data"][0]["visits"])}} visits</h5>
+        <div class="swap-group">
+            <h5 class="swap-item"><i class='bx bxs-user'></i> {{"{:,}".format(v["data"][0]["visits"])}} visits</h5>
+            <h5 class="swap-item"><i class='bx bxs-user'></i> {{"{:,}".format(v["data"][0]["playing"])}} playing</h5>
+        </div>
         <button onclick='event.stopPropagation(); window.location.href = `roblox://experiences/start?placeId={{v["placeid"]}}`;' class="play-button"><i class="bx bx-play"></i></button>
     </div>
 {%endfor%}
