@@ -13,6 +13,9 @@ class Session:
         self.pfp_session = requests_cache.CachedSession(
             "roblox_userdata", expire_after=timedelta(hours=1)
         )
+        self.decal_session = requests_cache.CachedSession(
+            "roblox_imgdata", expire_after=timedelta(days=1)
+        )
         self.session.cookies.update({".ROBLOSECURITY": self.auth_cookie})
 
     def get_pfp(self, user_id: str) -> str:

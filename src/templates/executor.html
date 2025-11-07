@@ -166,7 +166,7 @@
             <div class="grid-container avatar-container action-buttons">
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction(`targetchar.Humanoid.WalkSpeed = ${this.parentElement.querySelector('input').value}`);">Set Speed</button>
-                <input class="search" style="border-radius: 4px;" id="walkspeed" type="number" value="" placeholder="Walk speed">
+                <input class="search" style="border-radius: 4px; padding: 8px;" id="walkspeed" type="number" value="" placeholder="Walk speed">
               </div>
             </div>
 
@@ -229,6 +229,38 @@
             <div class="grid-container avatar-container action-buttons">
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('require(580330877)().Parent = target.Backpack');">F3X</button>
+                <button style="width: 33%;" onclick="executePlayerAction('local tool = game:GetService(\'InsertService\'):LoadAsset(95354288):GetChildren()[1]; tool.Parent = target.Backpack');">Luger</button>
+                <button style="width: 33%;" onclick="executePlayerAction('local tool = game:GetService(\'InsertService\'):LoadAsset(11999247):GetChildren()[1]; tool.Parent = target.Backpack');">Subspace Tripmine</button>
+              </div>
+            </div>
+
+            <h4 style="width: 100%; margin: 10px 0 0 10px;">Troll Actions</h4>
+            <div class="grid-container avatar-container action-buttons">
+              <div class="action-buttons" style="padding: 0!important;">
+                <button style="width: 50%;" onclick="let sel = document.getElementById('jumpscare');
+                                                     if (sel.value && sel.value != '') {
+                                                       executePlayerAction('local textureId=game:GetService(\'InsertService\'):LoadAsset('+sel.value+'):GetChildren()[1].Texture;local gui=Instance.new(\'ScreenGui\',target.PlayerGui)gui.IgnoreGuiInset=true;gui.DisplayOrder=2147483647;local sound=Instance.new(\'Sound\',gui)sound.Volume=math.huge;sound.SoundId=\'rbxassetid:/\/85271883712040\';sound:Play()local img=Instance.new(\'ImageLabel\',gui)img.ScaleType=Enum.ScaleType.Fit;img.BackgroundColor3=Color3.new(0);img.ZIndex=2147483647;img.Size=UDim2.new(1,0,1,0)img.Image=textureId;game:GetService(\'Debris\'):AddItem(gui,3)');
+                                                     }">Jumpscare</button>
+                <div style="width: 50%;" class="custom-select">
+                  <select id="jumpscare">
+                    <option value="">Select Jumpscare</option>
+                    <option value="3100736018">Scary face 1</option>
+                    <option value="7409940110">Scary face 2</option>
+                    <option value="15889768466">Momo</option>
+                    <option value="6182991657">Scary face 3</option>
+                    <option value="10369918089">Scary face 4</option>
+                    <option value="664919078">Scary face 5</option>
+                    <option value="110283275538394">Jeff the Killer 1</option>
+                    <option value="668614179">Jeff the Killer 2</option>
+                    <option value="12735029556">Smile Dog</option>
+                    <option value="111019744">Smile Dog 2</option>
+                    <option value="92738651899331">Scary face 6</option>
+                    <option value="107062215441173">King Von</option>
+                    <option value="7019166049">Russian Sleep Experiment</option>
+                    <option value="16875456291">The Rake</option>
+                    <option value="114664205641582">Scary face 7</option>
+                  </select>
+                </div>
               </div>
             </div>
 

@@ -16,7 +16,7 @@ html {
     border-bottom: 2px solid #50407040;
 }
 
-button {
+button, select, .select-selected {
     min-height: 40px;
     border: none;
     outline: none;
@@ -28,11 +28,11 @@ button {
     margin: 6px;
 }
 
-button:active:after {
+button:active:after, select:active:after {
     background: transparent;
 }
 
-button:before {
+button:before, select::before {
     content: '';
     background: var(--dark-btn-hov);
     position: absolute;
@@ -48,7 +48,7 @@ button:before {
     border-radius: 4px;
 }
 
-button:after {
+button:after, select:after {
     z-index: -1;
     content: '';
     position: absolute;
@@ -59,7 +59,7 @@ button:after {
     border-radius: 4px;
 }
 
-.action-buttons button:after {
+.action-buttons button:after, .action-buttons select, .select-selected {
     background: var(--dark-btn);
 }
 

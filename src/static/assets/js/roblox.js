@@ -192,3 +192,48 @@ const observer = new MutationObserver(mutations => {
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
+
+function initCustomSelect() {
+    const customSelects = document.querySelectorAll('.custom-select');
+    customSelects.forEach(container => {
+        const select = container.querySelector('select');
+        const selected = document.createElement('div');
+        selected.className = 'select-selected';
+        const firstOption = select.options[select.selectedIndex];
+        if(firstOption.value){
+            selected.innerHTML = `<img src="/api/decal?assetid=${firstOption.value}" alt=""> ${firstOption.text}`;
+        } else {
+            selected.innerHTML = firstOption.innerHTML + "<i class='bx bxs-chevron-down'></i>";
+        }
+        container.appendChild(selected);
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'select-items';
+        Array.from(select.options).forEach(option => {
+            if(option.value === "") return;
+            const optionDiv = document.createElement('div');
+            optionDiv.innerHTML = `<img src="/api/decal?assetid=${option.value}" alt=""> ${option.text}`;
+            optionDiv.addEventListener('click', () => {
+                select.value = option.value;
+                selected.innerHTML = `<img src="/api/decal?assetid=${option.value}" alt=""> ${option.text} <i class='bx bxs-chevron-down'></i>`;
+                optionsContainer.style.display = 'none';
+                select.dispatchEvent(new Event('change'));
+            });
+            optionsContainer.appendChild(optionDiv);
+        });
+        container.appendChild(optionsContainer);
+        selected.addEventListener('click', () => {
+            if (selected.innerHTML.includes("bxs-chevron-down"))
+                selected.innerHTML = selected.innerHTML.replace("bxs-chevron-down", "bxs-chevron-up");
+            else
+                selected.innerHTML = selected.innerHTML.replace("bxs-chevron-up", "bxs-chevron-down");
+            optionsContainer.style.display = optionsContainer.style.display === 'flex' ? 'none' : 'flex';
+        });
+        document.addEventListener('click', e => {
+            if(!container.contains(e.target)){
+                optionsContainer.style.display = 'none';
+            }
+        });
+    });
+}
+
+initCustomSelect();

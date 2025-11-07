@@ -2,7 +2,7 @@ import json
 import sqlite3
 
 import requests
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, Response, jsonify, request
 
 from blueprints.auth import DB_PATH, discord_auth
 from utils.inputs import PATH
@@ -80,3 +80,33 @@ def roblox_data():
     user_data["avatarUrl"] = session.get_pfp(user_id)
 
     return jsonify(user_data)
+
+
+@user.route("/api/decal", methods=["GET"])
+@discord_auth.require_agreement
+@discord_auth.require_login
+def decal():
+    asset = request.args.get("assetid")
+    session = Session(None)
+    try:
+        print("fetch")
+        response = session.decal_session.get(
+            f"https://thumbnails.roblox.com/v1/assets?assetIds={asset}&format=webp&size=30x30",
+            timeout=5,
+        )
+    except requests.exceptions.Timeout:
+        return jsonify(
+            {
+                "error": {
+                    "error": "Servers overloaded.",
+                    "advice": "Please re-enter the asset id in a moment!",
+                }
+            }
+        )
+    data = response.json()
+
+    if data["data"][0]["state"] == "Completed":
+        imgUrl = data["data"][0]["imageUrl"]
+        img = session.decal_session.get(imgUrl, timeout=5)
+        return Response(img.content, mimetype=img.headers["Content-Type"])
+    return jsonify(data)

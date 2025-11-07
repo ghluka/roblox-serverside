@@ -127,7 +127,7 @@ img {
     margin-top: auto;  
 }
 
-button, input {
+button, input, select, .select-selected {
     border: 2px solid #50407040;
     border-radius: 4px;
     background-color: var(--dark);
@@ -145,12 +145,12 @@ input {
     background-color: var(--dark-hov);
 }
 
-button:hover:not(.play-button), input:hover:not(.search) {
-    transform: scale(1.05);
+select:hover, button:hover:not(.play-button), input:hover:not(.search) {
+    transform: scale(1.01);
 }
 
 button:active:not(.play-button), input:active:not(.search) {
-    transform: scale(1.05);
+    transform: scale(1.01);
 }
 
 input {

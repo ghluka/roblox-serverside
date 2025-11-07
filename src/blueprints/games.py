@@ -157,7 +157,8 @@ def games_list():
                 game["thumbnail"] = image
             game = {**game, **details}
 
-            games_data.append(game)
+            if game.get("data"):
+                games_data.append(game)
         except:
             pass
 
