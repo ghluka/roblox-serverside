@@ -123,8 +123,25 @@ local target = "{username}"
     module_path = f"{PATH}/modules/{module_name}"
     if module_exists(module_path):
         if os.path.exists(f"{module_path}/script.luau"):
+            with open(f"{PATH}/static/assets/lua/header.luau", encoding="utf8") as convert_file:
+               header = convert_file.read()
+            with open(
+                f"{PATH}/static/assets/lua/convert.luau", encoding="utf8"
+            ) as convert_file:
+                convert = convert_file.read()
+            with open(
+                f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
+            ) as functions_file:
+                functions = functions_file.read()
+
             with open(f"{module_path}/script.luau", encoding="utf8") as script_file:
-                script += script_file.read()
+                script = f"""pcall(function()
+                local plr = game:GetService(\"Players\"):GetPlayerByUserId({userid})
+                {header}
+                {convert}
+                {functions}
+                {script_file.read()}
+                end)"""
         elif os.path.exists(f"{module_path}/id.txt"):
             with open(f"{module_path}/id.txt", encoding="utf8") as id_file:
                 module_id = id_file.read()
