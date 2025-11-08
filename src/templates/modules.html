@@ -1,4 +1,5 @@
 {%for v in modules%}
+    {%if v.get("broken") != True %}
     <div class="module" onclick='executeRequire(`{{v["module"]}}`);'>
         <img src='{{v["image"]}}' class="preview-img">
         <h3>
@@ -21,4 +22,5 @@
             ' href="#">Click for controls.</a>
             {%endif%}</h5>
     </div>
+    {%endif%}
 {%endfor%}

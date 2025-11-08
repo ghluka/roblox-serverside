@@ -26,7 +26,7 @@ if conversion == 0x55262CE723BF then
     typeof = getfenv(1).typeof
     warn = getfenv(1).warn
     workspace = getfenv(1).workspace
-elseif conversion == 0x4C059AED9772 then
+elseif conversion == 0x24616E567 then
     CFrame = getfenv(1).CFrame
     Camera = getfenv(1).Camera
     Vector3 = getfenv(1).Vector3
