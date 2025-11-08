@@ -2,10 +2,10 @@
 getfenv(1).owner = plr
 
 if plr.Character and plr.Character.Parent ~= nil then
-    -- 0x4C059AED9772 for Nebula
+    -- 0x24616E567 for Nebula
     -- 0x55262CE723BF for Sensation
-    local conversion = 92261318635844
-    require(conversion)(getfenv)
+    local conversion = 0x24616E567
+    require(conversion)()
 end
 
 -- APPLY ENVIRONMENT CHANGES
