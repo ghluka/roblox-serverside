@@ -1,6 +1,7 @@
 import os
 import sqlite3
 from datetime import datetime
+import json
 
 import requests
 from flask import Blueprint, jsonify, redirect, request, session, url_for
@@ -33,6 +34,7 @@ def init_db():
                 roblox_id INTEGER,
                 whitelist INTEGER,
                 signup_date TEXT,
+                user_data TEXT,
                 tos_version INTEGER
             )
         """
@@ -54,15 +56,15 @@ def signup(user_info):
         if not existing_user:
             email = user_info.get("email", "none")
             cursor.execute(
-                "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, signup_date, tos_version) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (discord_id, email, username, 1, 0, signup_date, 0),
+                "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, user_data, signup_date, tos_version) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (discord_id, email, username, 1, 0, json.dumps(user_info), signup_date, 0),
             )
             conn.commit()
         else:
             email = user_info.get("email", existing_user[2])
             cursor.execute(
-                "UPDATE users SET email = ?, username = ? WHERE discord_id = ?",
-                (email, username, discord_id),
+                "UPDATE users SET email = ?, username = ?, user_data = ? WHERE discord_id = ?",
+                (email, username, json.dumps(user_info), discord_id),
             )
 
 

