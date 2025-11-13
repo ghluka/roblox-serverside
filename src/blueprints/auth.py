@@ -33,6 +33,7 @@ def init_db():
                 username TEXT,
                 roblox_id INTEGER,
                 whitelist INTEGER,
+                user_data TEXT,
                 signup_date TEXT,
                 user_data TEXT,
                 tos_version INTEGER
@@ -56,7 +57,7 @@ def signup(user_info):
         if not existing_user:
             email = user_info.get("email", "none")
             cursor.execute(
-                "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, user_data, signup_date, tos_version) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, user_data, signup_date, tos_version) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 (discord_id, email, username, 1, 0, json.dumps(user_info), signup_date, 0),
             )
             conn.commit()

@@ -61,18 +61,38 @@ local ls = setmetatable({
     end,
 })
 
-local function fixenv()
-    game = _env.game
-    Game = game
-    Instance = _env.Instance
-    CFrame = _env.CFrame
-    Vector3 = _env.Vector3
-    math = _env.math
+local function make_sandbox()
+    local real = _env
+    local env = {}
+    setmetatable(env, {
+        __index = function(_, k)
+            return real[k]
+        end,
+        __newindex = function(t,k,v) rawset(t,k,v) end,
+    })
+    env._G = env
+    env._ENV = env
+    return env
 end
 
 local run = function(source)
-    fixenv()
-    ls(source)()
-    fixenv()
-    return function() end
+    local env = make_sandbox()
+
+    env.game = _env.game
+    env.Instance = _env.Instance
+    env.CFrame = _env.CFrame
+    env.Vector3 = _env.Vector3
+    env.math = _env.math
+    
+    local chunk = ls(source, env)
+    if type(chunk) ~= "function" then
+        warn("failed to compile chunk", 0)
+    end
+
+    local ok, res = pcall(chunk)
+    if not ok then
+        warn(res, 0)
+    end
+
+    return res
 end
