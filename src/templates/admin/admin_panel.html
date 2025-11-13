@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NettSS Admin</title>
+    <link rel="stylesheet" media="screen" href="/assets/css/editor.css">
+    <link rel="stylesheet" media="screen" href="/assets/css/index.css">
+    <link rel="stylesheet" media="screen" href="/assets/css/players.css">
+    <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+    <meta name="color-scheme" content="dark">
+    <style>
+        html {
+            overflow-y: scroll!important;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even){
+            background-color: var(--dark-btn)
+        }
+        
+        th {
+            background-color: var(--nett);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1 onclick="window.location.href = '/'"><div class="logo_name"><span style="color: #bc49db;">Nett</span><span>SS</span></div></h1>
+    </div>
+    <div style="padding: 8px 16px !important; margin: 8px 16px !important; border: 2px solid #50407040; border-radius: 8px;">
+        <h1>Admin Panel</h1>
+        <br>
+        <p>User database:</p>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Discord ID</th>
+                <th>Username</th>
+                <th>Roblox ID</th>
+                <th>Whitelist</th>
+                <th>Actions</th>
+            </tr>
+            {% for u in users %}
+            <tr>
+                <td>{{ u[0] }}</td>
+                <td>{{ u[1] }}</td>
+                <td>{{ u[2] }}</td>
+                <td>{{ u[3] }}</td>
+                <td>{{ u[4] }}</td>
+                <td><a href="/admin/user/{{ u[0] }}">View/Edit</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>

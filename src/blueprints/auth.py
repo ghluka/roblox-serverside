@@ -35,7 +35,6 @@ def init_db():
                 whitelist INTEGER,
                 user_data TEXT,
                 signup_date TEXT,
-                user_data TEXT,
                 tos_version INTEGER
             )
         """

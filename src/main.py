@@ -10,6 +10,7 @@ from blueprints.executor import executor
 from blueprints.games import games
 from blueprints.modules import scripthub
 from blueprints.user import user
+from blueprints.admin import admin
 from utils.auth import dev_auth
 from utils.cookie import get_cookie
 from utils.inputs import PATH
@@ -21,6 +22,7 @@ app.register_blueprint(executor)
 app.register_blueprint(games)
 app.register_blueprint(scripthub)
 app.register_blueprint(user)
+app.register_blueprint(admin)
 
 load_dotenv()
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")

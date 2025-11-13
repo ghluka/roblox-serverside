@@ -123,7 +123,9 @@ local target = "{username}"
     module_path = f"{PATH}/modules/{module_name}"
     if module_exists(module_path):
         if os.path.exists(f"{module_path}/script.luau"):
-            with open(f"{PATH}/static/assets/lua/header.luau", encoding="utf8") as convert_file:
+            with open(
+                f"{PATH}/static/assets/lua/header.luau", encoding="utf8"
+            ) as convert_file:
                 header = convert_file.read()
             with open(
                 f"{PATH}/static/assets/lua/convert.luau", encoding="utf8"

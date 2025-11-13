@@ -230,6 +230,7 @@ function initCustomSelect() {
         });
         document.addEventListener('click', e => {
             if(!container.contains(e.target)){
+                selected.innerHTML = selected.innerHTML.replace("bxs-chevron-up", "bxs-chevron-down");
                 optionsContainer.style.display = 'none';
             }
         });

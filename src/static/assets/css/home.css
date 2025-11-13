@@ -346,4 +346,5 @@ html, body {
     display: inline-block;
     width: 100%;
     text-align: center;
+    background-color: var(--dark-btn) !important;
 }

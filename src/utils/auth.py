@@ -104,6 +104,30 @@ class DiscordAuth:
         wrapped.__name__ = func.__name__
         return wrapped
 
+    def require_admin(self, func):
+        """Decorator to protect routes that require an administrator rank."""
+
+        def wrapped(*args, **kwargs):
+            if "user" not in session:
+                return redirect("/404.html")
+
+            with sqlite3.connect(DB_PATH) as conn:
+                cursor = conn.cursor()
+
+                cursor.execute(
+                    "SELECT whitelist FROM users WHERE discord_id = ?",
+                    (session.get("user").get("id"),),
+                )
+                result = cursor.fetchone()[0]
+
+                if result < 255:
+                    return redirect("/404.html")
+
+            return func(*args, **kwargs)
+
+        wrapped.__name__ = func.__name__
+        return wrapped
+
 
 def dev_auth() -> bool:
     """Returns whether or not dev_auth is enabled."""

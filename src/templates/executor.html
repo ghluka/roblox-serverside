@@ -59,7 +59,7 @@
             </li>
             {%if whitelist == 255%}
             <li>
-                <a onclick="openTab(event, 'admin')">
+                <a onclick="window.location.href = '/admin'">
                     <i class='bx bx-key'></i>
                     <span class="links_name">Admin</span>
                 </a>
@@ -278,15 +278,6 @@
         </div>
       </div>
     </section>
-    {%if whitelist == 255%}
-    <section class="home-section" id="admin">
-      <div class="script-container executor-container">
-        <div class="grid-container">
-          <h2>Admin panel</h2>
-        </div>
-      </div>
-    </section>
-    {%endif%}
 
     <script src="/assets/vs/loader.js"></script>
     <script defer src="/assets/js/editor.js"></script>
