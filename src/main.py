@@ -46,11 +46,15 @@ def homepage():
 
 @app.before_request
 def check_user_agent():
+    ignore = ["discord"] 
     embeds = ["discordbot", "twitterbot"]
-    user_agent = request.headers.get("User-Agent", "").lower()
-    for embed in embeds:
-        if embed in user_agent:
-            return app.send_static_file("404.html")
+
+    path = request.path.lower()
+    if not any(ignored in path for ignored in ignore):
+        user_agent = request.headers.get("User-Agent", "").lower()
+        for embed in embeds:
+            if embed in user_agent:
+                return app.send_static_file("404.html")
 
 
 @app.errorhandler(404)
@@ -76,6 +80,14 @@ def tos_page():
 @app.route("/eula")
 def eula_page():
     return app.send_static_file("eula.html")
+
+
+@app.route("/discord")
+def discord():
+    return render_template(
+        "discord.html",
+        invite=os.getenv("DISCORD_INVITE"),
+    )
 
 
 if __name__ == "__main__":
