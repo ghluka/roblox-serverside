@@ -5,33 +5,24 @@ var enums = [];
 
 require(['/assets/vs/editor/editor.main'], function() {
 
-  monaco.editor.defineTheme('vsLight', {base: 'vs'});
-  monaco.editor.defineTheme('vsDark', {base: 'vs-dark'});
+monaco.editor.defineTheme('vsLight', {base: 'vs'});
+monaco.editor.defineTheme('vsDark', {base: 'vs-dark'});
   
-  monaco.editor.defineTheme('studio', {
+monaco.editor.defineTheme('jsonDark', {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      {token: 'keyword', foreground: 'f86d7c', fontStyle: "bold"},
-      {token: 'global', foreground: '84d6f7', fontStyle: "bold"},
-      {token: 'type', foreground: '84d6f7'},
-      {token: 'string', foreground: 'adf195'},
-      {token: 'number', foreground: 'ffc600'},
-      {token: 'number.float', foreground: 'ffc600'},
-      {token: 'number.hex', foreground: 'ffc600'},
-      {token: 'operator', foreground: 'cccccc'},
-      {token: 'comment', foreground: '666666'},
-      {token: 'comment.todo', fontStyle: "bold"},
+      { token: 'string', foreground: 'ce9178' },
+      { token: 'keyword.json', foreground: '2d7ad6', fontStyle: 'bold' },
+      { token: 'comment', foreground: '9cdcf0', fontStyle: 'italic' },
+      { token: 'operator', foreground: '9cdcf0' },
+      { token: 'delimiter', foreground: 'cccccc' },
     ],
-    colors: {
-      'editor.background': '#252525',
-      'editor.foreground': '#cccccc',
-    }
   });
 
   editor = monaco.editor.create(document.getElementById('container'), {
     language: 'json',
-    theme: "studio",
+    theme: "jsonDark",
     folding: true,
     scrollbar: {
       useShadows: false,

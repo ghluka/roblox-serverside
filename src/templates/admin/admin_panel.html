@@ -9,6 +9,7 @@
     <link rel="stylesheet" media="screen" href="/assets/css/index.css">
     <link rel="stylesheet" media="screen" href="/assets/css/players.css">
     <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
+    <link rel="stylesheet" media="screen" href="/assets/css/admin.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -44,27 +45,98 @@
     </div>
     <div style="padding: 8px 16px !important; margin: 8px 16px !important; border: 2px solid #50407040; border-radius: 8px;">
         <h1>Admin Panel</h1>
-        <br>
-        <p>User database:</p>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Discord ID</th>
-                <th>Username</th>
-                <th>Roblox ID</th>
-                <th>Whitelist</th>
-                <th>Actions</th>
-            </tr>
-            {% for u in users %}
-            <tr>
-                <td>{{ u[0] }}</td>
-                <td>{{ u[1] }}</td>
-                <td>{{ u[2] }}</td>
-                <td>{{ u[3] }}</td>
-                <td>{{ u[4] }}</td>
-                <td><a href="/admin/user/{{ u[0] }}">View/Edit</a></td>
-            </tr>
-            {% endfor %}
-        </table>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'db')">User DB</button>
+            <button class="tablinks" onclick="openTab(event, 'gr')">Game Review</button>
+            <button class="tablinks" onclick="openTab(event, 'tba')">Coming Soon</button>
+        </div>
+
+        <div id="db" class="tabcontent">
+            <h3>User Database</h3>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Discord ID</th>
+                    <th>Username</th>
+                    <th>Roblox ID</th>
+                    <th>Whitelist</th>
+                    <th>Actions</th>
+                </tr>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u[0] }}</td>
+                    <td>{{ u[1] }}</td>
+                    <td>{{ u[2] }}</td>
+                    <td>{{ u[3] }}</td>
+                    <td>{{ u[4] }}</td>
+                    <td><a href="/admin/user/{{ u[0] }}">View/Edit</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div id="gr" class="tabcontent">
+            <h3>Game Review</h3>
+            <p style="color:#bbb;">Tip: Join the game using the link and verify whether or not execution works.</p>
+            <br>
+            
+            <table id="review-table">
+                <tr>
+                    <th>Place ID</th>
+                    <th>URL</th>
+                    <th>Reports</th>
+                    <th>Whitelist</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
+        
+            <script>
+                fetch("/admin/review")
+                    .then(r => r.json())
+                    .then(review => {
+                        const table = document.getElementById("review-table");
+                    
+                        Object.entries(review).forEach(([id, data]) => {
+                            const row = document.createElement("tr");
+                        
+                            row.innerHTML = `
+                                <td>${id}</td>
+                                <td><a href="${data.url}" target="_blank">${data.url}</a></td>
+                                <td>${data.reports}</td>
+                                <td>
+                                    <input type="number" min="0" value="0" id="wl-${id}" style="width:80px;">
+                                </td>
+                                <td>
+                                    <button id="execute" onclick="approveGame('${id}')">Approve</button>
+                                    <button id="clear" onclick="rejectGame('${id}')" style="margin-left:8px;">Reject</button>
+                                </td>
+                            `;
+                            
+                            table.appendChild(row);
+                        });
+                    });
+                
+                function approveGame(id) {
+                    const wl = document.getElementById(`wl-${id}`).value;
+                
+                    fetch(`/admin/review/approve/${id}`, {
+                        method: "POST",
+                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                        body: `whitelist=${wl}`
+                    }).then(() => location.reload());
+                }
+            
+                function rejectGame(id) {
+                    fetch(`/admin/review/reject/${id}`, {
+                        method: "POST"
+                    }).then(() => location.reload());
+                }
+            </script>
+        </div>
+        
+        <div id="tba" class="tabcontent">
+            <h3>Coming soon</h3>
+        </div>
+        <script defer src="/assets/js/tabs.js"></script>
     </div>
 </body>
