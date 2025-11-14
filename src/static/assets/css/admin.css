@@ -1,9 +1,31 @@
 
+html {
+    overflow-y: scroll!important;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){
+    background-color: var(--dark-btn)
+}
+
+th {
+    background-color: var(--nett);
+    color: white;
+}
+
 .tab {
     overflow: hidden;
     border: 1px solid var(--dark-btn);
     background-color: var(--dark-btn);
-  }
+}
 
 .tab button {
     background-color: inherit;

@@ -15,29 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
     <meta name="color-scheme" content="dark">
-    <style>
-        html {
-            overflow-y: scroll!important;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        
-        th, td {
-            text-align: left;
-            padding: 8px;
-        }
-        
-        tr:nth-child(even){
-            background-color: var(--dark-btn)
-        }
-        
-        th {
-            background-color: var(--nett);
-            color: white;
-        }
-    </style>
 </head>
 <body>
     <div style="text-align: center;">
@@ -48,11 +25,12 @@
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'db')">User DB</button>
             <button class="tablinks" onclick="openTab(event, 'gr')">Game Review</button>
-            <button class="tablinks" onclick="openTab(event, 'tba')">Coming Soon</button>
+            <button class="tablinks" onclick="openTab(event, 'sh')">Script Hub</button>
         </div>
 
         <div id="db" class="tabcontent">
             <h3>User Database</h3>
+            <br>
             <table>
                 <tr>
                     <th>ID</th>
@@ -123,19 +101,47 @@
                         method: "POST",
                         headers: {"Content-Type": "application/x-www-form-urlencoded"},
                         body: `whitelist=${wl}`
-                    }).then(() => location.reload());
+                    }).then(() => {
+                        window.location.href = window.location.pathname + window.location.search + "#gr";
+                        location.reload();
+                    });
                 }
             
                 function rejectGame(id) {
                     fetch(`/admin/review/reject/${id}`, {
                         method: "POST"
-                    }).then(() => location.reload());
+                    }).then(() => {
+                        window.location.href = window.location.pathname + window.location.search + "#gr";
+                        location.reload();
+                    });
                 }
             </script>
         </div>
         
-        <div id="tba" class="tabcontent">
-            <h3>Coming soon</h3>
+        <div id="sh" class="tabcontent">
+            <h3>Script Hub Manager</h3>
+            <br>
+            <table class="admin-table">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Hidden</th>
+                    <th>Actions</th>
+                </tr>
+                
+                {% for m in modules %}
+                <tr>
+                    <td>{{m.name}}</td>
+                    <td>{{m.description}}</td>
+                    <td>{{m.broken}}</td>
+                    <td>
+                        <button onclick="location.href='/admin/module/{{m.module_name}}'">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
         <script defer src="/assets/js/tabs.js"></script>
     </div>

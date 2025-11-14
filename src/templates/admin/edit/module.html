@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>NettSS Editing {{module.name}}</title>
+    <link rel="stylesheet" media="screen" href="/assets/css/editor.css">
+    <link rel="stylesheet" media="screen" href="/assets/css/index.css">
+    <link rel="stylesheet" media="screen" href="/assets/css/players.css">
+    <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+    <meta name="color-scheme" content="dark">
+    <style>
+        html {
+            overflow-y: scroll!important;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1 onclick="window.location.href = '/'"><div class="logo_name"><span style="color: #bc49db;">Nett</span><span>SS</span></div></h1>
+    </div>
+    <div style="padding: 8px 16px !important; margin: 8px 16px !important; border: 2px solid #50407040; border-radius: 8px;">
+        <h1>Editing Module: {{module.name}}</h1>
+
+        <form method="POST" style="display: inline;">
+            <label>Name:</label>
+            <input name="name" value="{{module.name}}"><br>
+        
+            <label>Description:</label>
+            <textarea name="description">{{module.description}}</textarea><br>
+        
+            <label>Controls:</label>
+            <textarea name="controls">{{module.controls}}</textarea><br>
+        
+            <label>Badges (comma-separated):</label>
+            <input name="badges" value="{{ module.badges|join(', ') }}"><br>
+        
+            <label>Roblox Script Name:</label>
+            <input name="roblox_name" value="{{module.roblox_name}}"><br>
+        
+            <label>Roblox Description:</label>
+            <input name="roblox_description" value="{{module.roblox_description}}"><br>
+        
+            <label>Hidden?</label>
+            <input type="checkbox" name="broken" {% if module.broken %}checked{% endif %}><br>
+        
+            <button type="submit" style="background:var(--nett)">Save JSON</button>
+        </form>
+        <button onclick="window.location.href = '/admin#sh'">Go back</button>
+
+        <br>
+        <br>
+        <div class="module-editor">
+            <label for="imageUpload">Module Image:</label>
+            <img id="moduleImage" src="/api/module/{{module_name}}.png" alt="Module Image" style="max-width: 200px; display:block; margin-bottom: 10px;">
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+        <script>
+            const imageInput = document.getElementById("imageUpload");
+            const moduleImage = document.getElementById("moduleImage");
+            
+            moduleImage.addEventListener("click", () => imageInput.click());
+            
+            imageInput.addEventListener("change", async (event) => {
+                const file = event.target.files[0];
+                if (!file || !file.type.startsWith("image/")) return alert("Please select an image file.");
+            
+                const reader = new FileReader();
+                reader.onload = e => moduleImage.src = e.target.result;
+                reader.readAsDataURL(file);
+            
+                const formData = new FormData();
+                formData.append("image", file);
+            
+                const response = await fetch("/admin/module/{{module_name}}/upload_image", {
+                    method: "POST",
+                    body: formData
+                });
+            
+                if (!response.ok) alert("Failed to save image!");
+            });
+        </script>
+
+        <br>
+        {% if has_script %}
+        <h2>script.luau</h2>
+        <div id="container" style="width:100%; height:420px;"></div>
+
+        <script src="/assets/vs/loader.js"></script>
+        <script src="/assets/js/editor.js"></script>
+
+        <script>
+            function trySetText(value) {
+                function trySet() {
+                    try {
+                        setText(value);
+                    }
+                    catch {
+                        setTimeout(trySet, 100);
+                    }
+                }
+                trySet()
+            }
+            fetch('/admin/module/{{module_name}}/script.luau')
+              .then(r=>r.text())
+              .then(t=>trySetText(t));
+            
+            function saveScript() {
+                fetch("/admin/module/{{module_name}}/save_script", {
+                    method:"POST",
+                    headers:{"Content-Type":"application/x-www-form-urlencoded"},
+                    body:"content="+encodeURIComponent(getText())
+                }).then(()=>Swal.fire("Saved!"))
+            }
+        </script>
+
+        <button onclick="saveScript()">Save Script</button>
+        {% elif has_rbxmx %}
+        <p>Current RBXMX: {{module.rbxmx}}</p>
+        {% endif %}
+
+        <form action="/admin/module/{{module_name}}/upload_rbxmx" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".rbxmx">
+            <button type="submit">Upload RBXMX</button>
+        </form>
+    </div>
+</body>
