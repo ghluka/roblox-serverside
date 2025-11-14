@@ -14,6 +14,9 @@ games = Blueprint("games", __name__)
 game_session = requests_cache.CachedSession(
     "roblox_gamedata", expire_after=timedelta(minutes=5)
 )
+img_session = requests_cache.CachedSession(
+    "roblox_imgdata", expire_after=timedelta(days=1)
+)
 headers = {"User-Agent": "Roblox/WinInet"}
 
 
@@ -147,7 +150,7 @@ def games_list():
                 )
 
             if not game.get("thumbnail"):
-                thumbnail = game_session.get(
+                thumbnail = img_session.get(
                     f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false",
                     headers=headers,
                     timeout=5,

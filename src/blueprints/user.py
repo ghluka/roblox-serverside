@@ -28,7 +28,7 @@ def whitelist_check():
     try:
         whitelist_limit = games_json[str(game_id)].get("whitelist")
     except KeyError:
-        return "false"
+        whitelist_limit = 255
 
     if roblox_id_exists(roblox_id):
         with sqlite3.connect(DB_PATH) as conn:
@@ -90,7 +90,7 @@ def decal():
     session = Session(None)
     try:
         print("fetch")
-        response = session.decal_session.get(
+        response = session.img_session.get(
             f"https://thumbnails.roblox.com/v1/assets?assetIds={asset}&format=webp&size=30x30",
             timeout=5,
         )
@@ -107,6 +107,6 @@ def decal():
 
     if data["data"][0]["state"] == "Completed":
         imgUrl = data["data"][0]["imageUrl"]
-        img = session.decal_session.get(imgUrl, timeout=5)
+        img = session.img_session.get(imgUrl, timeout=5)
         return Response(img.content, mimetype=img.headers["Content-Type"])
     return jsonify(data)
