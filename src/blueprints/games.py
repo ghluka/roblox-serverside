@@ -170,7 +170,6 @@ def games_page():
     page = int(request.args.get("page", 0))
     LIMIT = 8
     start = page * LIMIT
-    end = start + LIMIT
 
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -187,16 +186,22 @@ def games_page():
         del games_json["0"]
 
     place_ids = list(games_json.keys())
-    slice_ids = place_ids[start:end]
 
     result = []
 
-    for placeid in slice_ids:
+    i = start
+    collected = 0
+    while i < len(place_ids) and collected < LIMIT:
+        placeid = place_ids[i]
+        i += 1
+
         try:
             game = games_json[placeid]
 
             if whitelist < game.get("whitelist", 0):
                 continue
+
+            collected += 1
 
             universeid = game["universeid"]
 
@@ -214,8 +219,8 @@ def games_page():
 
             if game.get("data"):
                 try:
-                    for i, v in game["data"][0].items():
-                        details["data"][0][i] = v
+                    for i2, v in game["data"][0].items():
+                        details["data"][0][i2] = v
                 except:
                     pass
                 del game["data"]
