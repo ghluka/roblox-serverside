@@ -51,7 +51,37 @@
         
             <button type="submit" style="background:var(--nett)">Save JSON</button>
         </form>
+        <button id="deleteBtn" style="background-color: red;">Delete</button>
         <button onclick="window.location.href = '/admin#sh'">Go back</button>
+
+        <script>
+            document.getElementById("deleteBtn").addEventListener("click", () => {
+                Swal.fire({
+                    title: "Delete Module?",
+                    text: "This will permanently remove the module folder and all files.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch("/admin/module/{{module_name}}/delete", {
+                            method: "POST"
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Deleted!", "Module has been removed.", "success")
+                                  .then(() => window.location.href = "/admin#sh");
+                            } else {
+                                Swal.fire("Error", data.error || "Failed to delete module.", "error");
+                            }
+                        });
+                    }
+                });
+            });
+        </script>            
 
         <br>
         <br>
@@ -121,12 +151,46 @@
 
         <button onclick="saveScript()">Save Script</button>
         {% elif has_rbxmx %}
-        <p>Current RBXMX: {{module.rbxmx}}</p>
+            <p>Current RBXMX: {{module.rbxmx}}</p>
+
+            <form action="/admin/module/{{module_name}}/switch_to_script" method="POST" style="display:inline;">
+                <button type="submit" style="background:var(--nett); margin-top:10px;">
+                    Switch to script
+                </button>
+            </form>
         {% endif %}
 
         <form action="/admin/module/{{module_name}}/upload_rbxmx" method="POST" enctype="multipart/form-data">
             <input type="file" name="file" accept=".rbxmx">
             <button type="submit">Upload RBXMX</button>
         </form>
+
+        {% if has_rbxmx %}
+            <div>
+                <label><b>Module ID:</b></label><br>
+                <input type="number" id="id_value" value="{{ module_id if module_id else '0' }}" placeholder="Enter ID" style="width: 120px;">
+            
+                <button onclick="saveID()" style="margin-left: 10px; background: var(--nett);">
+                    Save ID
+                </button>
+            </div>
+
+            <script>
+            function saveID() {
+                const value = document.getElementById("id_value").value;
+            
+                fetch("/admin/module/{{module_name}}/save_id", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                    body: "id_value=" + encodeURIComponent(value)
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) Swal.fire("Saved!", "Module ID updated.", "success");
+                    else Swal.fire("Error", data.error || "Failed saving ID", "error");
+                });
+            }
+            </script>
+        {% endif %}
     </div>
 </body>

@@ -89,7 +89,6 @@ def decal():
     asset = request.args.get("assetid")
     session = Session(None)
     try:
-        print("fetch")
         response = session.img_session.get(
             f"https://thumbnails.roblox.com/v1/assets?assetIds={asset}&format=webp&size=30x30",
             timeout=5,

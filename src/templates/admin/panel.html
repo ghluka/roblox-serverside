@@ -120,6 +120,37 @@
         
         <div id="sh" class="tabcontent">
             <h3>Script Hub Manager</h3>
+
+            <div style="margin-bottom: 20px;">
+                <input id="new-module-name" type="text" style="min-height: 40px;" placeholder="Module name" />
+                <button id="create-module-btn" style="background-color: var(--nett);">Create Module</button>
+            </div>            
+        
+            <script>
+                document.getElementById("create-module-btn").addEventListener("click", async () => {
+                    const name = document.getElementById("new-module-name").value.trim();
+                    if (!name) {
+                        alert("Enter a module name");
+                        return;
+                    }
+                
+                    const response = await fetch("/admin/create_module", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({ name })
+                    });
+                
+                    const data = await response.json();
+                    console.log(data);
+                    if (data.success) {
+                        window.location.href = window.location.pathname + window.location.search + "#sh";
+                        location.reload(); 
+                    } else {
+                        alert(data.error);
+                    }
+                });
+            </script>
+            
             <br>
             <table class="admin-table">
                 <tr>

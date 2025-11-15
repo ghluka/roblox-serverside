@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import json
+import re
 from flask import Blueprint, render_template, request, session, redirect, url_for, jsonify, Response, send_file
 
 from blueprints.auth import DB_PATH, discord_auth
@@ -136,6 +137,14 @@ def admin_module_edit(module_name):
     if not os.path.exists(json_path):
         return "Not found", 404
 
+    module_id = 0
+    if os.path.exists(f"{module_path}/id.txt"):
+        try:
+            with open(f"{module_path}/id.txt", "r") as f:
+                module_id = int(f.read().strip() or 0)
+        except:
+            module_id = 0
+
     if request.method == "POST":
         with open(json_path, encoding="utf8") as f:
             data = json.load(f)
@@ -166,7 +175,8 @@ def admin_module_edit(module_name):
         module=data,
         module_name=module_name,
         has_script=has_script,
-        has_rbxmx=has_rbxmx
+        has_rbxmx=has_rbxmx,
+        module_id=module_id,
     )
 
 
@@ -247,3 +257,115 @@ def admin_upload_image(module_name):
     file.save(image_path)
 
     return "OK"
+
+
+@admin.route("/admin/module/<module_name>/switch_to_script", methods=["POST"])
+@discord_auth.require_admin
+def admin_switch_to_script(module_name):
+    module_path = f"{PATH}/modules/{module_name}"
+    json_path = f"{module_path}/data.json"
+
+    with open(json_path, encoding="utf8") as f:
+        data = json.load(f)
+
+    rbxmx = data.get("rbxmx")
+    if not rbxmx:
+        return "No RBXMX to convert", 400
+
+    rbx_path = os.path.join(module_path, rbxmx)
+    if os.path.exists(rbx_path):
+        os.remove(rbx_path)
+
+    data["rbxmx"] = None
+
+    script_path = os.path.join(module_path, "script.luau")
+    if not os.path.exists(script_path):
+        with open(script_path, "w", encoding="utf8") as f:
+            f.write("print(`Hello world!` :: string)")
+
+    with open(json_path, "w", encoding="utf8") as f:
+        json.dump(data, f, indent=4)
+
+    return redirect(f"/admin/module/{module_name}")
+
+
+@admin.route("/admin/create_module", methods=["POST"])
+@discord_auth.require_admin
+def admin_create_module():
+    data = request.get_json()
+    module_name = data.get("name", "").strip()
+    module_path = f"{PATH}/modules/{module_name}"
+
+    if not module_name:
+        return jsonify({"success": False, "error": "Module name is required"})
+
+    if not re.match(r"^[A-Za-z0-9_-]+$", module_name):
+        return jsonify({"success": False, "error": "Invalid module name"})
+
+    if os.path.exists(module_path):
+        return jsonify({"success": False, "error": "Module already exists"})
+
+    os.makedirs(module_path)
+
+    json_path = os.path.join(module_path, "data.json")
+    default_json = {
+        "roblox_name": "MainModule",
+        "roblox_description": "Test module",
+        "name": module_name,
+        "description": "Description",
+        "rbxmx": "MainModule.rbxmx"
+    }
+    with open(json_path, "w") as f:
+        json.dump(default_json, f, indent=4)
+
+    script_path = os.path.join(module_path, "script.luau")
+    with open(script_path, "w") as f:
+        f.write(f"print(`Hello world!` :: string)")
+    return jsonify({"success": True})
+
+
+@admin.route("/admin/module/<module_name>/delete", methods=["POST"])
+@discord_auth.require_admin
+def admin_delete_module(module_name):
+    module_path = f"{PATH}/modules/{module_name}"
+
+    if not os.path.exists(module_path):
+        return jsonify({"success": False, "error": "Module does not exist"}), 404
+
+    if module_name.lower() == "template":
+        return jsonify({"success": False, "error": "Cannot delete template"}), 400
+
+    try:
+        for entry in os.listdir(module_path):
+            file_path = os.path.join(module_path, entry)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            else:
+                return jsonify({"success": False, "error": f"Directory inside module not allowed: {entry}"}), 400
+
+        os.rmdir(module_path)
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+    return jsonify({"success": True})
+
+
+@admin.route("/admin/module/<module_name>/save_id", methods=["POST"])
+@discord_auth.require_admin
+def admin_save_id(module_name):
+    module_path = f"{PATH}/modules/{module_name}"
+    id_path = os.path.join(module_path, "id.txt")
+
+    new_id = request.form.get("id_value", "").strip()
+
+    if not new_id.isdigit():
+        return jsonify({"success": False, "error": "ID must be numeric"}), 400
+
+    try:
+        with open(id_path, "w") as f:
+            f.write(new_id)
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+    return jsonify({"success": True})

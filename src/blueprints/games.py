@@ -162,8 +162,8 @@ def games_list():
 
             if game.get("data"):
                 games_data.append(game)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     if del_zero:
         del games_json["0"]
