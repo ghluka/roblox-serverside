@@ -1,4 +1,5 @@
 import json
+import time
 import os
 import sqlite3
 from datetime import timedelta
@@ -118,11 +119,13 @@ def games_list():
 
     games_data = []
     visits = 0
+    playing = 0
+    missing_visits = 0
     del_zero = False
     for placeid, game in games_json.items():
         try:
             universeid = game["universeid"]
-            details = game_session.get(
+            details = img_session.get(
                 f"https://games.roblox.com/v1/games?universeIds={universeid}",
                 headers=headers,
                 timeout=5,
@@ -132,9 +135,82 @@ def games_list():
                 del_zero = True
                 continue
 
-            if whitelist < game.get("whitelist", 0):
+            if details.get("data"):
+                if whitelist < game.get("whitelist", 0):
+                    missing_visits += details["data"][0].get("visits", 0)
+                    continue
                 visits += details["data"][0].get("visits", 0)
+                if game.get("minPlaying"):
+                    details["data"][0]["playing"] = max(
+                       details["data"][0]["playing"], game.get("minPlaying")
+                    )
+                playing += details["data"][0].get("playing", 0)
+
+            games_data.append(game)
+        except:
+            pass
+
+    if del_zero:
+        del games_json["0"]
+
+    message = ""
+    diff = len(games_json.items()) - len(games_data)
+    if diff > 0:
+        message = f"Due to your whitelist status, you're missing out on {diff} games with a total of {missing_visits:,} visits."
+
+    return render_template("games.html", message=message, games=games_data, visits=visits, playing=playing)
+
+@games.route("/api/games/page", methods=["GET"])
+@discord_auth.require_agreement
+@discord_auth.require_login
+def games_page():
+    initialize()
+    user = session["user"]
+
+    page = int(request.args.get("page", 0))
+    LIMIT = 8
+    start = page * LIMIT
+    end = start + LIMIT
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT whitelist FROM users WHERE discord_id = ?", 
+            (user["id"],)
+        )
+        whitelist = cursor.fetchone()[0]
+
+    with open(f"{PATH}/games/games.json", encoding="utf8") as games_file:
+        games_json = json.load(games_file)
+
+    if "0" in games_json:
+        del games_json["0"]
+
+    place_ids = list(games_json.keys())
+    slice_ids = place_ids[start:end]
+
+    result = []
+
+    for placeid in slice_ids:
+        try:
+            game = games_json[placeid]
+
+            if whitelist < game.get("whitelist", 0):
                 continue
+
+            universeid = game["universeid"]
+
+            status = 429
+            while status == 429:
+                details = game_session.get(
+                    f"https://games.roblox.com/v1/games?universeIds={universeid}",
+                    headers=headers,
+                    timeout=5,
+                )
+                status = details.status_code
+                if status == 429:
+                    time.sleep(2)
+            details = details.json()
 
             if game.get("data"):
                 try:
@@ -150,30 +226,18 @@ def games_list():
                 )
 
             if not game.get("thumbnail"):
-                thumbnail = img_session.get(
+                thumb = img_session.get(
                     f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false",
                     headers=headers,
                     timeout=5,
                 ).json()
+                game["thumbnail"] = thumb["data"][0]["thumbnails"][0]["imageUrl"]
 
-                image = thumbnail["data"][0]["thumbnails"][0]["imageUrl"]
-                game["thumbnail"] = image
-            game = {**game, **details}
+            result.append({**game, **details})
 
-            if game.get("data"):
-                games_data.append(game)
-        except Exception as e:
-            print(e)
+        except:
+            pass
 
-    if del_zero:
-        del games_json["0"]
-
-    message = ""
-    diff = len(games_json.items()) - len(games_data)
-    if diff > 0:
-        message = f"Due to your whitelist status, you're missing out on {diff} games with a total of {visits:,} visits."
-
-    return render_template("games.html", message=message, games=games_data)
-
+    return {"games": result}
 
 initialize()

@@ -1,6 +1,5 @@
 <section>
     <h2><b>Games</b></h2>
-    <h3 style="color: #9e9ea8;">Updates every 5 minutes</h3>
     <br>
 </section>
 {%if message != ""%}
@@ -20,14 +19,14 @@
         <img class="avatar" src="/assets/svg/joins.svg">
         <div>
             <h3 style="color: #606070;">Total Visits</h3>
-            <h3>{{"{:,}".format(games | map(attribute='data.0.visits') | sum)}}</h3>
+            <h3>{{"{:,}".format(visits)}}</h3>
         </div>
     </div>
     <div>
         <img class="avatar" src="/assets/svg/users.svg">
         <div>
             <h3 style="color: #606070;">Total Playing</h3>
-            <h3>{{"{:,}".format(games | map(attribute='data.0.playing') | sum)}}</h3>
+            <h3>{{"{:,}".format(playing)}}</h3>
         </div>
     </div>
 </section>
@@ -42,14 +41,4 @@
     });
 ">
 </section>
-{%for v in games%}
-    <div class="game" onclick='window.open(`{{v["url"]}}`);'>
-        <img src='{{v["thumbnail"]}}' class="preview-img">
-        <h3>{{v["data"][0]["name"]}}</h3>
-        <div class="swap-group">
-            <h5 class="swap-item"><i class='bx bxs-user'></i> {{"{:,}".format(v["data"][0]["visits"])}} visits</h5>
-            <h5 class="swap-item"><i class='bx bxs-user'></i> {{"{:,}".format(v["data"][0]["playing"])}} playing</h5>
-        </div>
-        <button onclick='event.stopPropagation(); window.location.href = `roblox://experiences/start?placeId={{v["placeid"]}}`;' class="play-button"><i class="bx bx-play"></i></button>
-    </div>
-{%endfor%}
+<pre id="loadingGames">Loading games...</pre>
