@@ -20,8 +20,86 @@
     overflow-x: hidden;
 }
 
-.sidebar.open {
-    width: 250px;
+@media (max-width: 1053px) {
+    .sidebar .logo-details .logo_name {
+        padding-left: 12px!important;
+        opacity: 1!important;
+    }
+    .sidebar > .logo-details > .logo_name > span:nth-of-type(2) {
+        display: none;
+    }
+    #btn {
+        display: none;
+    }
+
+    .sidebar .nav-list {
+        padding: 0!important;
+        width: 54px;
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar .logo-details #btn {
+        left: 0;
+    }
+    
+}
+
+@media (min-width: 1053px) {
+    .sidebar.open {
+        width: 250px;
+    }
+
+    .sidebar.open .logo-details,
+    .sidebar.open .logo-details .logo_name {
+        opacity: 1;
+    }
+    
+    .sidebar.open .logo-details #btn {
+        text-align: center;
+    }
+    
+    .sidebar:not(.open) .nav-list {
+        padding: 0!important;
+        width: 54px;
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar:not(.open) .logo-details #btn {
+        left: 0;
+    }
+    
+    .sidebar.open input {
+        padding: 0 20px 0 50px;
+        width: 100%;
+    }
+    
+    .sidebar.open .bx-search:hover {
+        background: var(--side);
+        color: #fff;
+    }
+    
+    .sidebar.open li a .links_name {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .sidebar.open li .tooltip {
+        display: none;
+    }
+
+    .sidebar.open li.profile {
+        width: 250px;
+    }
+    
+    .sidebar.open .profile #log_out {
+        width: 50px;
+        background: none;
+    }
+    
+    .sidebar.open~.home-section {
+        left: 250px;
+        width: calc(100% - 250px)!important;
+    }
 }
 
 .sidebar .logo-details {
@@ -52,11 +130,6 @@
     font-style: normal;
 }
 
-.sidebar.open .logo-details,
-.sidebar.open .logo-details .logo_name {
-    opacity: 1;
-}
-
 .sidebar .logo-details #btn {
     position: absolute;
     top: 50%;
@@ -66,10 +139,6 @@
     text-align: center;
     cursor: pointer;
     transition: all 0.5s ease;
-}
-
-.sidebar.open .logo-details #btn {
-    text-align: center;
 }
 
 .sidebar i {
@@ -86,16 +155,6 @@
     margin-right: auto;
     margin-left: auto;
     padding: 0 16px;
-}
-
-.sidebar:not(.open) .nav-list {
-    padding: 0!important;
-    width: 54px;
-    transition: transform 0.3s ease;
-}
-
-.sidebar:not(.open) .logo-details #btn {
-    left: 0;
 }
 
 .sidebar li {
@@ -117,11 +176,6 @@
     background: var(--side);
 }
 
-.sidebar.open input {
-    padding: 0 20px 0 50px;
-    width: 100%;
-}
-
 .sidebar .bx-search {
     position: absolute;
     top: 50%;
@@ -135,11 +189,6 @@
 .sidebar .bx-search:hover {
     background: #fff;
     color: var(--side);
-}
-
-.sidebar.open .bx-search:hover {
-    background: var(--side);
-    color: #fff;
 }
 
 .sidebar li i {
@@ -198,11 +247,6 @@
     transition: 0.4s;
 }
 
-.sidebar.open li a .links_name {
-    opacity: 1;
-    pointer-events: auto;
-}
-
 .sidebar li a:hover .links_name {
     transition: all 0.5s ease;
     color: #fff;
@@ -237,10 +281,6 @@
     transform: translateY(-50%);
 }
 
-.sidebar.open li .tooltip {
-    display: none;
-}
-
 .sidebar li.profile {
     position: fixed;
     height: 60px;
@@ -251,10 +291,6 @@
     background: var(--side);
     transition: all 0.5s ease;
     overflow: hidden;
-}
-
-.sidebar.open li.profile {
-    width: 250px;
 }
 
 .sidebar li .profile-details {
@@ -295,11 +331,6 @@
     transition: all 0.5s ease;
 }
 
-.sidebar.open .profile #log_out {
-    width: 50px;
-    background: none;
-}
-
 .home-section {
     position: relative;
     min-height: 100svh;
@@ -314,11 +345,6 @@
 
 .home-section > div {
     flex-grow: 1;
-}
-
-.sidebar.open~.home-section {
-    left: 250px;
-    width: calc(100% - 250px)!important;
 }
 
 .home-section .text {
