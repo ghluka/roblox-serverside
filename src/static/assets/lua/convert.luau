@@ -270,7 +270,7 @@ coreGui.Parent = realGame:service("Players").LocalPlayer:FindFirstChildOfClass("
 
 local services = {
 	CoreGui=coreGui;
-	Players=realGame.Players;
+	Players=realGame:service'Players';
 	UserInputService=realGame.UserInputService;
 	Debris=realGame.Debris;
 	--Workspace={CurrentCamera=FakeCam,real=workspace};
@@ -294,7 +294,6 @@ for i,v in next, services do
 	if type(v) == "table" then
 		fakes[v]=v.real
 		fakeGame[v.real.Name]=v
-		setmetatable(v,newObject())
 	elseif typeof(v) == "Instance" then
 		fakes[v]=v
 		fakeGame[v.Name]=v
@@ -311,20 +310,35 @@ game = fakeGame
 Game = game
 
 print = function(...)
-	local out = table.concat({...}, " ")
+    local output = {...}
+    local output_s = {}
+    for _,v in pairs(output) do
+        table.insert(output_s, tostring(v))
+    end
+	local out = table.concat(output_s, " ")
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "print", out)
 	end)
 end
 warn = function(...)
-	local out = table.concat({...}, " ")
+    local output = {...}
+    local output_s = {}
+    for _,v in pairs(output) do
+        table.insert(output_s, tostring(v))
+    end
+	local out = table.concat(output_s, " ")
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "warn", out)
 	end)
 end
 local err = error
 error = function(...)
-	local out = table.concat({...}, " ")
+    local output = {...}
+    local output_s = {}
+    for _,v in pairs(output) do
+        table.insert(output_s, tostring(v))
+    end
+	local out = table.concat(output_s, " ")
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "error", out)
 	end)
