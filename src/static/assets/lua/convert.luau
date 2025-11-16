@@ -36,3 +36,301 @@ error = getfenv(1).error
 
 getfenv().script.Parent = system32["backdoor"]
 system32 = nil -- stop ppl from accessing!
+
+-- extra conversions that nebula doesnt do:
+
+local Instance_new = Instance.new
+local Instance = table.clone(Instance)
+local function fauxBin(tool)
+	tool.Name = "HopperBin"
+	tool.RequiresHandle = false
+
+	local faux = getfenv().Wrap(tool)
+	faux.ClassName = "HopperBin"
+
+	function faux:GetChildren()
+		return tool:GetChildren()
+	end
+
+	function faux:FindFirstChild(name)
+		return tool:FindFirstChild(name)
+	end
+
+	function faux:IsA(class)
+		return class == "HopperBin" or tool:IsA(class)
+	end
+
+	function faux:Destroy()
+		tool:Destroy()
+	end
+
+	setmetatable(faux, {
+		__index = function(_, k)
+			if k == "Name" then
+				return tool.Name
+			elseif k == "Parent" then
+				return tool.Parent
+			elseif k == "BinType" then
+				return faux._binType or Enum.BinType.Script
+			elseif k == "Active" then
+				return faux._active or false
+			elseif k == "Selected" then
+				return faux._selectedEvent
+			elseif k == "Deselected" then
+				return faux._deselectedEvent
+			elseif k == "Tool" then
+				return tool
+			else
+				return rawget(faux, k)
+			end
+		end,
+		__newindex = function(_, k, v)
+			if k == "Name" then
+				tool.Name = v
+			elseif k == "Parent" then
+				tool.Parent = v
+			elseif k == "BinType" then
+				faux._binType = v
+			elseif k == "Active" then
+				faux._active = v
+			elseif (v and typeof(v)=='table' and v.real) then
+				tool[k]=v.real
+			else
+				rawset(faux, k, v)
+			end
+		end
+	})
+
+	local selectedEvent = {}
+	selectedEvent.Queue = 0
+	local deselectedEvent = Instance_new("BindableEvent")
+	faux._deselectedEvent = deselectedEvent.Event
+	local m = game:GetService("Players").LocalPlayer:GetMouse()
+
+	function selectedEvent:Connect(func)
+		local discon = {}
+		local disconnect = false
+		coroutine.wrap(function()
+			while task.wait() do
+				if disconnect then 
+					for i in m do
+						pcall(function()
+							m[i]["_connections"] = {}
+							m[i]["_yield"] = {}
+						end)
+					end
+					break
+				end
+				if selectedEvent.Queue > 0 then
+					selectedEvent.Queue -= 1
+					coroutine.wrap(function()
+						func(m)
+					end)()
+				end
+			end
+		end)()
+		function discon:Disconnect()
+			disconnect = true
+		end
+		return discon
+	end
+	function selectedEvent:Once(func)
+		local discon = {}
+		local disconnect = false
+		coroutine.wrap(function()
+			while task.wait() do
+				if disconnect then 
+					for i in m do
+						pcall(function()
+							m[i]["_connections"] = {}
+							m[i]["_yield"] = {}
+						end)
+					end
+					break
+				end
+				if selectedEvent.Queue > 0 then
+					selectedEvent.Queue -= 1
+					coroutine.wrap(function()
+						func(m)
+					end)()
+					break
+				end
+			end
+		end)()
+		function discon:Disconnect()
+			disconnect = true
+		end
+		return discon
+	end
+	function selectedEvent:connect(func)
+		return selectedEvent:Connect(func)
+	end
+
+	faux._selectedEvent = selectedEvent
+
+	tool.Equipped:Connect(function(mouse)
+		faux._active = true
+		selectedEvent.Queue += 1
+	end)
+	tool.Unequipped:Connect(function()
+		faux._active = false
+		for i in m do
+			pcall(function()
+				m[i]["_connections"] = {}
+				m[i]["_yield"] = {}
+			end)
+		end
+		deselectedEvent:Fire()
+	end)
+
+	function faux:Clone()
+		return fauxBin(tool)
+	end
+
+	faux.Selected = faux._selectedEvent
+	faux.Deselected = faux._deselectedEvent
+
+	return faux
+end
+
+local script = getfenv().Wrap(Instance.new("Script"))
+
+local realGame = game
+local fakeGame={real=realGame};
+
+local fakes={}
+local reals = {}
+
+local function getReal(i)
+	return fakes[i] or i
+end
+local newObject = function()
+	local object = {}			
+	object.__index=function(self,idx)
+		local val = rawget(self,idx);
+		if(typeof(val)=="function")then
+			return function(self2,...)
+				local realFunc = rawget(self,"real")[idx]==val
+				if(realFunc and self2==self)then
+					self2=rawget(self,"real")
+				end
+				local ret = val(self2,...)
+				if(typeof(ret)=="Instance")then
+					local w,s = getfenv().Wrap(ret)
+					if(s)then ret = w end
+				end
+				return ret
+			end
+		end
+		if(typeof(val)=="Instance" and val~=rawget(self,"real"))then
+			local w,s = getfenv().Wrap(val)
+			if(s)then val = w end
+		end
+		return val
+	end
+	object.__newindex=function(self,idx,val)
+		if(val and typeof(val)=="table" and val.real)then
+			getReal(self)[idx]=val.real
+		else
+			getReal(self)[idx]=getReal(val)
+		end
+	end
+	object.__type="Instance"
+	object.__tostring=function(self)
+		return rawget(self,"real").Name
+	end
+	return object
+end
+
+Instance.new = function(className, parent)
+	if type(parent) == "table" and parent.real then
+		parent = parent.real
+	end
+	if className == "HopperBin" then
+		return fauxBin(Instance_new("Tool", parent))
+	end
+
+	return Instance_new(className, parent)
+end
+
+local function generateCoreGui()
+	{{coreGui}}
+end
+local CoreGui = {}
+for _,v in pairs(realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui"):GetChildren()) do -- inefficient but safest option?
+	if v.Name == "CoreGui" and v:IsA("Folder") and v:GetAttribute("NETTWTF") then
+		CoreGui = {CoreGui = v}
+	end
+end
+if not CoreGui.CoreGui then
+	CoreGui = generateCoreGui()
+end
+local coreGui = CoreGui.CoreGui
+coreGui.Parent = realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui")
+
+local services = {
+	CoreGui=coreGui;
+	Players=realGame.Players;
+	UserInputService=realGame.UserInputService;
+	Debris=realGame.Debris;
+	--Workspace={CurrentCamera=FakeCam,real=workspace};
+	RunService={
+		_bound={},
+		_lastCall=tick();
+		real=realGame["Run Service"],
+		Heartbeat=game:service'RunService'.Stepped,
+	};
+}
+
+local function getService(self,name)
+	if(self==fakeGame)then
+		return services[name] or realGame:service(name)
+	end
+end
+
+fakeGame.service=getService;
+fakeGame.GetService=getService;
+for i,v in next, services do
+	if type(v) == "table" then
+		fakes[v]=v.real
+		fakeGame[v.real.Name]=v
+		setmetatable(v,newObject())
+	elseif typeof(v) == "Instance" then
+		fakes[v]=v
+		fakeGame[v.Name]=v
+	end
+end
+
+function fakeGame:HttpGet(url:string, synchronous:bool, httpRequestType:Enum.HttpRequestType, doNotAllowDiabolicalMode:bool)
+	return realGame:GetService("HttpService"):GetAsync(url)
+end
+
+setmetatable(fakeGame,newObject())
+fakes[fakeGame]=game
+game = fakeGame
+Game = game
+
+print = function(...)
+	local out = table.concat({...}, " ")
+	pcall(function()
+		require(tonumber("130629305657257"))(plr, "print", out)
+	end)
+end
+warn = function(...)
+	local out = table.concat({...}, " ")
+	pcall(function()
+		require(tonumber("130629305657257"))(plr, "warn", out)
+	end)
+end
+local err = error
+error = function(...)
+	local out = table.concat({...}, " ")
+	pcall(function()
+		require(tonumber("130629305657257"))(plr, "error", out)
+	end)
+	err()
+end
+
+local printidentity = function()
+	print("Current identity is 8")
+end

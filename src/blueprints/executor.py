@@ -47,9 +47,13 @@ def web_execute():
     with open(f"{PATH}/static/assets/lua/header.luau", encoding="utf8") as convert_file:
         header = convert_file.read()
     with open(
+        f"{PATH}/static/assets/lua/coregui.luau", encoding="utf8"
+    ) as coregui_file:
+        coregui = coregui_file.read()
+    with open(
         f"{PATH}/static/assets/lua/convert.luau", encoding="utf8"
     ) as convert_file:
-        convert = convert_file.read()
+        convert = convert_file.read().replace("{{coreGui}}", coregui)
     with open(
         f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
     ) as functions_file:
@@ -128,9 +132,13 @@ local target = "{username}"
             ) as convert_file:
                 header = convert_file.read()
             with open(
+                f"{PATH}/static/assets/lua/coregui.luau", encoding="utf8"
+            ) as coregui_file:
+                coregui = coregui_file.read()
+            with open(
                 f"{PATH}/static/assets/lua/convert.luau", encoding="utf8"
             ) as convert_file:
-                convert = convert_file.read()
+                convert = convert_file.read().replace("{{coreGui}}", coregui)
             with open(
                 f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
             ) as functions_file:

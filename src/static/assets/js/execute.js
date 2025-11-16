@@ -61,5 +61,5 @@ function executePlayerAction(script) {
     script = "local plrchar = plr.Character\n" + script
     script = "local plr = game:GetService('Players'):GetPlayerByUserId(" + getUserId() + ")\n" + script
     
-    executeSS(script);
+    execute(script);
 }

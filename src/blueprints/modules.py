@@ -89,8 +89,8 @@ def roblox_modules_list():
         if module_exists(module_path) and not module_path.endswith("template"):
             with open(f"{module_path}/data.json", encoding="utf8") as data_file:
                 info = json.load(data_file)
-
-            modules[module_path.replace("\\", "/").split("/")[-1]] = info["name"]
+            if not info.get("broken", False):
+                modules[module_path.replace("\\", "/").split("/")[-1]] = info["name"]
 
     return jsonify(modules)
 
