@@ -152,6 +152,8 @@ def admin_module_edit(module_name):
         data["name"] = request.form.get("name")
         data["description"] = request.form.get("description")
         data["controls"] = request.form.get("controls") or None
+        if data["controls"] == "None":
+            data["controls"] = None
         data["roblox_name"] = request.form.get("roblox_name")
         data["roblox_description"] = request.form.get("roblox_description")
         data["broken"] = bool(request.form.get("broken", False))
@@ -225,7 +227,7 @@ def admin_view_script(module_name):
 def admin_save_script(module_name):
     module_path = f"{PATH}/modules/{module_name}"
 
-    content = request.form.get("content", "")
+    content = request.form.get("content", "").replace("\r\n", "\n")
     with open(f"{module_path}/script.luau", "w", encoding="utf8") as f:
         f.write(content)
 

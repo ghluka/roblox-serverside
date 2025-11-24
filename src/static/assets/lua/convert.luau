@@ -38,6 +38,17 @@ getfenv().script.Parent = system32["backdoor"]
 system32 = nil -- stop ppl from accessing!
 
 -- extra conversions that nebula doesnt do:
+local wrapObject = getfenv().Wrap
+local function fauxWrap(obj)
+	function obj:FindFirstChild(...)
+		return obj.real:FindFirstChild(...)
+	end
+end
+getfenv().Wrap = function(v)
+	local obj = wrapObject(v)
+	fauxWrap(obj)
+	return obj
+end
 
 local Instance_new = Instance.new
 local Instance = table.clone(Instance)
@@ -193,7 +204,8 @@ local function fauxBin(tool)
 	return faux
 end
 
-local script = getfenv().Wrap(Instance.new("Script"))
+script = getfenv().Wrap(script)
+script.Parent = script.real.Parent
 
 local realGame = game
 local fakeGame={real=realGame};
@@ -278,6 +290,8 @@ local services = {
 		_bound={},
 		_lastCall=tick();
 		real=realGame["Run Service"],
+		Stepped=realGame["Run Service"].real.Stepped,
+		RenderStepped=realGame["Run Service"].Stepped,
 		Heartbeat=game:service'RunService'.Stepped,
 	};
 }
@@ -304,6 +318,7 @@ function fakeGame:HttpGet(url:string, synchronous:bool, httpRequestType:Enum.Htt
 	return realGame:GetService("HttpService"):GetAsync(url)
 end
 
+fauxWrap(fakeGame)
 setmetatable(fakeGame,newObject())
 fakes[fakeGame]=game
 game = fakeGame
@@ -348,3 +363,12 @@ end
 local printidentity = function()
 	print("Current identity is 8")
 end
+
+-- allow functions to be accessible from loadstring
+getfenv().game = game
+getfenv().Game = game
+getfenv().print = print
+getfenv().warn = warn
+getfenv().error = error
+getfenv().Instance = Instance
+getfenv().printidentity = printidentity

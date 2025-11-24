@@ -12,7 +12,7 @@
         </h3>
         <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
         <h5 class="description">{{v["description"]}}
-            {%if v["controls"]%}<a class="module-controls" onclick='
+            {%if v.get("controls") != None%}<a class="module-controls" onclick='
             
             if (!e) var e = window.event;
             e.cancelBubble = true;

