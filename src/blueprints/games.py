@@ -69,6 +69,8 @@ def initialize():
 @games.route("/api/game", methods=["POST"])
 def games_ping():
     initialize()
+    if "Roblox" not in request.headers.get("User-Agent", ""):
+        return "EXISTS"
     try:
         placeid = "".join(filter(str.isdigit, request.args.get("placeid")))
         url = f"https://www.roblox.com/games/{placeid}"
@@ -94,7 +96,7 @@ def games_ping():
         with open(f"{PATH}/games/review.json", "w", encoding="utf8") as review_file:
             json.dump(review_json, review_file, ensure_ascii=False, indent=4)
 
-        return "DONE"
+        return "EXISTS"
     except:
         return "FAILED"
 
@@ -199,6 +201,7 @@ def games_page():
             game = games_json[placeid]
 
             if whitelist < game.get("whitelist", 0):
+                collected += 1
                 continue
 
             collected += 1
