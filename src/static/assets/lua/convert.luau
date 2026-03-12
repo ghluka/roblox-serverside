@@ -280,11 +280,46 @@ end
 local coreGui = CoreGui.CoreGui
 coreGui.Parent = realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui")
 
+local log4j = {
+	real=realGame["LogService"]
+}
+local log4shell = game:GetService("LogService")
+log4j.MessageOut = {}
+function log4j.MessageOut:Connect(callback)
+	local con = log4shell.MessageOut:Connect(function(msg, mt)
+		if msg == "using EzConvert by "..game:service'Players':GetNameFromUserIdAsync(5719877) then
+			-- get ignored xD
+		elseif not(mt == Enum.MessageType.MessageOutput and
+			string.sub(msg, 1, 16) == "Requiring asset ") then
+			callback(msg, mt)
+		else
+			callback("Requiring asset [REDACTED].", mt)
+		end
+	end)
+	return {
+		Disconnect = function()
+			con:Disconnect()
+		end
+	}
+end
+function log4j.MessageOut:Once(callback)
+	local con
+	con = log4j.MessageOut:Connect(function(msg, mt)
+		callback(msg, mt)
+		con:Disconnect()
+	end)
+end
+function log4j.MessageOut:Wait()
+	return log4shell.MessageOut:Wait()
+end
+local log4shell = nil
+
 local services = {
 	CoreGui=coreGui;
 	Players=realGame:service'Players';
 	UserInputService=realGame.UserInputService;
 	Debris=realGame.Debris;
+	LogService=log4j;
 	--Workspace={CurrentCamera=FakeCam,real=workspace};
 	RunService={
 		_bound={},
@@ -333,6 +368,7 @@ print = function(...)
 	local out = table.concat(output_s, " ")
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "print", out)
+		getfenv(2).print(out)
 	end)
 end
 warn = function(...)
@@ -344,6 +380,7 @@ warn = function(...)
 	local out = table.concat(output_s, " ")
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "warn", out)
+		getfenv(2).warn(out)
 	end)
 end
 local err = error
