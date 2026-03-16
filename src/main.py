@@ -4,13 +4,14 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, request, session
 from markupsafe import Markup
 
+from blueprints.admin import admin
 from blueprints.auth import auth
 from blueprints.dashboard import dash
 from blueprints.executor import executor
 from blueprints.games import games
+from blueprints.loader import loader
 from blueprints.modules import scripthub
 from blueprints.user import user
-from blueprints.admin import admin
 from utils.auth import dev_auth
 from utils.cookie import get_cookie
 from utils.inputs import PATH
@@ -19,6 +20,7 @@ app = Flask(__name__, static_url_path="")
 app.register_blueprint(auth)
 app.register_blueprint(dash, url_prefix="")
 app.register_blueprint(executor)
+app.register_blueprint(loader)
 app.register_blueprint(games)
 app.register_blueprint(scripthub)
 app.register_blueprint(user)
@@ -46,7 +48,7 @@ def homepage():
 
 @app.before_request
 def check_user_agent():
-    ignore = ["discord"] 
+    ignore = ["discord"]
     embeds = ["discordbot", "twitterbot"]
 
     path = request.path.lower()

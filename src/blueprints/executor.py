@@ -3,17 +3,14 @@ import sqlite3
 
 from flask import (
     Blueprint,
-    Response,
     redirect,
     render_template,
     request,
-    send_file,
     session,
     url_for,
 )
 
 from blueprints.auth import DB_PATH, discord_auth
-from obfuscator.wrapper import obfuscate
 from utils.inputs import PATH
 from utils.session import Session
 
@@ -54,9 +51,7 @@ def web_execute():
         f"{PATH}/static/assets/lua/convert.luau", encoding="utf8"
     ) as convert_file:
         convert = convert_file.read().replace("{{coreGui}}", coregui)
-    with open(
-        f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8"
-    ) as vlua_file:
+    with open(f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8") as vlua_file:
         vluau = vlua_file.read()
     with open(
         f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
@@ -210,28 +205,6 @@ def roblox_ping():
     user_scripts.clear()
 
     return scripts_to_return
-
-
-@executor.route("/admin.luau", methods=["GET"])
-def admin_script():
-    with open(f"{PATH}/obfuscator/watermark.luau", encoding="utf8") as watermark_script:
-        watermark = watermark_script.read() + "\n"
-    if "Roblox" not in request.headers.get("User-Agent", ""):
-        return Response(watermark + 'print("Hello World!")', mimetype="text/x-lua")
-
-    with open(f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8") as vlua_script:
-        vlua_script = vlua_script.read()
-    rendered = render_template(
-        "assets/lua/admin.luau", endpoint=request.headers.get("Host"), vlua=vlua_script
-    )
-    obfuscated = obfuscate(rendered)
-
-    if obfuscated:
-        with open(
-            f"{PATH}/obfuscator/source.obfuscated.lua", encoding="utf8"
-        ) as obfuscated_script:
-            return Response(watermark + obfuscated_script.read(), mimetype="text/x-lua")
-    return Response(watermark + rendered, mimetype="text/x-lua")
 
 
 @executor.route("/api/players", methods=["GET", "POST"])
