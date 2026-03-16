@@ -20,6 +20,10 @@ def admin_home():
     modules_dir = f"{PATH}/modules"
     modules = []
 
+    games_path = f"{PATH}/games/games.json"
+    with open(games_path, encoding="utf8") as f:
+        games = json.load(f)
+
     for name in os.listdir(modules_dir):
         if name != "template":
             module_path = os.path.join(modules_dir, name)
@@ -37,7 +41,7 @@ def admin_home():
                 "broken": data.get("broken", False),
             })
 
-    return render_template("admin/panel.html", users=users, modules=modules)
+    return render_template("admin/panel.html", games=games, users=users, modules=modules)
 
 
 @admin.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
@@ -109,6 +113,7 @@ def admin_review_approve(placeid):
     return "OK"
 
 
+@admin.route("/admin/review/reject/", defaults={"placeid": ""}, methods=["POST"])
 @admin.route("/admin/review/reject/<placeid>", methods=["POST"])
 @discord_auth.require_admin
 def admin_review_reject(placeid):
@@ -371,3 +376,33 @@ def admin_save_id(module_name):
         return jsonify({"success": False, "error": str(e)}), 500
 
     return jsonify({"success": True})
+
+@admin.route("/admin/game/<placeid>", methods=["GET", "POST"])
+@discord_auth.require_admin
+def admin_game_edit(placeid):
+    games_path = f"{PATH}/games/games.json"
+
+    with open(games_path, encoding="utf8") as f:
+        games = json.load(f)
+
+    if placeid not in games:
+        return "Game not found", 404
+
+    if request.method == "POST":
+        whitelist = request.form.get("whitelist")
+
+        games[placeid]["url"] = f"https://www.roblox.com/games/{placeid}"
+        games[placeid]["whitelist"] = int(whitelist)
+
+        with open(games_path, "w", encoding="utf8") as f:
+            json.dump(games, f, indent=4)
+
+        return redirect(f"/admin/game/{placeid}")
+
+    game = games[placeid]
+
+    return render_template(
+        "admin/edit/game.html",
+        game=game,
+        placeid=placeid
+    )

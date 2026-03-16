@@ -5,7 +5,7 @@ import sqlite3
 from datetime import timedelta
 
 import requests_cache
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, jsonify
 
 from blueprints.auth import DB_PATH, discord_auth
 from utils.inputs import PATH
@@ -99,6 +99,49 @@ def games_ping():
         return "EXISTS"
     except:
         return "FAILED"
+
+
+@games.route("/api/game/<placeid>", methods=["GET"])
+@discord_auth.require_agreement
+@discord_auth.require_login
+def game_details(placeid):
+    initialize()
+    user = session["user"]
+
+    with open(f"{PATH}/games/games.json", encoding="utf8") as games_file:
+        games_json = json.loads(games_file.read())
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT whitelist FROM users WHERE discord_id = ?", (user["id"],)
+        )
+        result = cursor.fetchone()
+    whitelist = result[0]
+
+    if placeid not in games_json.keys():
+        return jsonify({"failed":True})
+    game = games_json[placeid]
+    if whitelist < game.get("whitelist", 0):
+        return jsonify({"failed":True})
+        
+    try:
+        universeid = game["universeid"]
+        details = img_session.get(
+            f"https://games.roblox.com/v1/games?universeIds={universeid}",
+            headers=headers,
+            timeout=5,
+        ).json()
+        if not game.get("thumbnail"):
+            thumb = img_session.get(
+                f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={universeid}&size=768x432&format=Png&isCircular=false",
+                headers=headers,
+                timeout=5,
+            ).json()
+            game["thumbnail"] = thumb["data"][0]["thumbnails"][0]["imageUrl"]
+    except:
+        pass
+    return jsonify({**game, **details})
 
 
 @games.route("/api/games", methods=["GET"])

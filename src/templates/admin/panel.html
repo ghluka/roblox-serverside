@@ -24,6 +24,7 @@
         <h1>Admin Panel</h1>
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'db')">User DB</button>
+            <button class="tablinks" onclick="openTab(event, 'gd')">Game DB</button>
             <button class="tablinks" onclick="openTab(event, 'gr')">Game Review</button>
             <button class="tablinks" onclick="openTab(event, 'sh')">Script Hub</button>
         </div>
@@ -48,6 +49,27 @@
                     <td>{{ u[3] }}</td>
                     <td>{{ u[4] }}</td>
                     <td><a href="/admin/user/{{ u[0] }}">View/Edit</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+        <div id="gd" class="tabcontent">
+            <h3>Game Database</h3>
+            <br>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>URL</th>
+                    <th>Whitelist</th>
+                    <th>Actions</th>
+                </tr>
+                {% for u in games %}
+                <tr>
+                    <td>{{ u }}</td>
+                    <td>{{ games[u]["url"] }}</td>
+                    <td>{{ games[u].get("whitelist", 0) }}</td>
+                    <td><a href="/admin/game/{{ u }}">View/Edit</a></td>
                 </tr>
                 {% endfor %}
             </table>

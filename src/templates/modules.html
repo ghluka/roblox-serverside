@@ -1,3 +1,4 @@
+<p style="width: 100%; text-align: center;"><i class="bx bx-error"></i> Many modules have been temporarily deleted, we are working on bringing them back with a new asset moderation bypass.</p>
 {%for v in modules%}
     {%if v.get("broken") != True %}
     <div class="module" onclick='executeRequire(`{{v["module"]}}`);'>
