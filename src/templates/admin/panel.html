@@ -27,6 +27,7 @@
             <button class="tablinks" onclick="openTab(event, 'gd')">Game DB</button>
             <button class="tablinks" onclick="openTab(event, 'gr')">Game Review</button>
             <button class="tablinks" onclick="openTab(event, 'sh')">Script Hub</button>
+            <button class="tablinks" onclick="openTab(event, 'ee')">Env Editor</button>
         </div>
 
         <div id="db" class="tabcontent">
@@ -196,6 +197,49 @@
                 {% endfor %}
             </table>
         </div>
+
+
+        <div id="ee" class="tabcontent">
+            <h3>Environment Editor</h3>
+            <br>
+            
+            <button id="roblosec">Change .ROBLOSECURITY Cookie</button>
+            <script>
+                const report = document.getElementById("roblosec");
+                report.addEventListener("click", function() {
+                    Swal.fire({
+                        title: ".ROBLOSECURITY",
+                        text: `Enter the module uploader .ROBLOSECURITY cookie`,
+                        confirmButtonText: "Change",
+                        showCancelButton: true,
+                        input: "text",
+                        inputPlaceholder: "_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_",
+                        confirmButtonText: "Change",
+                        preConfirm: () => {
+                            const token = Swal.getInput().value.trim().toLowerCase();
+                            if (!token) {
+                                Swal.showValidationMessage("Please enter a ROBLOSECURITY token.");
+                                return false;
+                            }
+                            return token
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('/admin/set_cookie', {
+                                method: 'POST',
+                                body: result.value
+                            }).then(response => {
+                                Swal.fire({
+                                    title: 'Cookie updated!',
+                                    icon: "success"
+                                });
+                            });
+                        }
+                    });
+                });
+            </script>
+        </div>
+
         <script defer src="/assets/js/tabs.js"></script>
     </div>
 </body>

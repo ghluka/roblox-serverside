@@ -116,7 +116,10 @@ local function fauxBin(tool)
 	selectedEvent.Queue = 0
 	local deselectedEvent = Instance_new("BindableEvent")
 	faux._deselectedEvent = deselectedEvent.Event
-	local m = game:GetService("Players").LocalPlayer:GetMouse()
+	local m
+	pcall(function()
+		m = game:GetService("Players").LocalPlayer:GetMouse()
+	end)
 
 	function selectedEvent:Connect(func)
 		local discon = {}
@@ -265,25 +268,29 @@ Instance.new = function(className, parent)
 	return Instance_new(className, parent)
 end
 
-local function generateCoreGui()
-	{{coreGui}}
-end
 local CoreGui = {}
-for _,v in pairs(realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui"):GetChildren()) do -- inefficient but safest option?
-	if v.Name == "CoreGui" and v:IsA("Folder") and v:GetAttribute("NETTWTF") then
-		CoreGui = {CoreGui = v}
+local coreGui
+pcall(function()
+	local function generateCoreGui()
+		{{coreGui}}
 	end
-end
-if not CoreGui.CoreGui then
-	CoreGui = generateCoreGui()
-end
-local coreGui = CoreGui.CoreGui
-coreGui.Parent = realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui")
+	for _,v in pairs(realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui"):GetChildren()) do -- inefficient but safest option?
+		if v.Name == "CoreGui" and v:IsA("Folder") and v:GetAttribute("NETTWTF") then
+			CoreGui = {CoreGui = v}
+		end
+	end
+	if not CoreGui.CoreGui then
+		CoreGui = generateCoreGui()
+	end
+	local coreGui = CoreGui.CoreGui
+	coreGui.Parent = realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui")
+end)
 
 local log4j = {
 	real=realGame["LogService"]
 }
 local log4shell = game:GetService("LogService")
+log4j.Name = "LogService"
 log4j.MessageOut = {}
 function log4j.MessageOut:Connect(callback)
 	local con = log4shell.MessageOut:Connect(function(msg, mt)
@@ -315,21 +322,27 @@ end
 local log4shell = nil
 
 local services = {
-	CoreGui=coreGui;
-	Players=realGame:service'Players';
-	UserInputService=realGame.UserInputService;
-	Debris=realGame.Debris;
 	LogService=log4j;
-	--Workspace={CurrentCamera=FakeCam,real=workspace};
-	RunService={
-		_bound={},
-		_lastCall=tick();
-		real=realGame["Run Service"],
-		Stepped=realGame["Run Service"].real.Stepped,
-		RenderStepped=realGame["Run Service"].Stepped,
-		Heartbeat=game:service'RunService'.Stepped,
-	};
+	Players=realGame:service'Players';
 }
+if plr.Character and plr.Character.Parent ~= nil then
+	services = {
+		CoreGui=coreGui;
+		Players=realGame:service'Players';
+		UserInputService=realGame.UserInputService;
+		Debris=realGame.Debris;
+		LogService=log4j;
+		--Workspace={CurrentCamera=FakeCam,real=workspace};
+		RunService={
+			_bound={},
+			_lastCall=tick();
+			real=realGame["Run Service"],
+			Stepped=realGame["Run Service"].real.Stepped,
+			RenderStepped=realGame["Run Service"].Stepped,
+			Heartbeat=game:service'RunService'.Stepped,
+		};
+	}
+end
 
 local function getService(self,name)
 	if(self==fakeGame)then
@@ -358,6 +371,8 @@ setmetatable(fakeGame,newObject())
 fakes[fakeGame]=game
 game = fakeGame
 Game = game
+
+local realGame = game
 
 print = function(...)
     local output = {...}
@@ -395,10 +410,6 @@ error = function(...)
 		require(tonumber("130629305657257"))(plr, "error", out)
 	end)
 	err()
-end
-
-local printidentity = function()
-	print("Current identity is 8")
 end
 
 -- allow functions to be accessible from loadstring

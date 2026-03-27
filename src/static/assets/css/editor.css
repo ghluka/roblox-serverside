@@ -116,10 +116,11 @@ button:after, select:after {
 
 .badges * {
     padding: 1px 3px;
-    margin-right: 6px;
+    margin-right: 0px;
     background: var(--nett);
     border-radius: 6px;
     color: #fff!important;
+    display: inline-block;
 }
 
 .search {

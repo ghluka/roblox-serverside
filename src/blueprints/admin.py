@@ -1,13 +1,26 @@
-import sqlite3
-import os
 import json
+import os
+import pickle
 import re
-from flask import Blueprint, render_template, request, session, redirect, url_for, jsonify, Response, send_file
+import sqlite3
+
+from flask import (
+    Blueprint,
+    Response,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    send_file,
+    session,
+    url_for,
+)
 
 from blueprints.auth import DB_PATH, discord_auth
 from utils.inputs import PATH
 
 admin = Blueprint("admin", __name__)
+
 
 @admin.route("/admin")
 @discord_auth.require_admin
@@ -34,14 +47,18 @@ def admin_home():
             with open(json_path, encoding="utf8") as f:
                 data = json.load(f)
 
-            modules.append({
-                "module_name": name,
-                "name": data.get("name", name),
-                "description": data.get("description", ""),
-                "broken": data.get("broken", False),
-            })
+            modules.append(
+                {
+                    "module_name": name,
+                    "name": data.get("name", name),
+                    "description": data.get("description", ""),
+                    "broken": data.get("broken", False),
+                }
+            )
 
-    return render_template("admin/panel.html", games=games, users=users, modules=modules)
+    return render_template(
+        "admin/panel.html", games=games, users=users, modules=modules
+    )
 
 
 @admin.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
@@ -320,7 +337,7 @@ def admin_create_module():
         "roblox_description": "Test module",
         "name": module_name,
         "description": "Description",
-        "rbxmx": "MainModule.rbxmx"
+        "rbxmx": "MainModule.rbxmx",
     }
     with open(json_path, "w") as f:
         json.dump(default_json, f, indent=4)
@@ -348,7 +365,15 @@ def admin_delete_module(module_name):
             if os.path.isfile(file_path):
                 os.remove(file_path)
             else:
-                return jsonify({"success": False, "error": f"Directory inside module not allowed: {entry}"}), 400
+                return (
+                    jsonify(
+                        {
+                            "success": False,
+                            "error": f"Directory inside module not allowed: {entry}",
+                        }
+                    ),
+                    400,
+                )
 
         os.rmdir(module_path)
 
@@ -366,6 +391,16 @@ def admin_save_id(module_name):
 
     new_id = request.form.get("id_value", "").strip()
 
+    if new_id == "":
+        try:
+            if os.path.isfile(id_path):
+                os.remove(id_path)
+        except:
+            return (
+                jsonify({"success": False, "error": "Failed to remove ID, try again."}),
+                500,
+            )
+        return jsonify({"success": True})
     if not new_id.isdigit():
         return jsonify({"success": False, "error": "ID must be numeric"}), 400
 
@@ -376,6 +411,7 @@ def admin_save_id(module_name):
         return jsonify({"success": False, "error": str(e)}), 500
 
     return jsonify({"success": True})
+
 
 @admin.route("/admin/game/<placeid>", methods=["GET", "POST"])
 @discord_auth.require_admin
@@ -401,8 +437,15 @@ def admin_game_edit(placeid):
 
     game = games[placeid]
 
-    return render_template(
-        "admin/edit/game.html",
-        game=game,
-        placeid=placeid
-    )
+    return render_template("admin/edit/game.html", game=game, placeid=placeid)
+
+
+@admin.route("/admin/set_cookie", methods=["POST"])
+@discord_auth.require_admin
+def admin_set_cookie():
+    cookie = request.get_data(as_text=True)
+    cookie_path = f"{PATH}/cookie.pkl"
+    with open(cookie_path, "wb") as file:
+        pickle.dump(cookie, file)
+
+    return jsonify({"success": True})

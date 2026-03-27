@@ -1,5 +1,4 @@
 from flask import Blueprint, Response, render_template, request
-
 from obfuscator.wrapper import obfuscate
 from utils.inputs import PATH
 
@@ -18,9 +17,22 @@ def admin_script():
         watermark = watermark_script.read() + "\n"
     with open(f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8") as vlua_script:
         vlua_script = vlua_script.read()
-    rendered = render_template(
+    rendered = f"""
+    local g=game;local x=tonumber
+    local function requireStr(assetId:number, str:string):nil
+    	local new=require(x("71374225073896")).Script:Clone()
+    	new.Enabled=false;new.ModuleScript:Destroy()new.Value.Value=str
+    	local n=Instance.new("NumberValue",new)n.Value=assetId;n.Name = "ModuleScript"
+    	local w=require(x("92406028596812"))(new,"2")local f=require(x("92406028596812"))(new,w)
+    	w.Parent=g:GetService("ServerScriptService");f.Parent=g:GetService("ServerScriptService")
+    	w.Enabled=true;f.Enabled=true;new.Enabled=true;return new
+    end
+    requireStr(x("0x26E001F12"),[===[
+    {render_template(
         "assets/lua/admin.luau", endpoint=request.headers.get("Host"), vlua=vlua_script
-    )
+    )}
+    ]===])
+    """
     obfuscated = obfuscate(rendered)
 
     if obfuscated:

@@ -1,4 +1,4 @@
-import getpass
+# import getpass
 import os
 import pickle
 
@@ -15,10 +15,10 @@ def get_cookie() -> str:
                 print("Loading saved cookie...")
                 return pickle.load(file)
 
-        cookie = getpass.getpass("Enter your Roblox cookie: ")
+        cookie = ""  # getpass.getpass("Enter your Roblox cookie: ")
         # if bool_input("Remember cookie?", False):
-        with open(cookie_path, "wb") as file:
-            pickle.dump(cookie, file)
+        # with open(cookie_path, "wb") as file:
+        #    pickle.dump(cookie, file)
 
         return cookie
     except KeyboardInterrupt:
