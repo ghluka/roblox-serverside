@@ -17,6 +17,7 @@ end
 local printidentity = function()
 	print("Current identity is 8")
 end
+getfenv().printidentity = printidentity
 
 local function bruh()
 	local sound = Instance.new("Sound", game:GetService("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui"))

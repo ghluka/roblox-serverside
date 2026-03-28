@@ -282,7 +282,7 @@ pcall(function()
 	if not CoreGui.CoreGui then
 		CoreGui = generateCoreGui()
 	end
-	local coreGui = CoreGui.CoreGui
+	coreGui = CoreGui.CoreGui
 	coreGui.Parent = realGame:service("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui")
 end)
 
@@ -419,4 +419,3 @@ getfenv().print = print
 getfenv().warn = warn
 getfenv().error = error
 getfenv().Instance = Instance
-getfenv().printidentity = printidentity

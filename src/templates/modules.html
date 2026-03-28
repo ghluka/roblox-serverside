@@ -2,14 +2,14 @@
     {%if v.get("broken") != True %}
     <div class="module" onclick='executeRequire(`{{v["module"]}}`);'>
         <img src='{{v["image"]}}' class="preview-img">
-        <h3>
+        <h4>
             {{v["name"]}}
             <div class="badges">
                 {%for badge in v["badges"]%}
-                    <h5>{{badge}}</h5>
+                    <h6>{{badge}}</h6>
                 {%endfor%}
             </div>
-        </h3>
+        </h4>
         <h5 style="color: #b9b9b9;">{{v["author"]}}</h5>
         <h5 class="description">{{v["description"]}}
             {%if v.get("controls") != None%}<a class="module-controls" onclick='

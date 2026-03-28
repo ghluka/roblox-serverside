@@ -121,6 +121,8 @@ button:after, select:after {
     border-radius: 6px;
     color: #fff!important;
     display: inline-block;
+    margin-bottom: 3px;
+    vertical-align: middle;
 }
 
 .search {
