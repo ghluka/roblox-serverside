@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
 :root {
     --bg: rgba(30, 30, 45, 1);
     --lite: rgba(30, 30, 45, 0.9);
@@ -14,6 +12,9 @@
     --selected: rgba(188, 73, 219, 0.1);
     --card: rgba(20, 20, 35, 0.1);
     --card-dark: rgba(188, 73, 219, 0.1);
+    --border: rgba(80, 64, 112, 0.25);
+    --color-success: rgb(0, 120, 0);
+    --color-danger: rgb(180, 0, 0);
 }
 
 html, body {
@@ -40,15 +41,16 @@ html, body {
 }
   
 ::-webkit-scrollbar-track {
-    background: var(--dark-hov); 
+    background: var(--side);
 }
-   
+
 ::-webkit-scrollbar-thumb {
-    background: var(--dark-hov); 
+    background: rgba(80, 64, 112, 0.5);
+    border-radius: 4px;
 }
-  
+
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--dark-hov); 
+    background: var(--nett);
 }
 
 img {
@@ -150,7 +152,7 @@ select:hover, button:hover:not(.play-button), input:hover:not(.search) {
 }
 
 button:active:not(.play-button), input:active:not(.search) {
-    transform: scale(1.01);
+    transform: scale(0.97);
 }
 
 input {
@@ -163,10 +165,12 @@ input {
 }
 
 .description {
-    height: 2.4em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     color: #606070!important;
     margin-bottom: 6px;
-    white-space: pre-line;
 }
 
 /*.description:hover {
@@ -320,4 +324,17 @@ a, a:visited {
     justify-content: center;
     text-align: left;
     margin: 4px;
+}
+
+.logo_name {
+    color: #fff;
+    font-size: 100%;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.logo_name * {
+    font-family: "Bowlby One SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }

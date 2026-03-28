@@ -11,7 +11,7 @@ It allows for in-game code execution and administration, providing developers wi
 
 The instructions for setting up the web server have been moved to [the wiki](https://github.com/ghluka/roblox-ss/wiki/%E2%9A%99%EF%B8%8F-Running).
 
-## 🫂 Thanks
+## 🫂 Credits
 
 - [vLuau](https://github.com/kosuke14/vLuau) - Luau VM used for in-game bytecode execution
 - [Prometheus](https://github.com/prometheus-lua/Prometheus) - Lua obfuscator by Elias Oelschner, used for script protection

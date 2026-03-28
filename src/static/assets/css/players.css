@@ -28,7 +28,7 @@
     border: none;
     border-radius: 12px;
     transition: all 0.5s ease;
-    background: #1d1b31;
+    background: var(--side);
 }
 
 .players.open input {
@@ -42,7 +42,7 @@
     left: 0;
     transform: translateY(-50%);
     font-size: 22px;
-    background: #1d1b31;
+    background: var(--side);
     color: #fff;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .players.open .bx-search:hover {
-    background: #1d1b31;
+    background: var(--side);
     color: #fff;
 }
 
@@ -100,7 +100,7 @@
 .players li a:hover .links_name,
 .players li a:hover i {
     transition: all 0.5s ease;
-    color: #2B2B2B;
+    color: #fff;
 }
 
 #player-action-warning {
@@ -199,7 +199,7 @@
 }
 
 .select-items div:hover {
-    background-color: var(dark-btn-hov);
+    background-color: var(--dark-btn-hov);
 }
 
 .select-items img, .select-selected img {

@@ -22,32 +22,37 @@ th {
 }
 
 .tab {
-    overflow: hidden;
-    border: 1px solid var(--dark-btn);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    border: 2px solid var(--dark-btn);
+    border-radius: 8px 8px 0 0;
     background-color: var(--dark-btn);
+    padding: 4px;
 }
 
 .tab button {
-    background-color: inherit;
-    float: left;
+    background-color: var(--dark);
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
+    padding: 10px 18px;
+    border-radius: 6px;
+    transition: background 0.2s;
 }
-  
+
 .tab button:hover {
     background-color: var(--dark-btn-hov);
 }
-  
+
 .tab button.active {
     background-color: var(--nett);
 }
-  
+
 .tabcontent {
     display: none;
-    padding: 6px 12px;
-    border: 1px solid var(--dark-btn);
+    padding: 12px;
+    border: 2px solid var(--dark-btn);
     border-top: none;
+    border-radius: 0 0 8px 8px;
 }

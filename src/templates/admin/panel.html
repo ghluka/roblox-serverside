@@ -163,6 +163,12 @@
             
             <br>
             <table class="admin-table">
+                <colgroup>
+                    <col style="width: 20%">
+                    <col style="width: 50%">
+                    <col style="width: 10%">
+                    <col style="width: 10%">
+                </colgroup>
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
@@ -175,11 +181,7 @@
                     <td>{{m.name}}</td>
                     <td>{{m.description}}</td>
                     <td>{{m.broken}}</td>
-                    <td>
-                        <button onclick="location.href='/admin/module/{{m.module_name}}'">
-                            Edit
-                        </button>
-                    </td>
+                    <td><a href="/admin/module/{{m.module_name}}">View/Edit</a></td>
                 </tr>
                 {% endfor %}
             </table>
