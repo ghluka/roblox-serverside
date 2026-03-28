@@ -1,13 +1,13 @@
+import json
 import os
 import sqlite3
 from datetime import datetime
-import json
 
 import requests
 from flask import Blueprint, jsonify, redirect, request, session, url_for
 
 from utils.auth import DB_PATH, DiscordAuth
-from utils.inputs import PATH
+from utils.inputs import PATH, TOS_VERSION
 
 auth = Blueprint("auth", __name__)
 
@@ -57,7 +57,16 @@ def signup(user_info):
             email = user_info.get("email", "none")
             cursor.execute(
                 "INSERT INTO users (discord_id, email, username, roblox_id, whitelist, user_data, signup_date, tos_version) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                (discord_id, email, username, 1, 0, json.dumps(user_info), signup_date, 0),
+                (
+                    discord_id,
+                    email,
+                    username,
+                    1,
+                    0,
+                    json.dumps(user_info),
+                    signup_date,
+                    0,
+                ),
             )
             conn.commit()
         else:
@@ -83,7 +92,7 @@ def callback():
         user_info = discord_auth.fetch_user(access_token)
         session["user"] = user_info
         signup(user_info)
-    except:
+    except Exception:
         pass
     return redirect(url_for("dash.dashboard"))
 
@@ -112,7 +121,7 @@ def roblox_user_id():
         resp.raise_for_status()
         result = resp.json()
         return jsonify(result)
-    except:
+    except Exception:
         return jsonify(
             {
                 "data": [
@@ -150,7 +159,7 @@ def update_id():
                     "UPDATE users SET roblox_id = ? WHERE discord_id = ?",
                     (user_id, discord_id),
                 )
-    except:
+    except Exception:
         return "Failed!"
     return "Done!"
 
@@ -162,13 +171,9 @@ def agree_to_terms():
     discord_id = user.get("id")
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
-
-        with open(f"{PATH}/static/terms.html", "r", encoding="utf8") as f:
-            version = int(f.read().split('version="')[1].split('"')[0])
-
         cursor.execute(
             "UPDATE users SET tos_version = ? WHERE discord_id = ?",
-            (version, discord_id),
+            (TOS_VERSION, discord_id),
         )
 
     return "You have confirmed that you agree to our Terms of Service."

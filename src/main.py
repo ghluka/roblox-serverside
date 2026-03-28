@@ -1,6 +1,9 @@
 import os
 
 from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask import Flask, render_template, request, session
 from markupsafe import Markup
 
@@ -26,7 +29,6 @@ app.register_blueprint(scripthub)
 app.register_blueprint(user)
 app.register_blueprint(admin)
 
-load_dotenv()
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
@@ -56,32 +58,32 @@ def check_user_agent():
         user_agent = request.headers.get("User-Agent", "").lower()
         for embed in embeds:
             if embed in user_agent:
-                return app.send_static_file("404.html")
+                return render_template("404.html"), 404
 
 
 @app.errorhandler(404)
 def not_found(_):
-    return app.send_static_file("404.html")
+    return render_template("404.html"), 404
 
 
 @app.route("/script")
 def admin_script_page():
-    return app.send_static_file("script.html")
+    return render_template("script.html")
 
 
 @app.route("/privacy")
 def privacy_policy_page():
-    return app.send_static_file("privacy.html")
+    return render_template("privacy.html")
 
 
 @app.route("/terms")
 def tos_page():
-    return app.send_static_file("terms.html")
+    return render_template("terms.html")
 
 
 @app.route("/eula")
 def eula_page():
-    return app.send_static_file("eula.html")
+    return render_template("eula.html")
 
 
 @app.route("/discord")

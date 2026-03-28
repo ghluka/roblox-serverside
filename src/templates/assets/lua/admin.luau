@@ -112,5 +112,5 @@ game:BindToClose(function()
     for _, plr in pairs(plrs:GetPlayers()) do
         plrRemoving(plr)
     end
-    wait(1)
+    task.wait(1)
 end)

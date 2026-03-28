@@ -26,10 +26,8 @@ def module_exists(module_path):
     )
 
 
-@executor.route("/api/execute", methods=["POST"])
-@discord_auth.require_agreement
-@discord_auth.require_login
-def web_execute():
+def get_current_user_roblox_id():
+    """Return the roblox_id string for the currently logged-in Discord user."""
     user = session["user"]
     discord_id = user.get("id")
     with sqlite3.connect(DB_PATH) as conn:
@@ -37,7 +35,14 @@ def web_execute():
         cursor.execute(
             "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
         )
-        userid = str(cursor.fetchone()[0])
+        return str(cursor.fetchone()[0])
+
+
+@executor.route("/api/execute", methods=["POST"])
+@discord_auth.require_agreement
+@discord_auth.require_login
+def web_execute():
+    userid = get_current_user_roblox_id()
 
     script = request.data.decode("utf-8")
 
@@ -81,14 +86,7 @@ end)"""
 @discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute_ss():
-    user = session["user"]
-    discord_id = user.get("id")
-    with sqlite3.connect(DB_PATH) as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
-        )
-        userid = str(cursor.fetchone()[0])
+    userid = get_current_user_roblox_id()
 
     script = request.data.decode("utf-8")
 
@@ -112,14 +110,7 @@ end)"""
 @discord_auth.require_agreement
 @discord_auth.require_login
 def web_execute_module():
-    user = session["user"]
-    discord_id = user.get("id")
-    with sqlite3.connect(DB_PATH) as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
-        )
-        userid = str(cursor.fetchone()[0])
+    userid = get_current_user_roblox_id()
 
     username = request.args.get("username")
     module_name = request.data.decode("utf-8")

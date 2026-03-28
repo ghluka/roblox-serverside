@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>NettSS</title>
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-        <link rel="stylesheet" href="/assets/css/index.css">
+{% extends "base.html" %}
+
+{% block extra_css %}
         <link rel="stylesheet" media="screen" href="/assets/css/editor.css">
         <link rel="stylesheet" media="screen" href="/assets/css/privacy.css">
         <link rel="stylesheet" media="screen" href="/assets/css/players.css">
         <link rel="stylesheet" media="screen" href="/assets/css/sidebar.css">
+{% endblock %}
+
+{% block head_extras %}
         <meta content="NettSS" property="og:title">
         <meta content="An open-source server-side LuaU executor for Roblox over HTTP. Allows in-game code execution and administration." property="og:description">
-        <meta content="#bc49db" data-react-helmet="true" name="theme-color">
-        <meta name="color-scheme" content="dark">
-    </head>
-    <body>
+{% endblock %}
+
+{% block body %}
         <div style="text-align: center;">
             <h1 onclick="window.location.href = '/'"><div class="logo_name"><span style="color: #bc49db;">Nett</span><span>SS</span></div></h1>
         </div>
@@ -36,5 +33,4 @@
                 <p>We respect your privacy. If you wish to delete all of your data from our systems, please contact us at <a href="mailto:removal@nett.wtf">removal@nett.wtf</a>.</p>
             </div>
         </div>
-    </body>
-</html>
+{% endblock %}

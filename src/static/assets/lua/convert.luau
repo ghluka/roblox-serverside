@@ -374,38 +374,31 @@ Game = game
 
 local realGame = game
 
+local function buildOutput(...)
+	local parts = {}
+	for _,v in pairs({...}) do
+		table.insert(parts, tostring(v))
+	end
+	return table.concat(parts, " ")
+end
+
+local err = error
 print = function(...)
-    local output = {...}
-    local output_s = {}
-    for _,v in pairs(output) do
-        table.insert(output_s, tostring(v))
-    end
-	local out = table.concat(output_s, " ")
+	local out = buildOutput(...)
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "print", out)
 		getfenv(2).print(out)
 	end)
 end
 warn = function(...)
-    local output = {...}
-    local output_s = {}
-    for _,v in pairs(output) do
-        table.insert(output_s, tostring(v))
-    end
-	local out = table.concat(output_s, " ")
+	local out = buildOutput(...)
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "warn", out)
 		getfenv(2).warn(out)
 	end)
 end
-local err = error
 error = function(...)
-    local output = {...}
-    local output_s = {}
-    for _,v in pairs(output) do
-        table.insert(output_s, tostring(v))
-    end
-	local out = table.concat(output_s, " ")
+	local out = buildOutput(...)
 	pcall(function()
 		require(tonumber("130629305657257"))(plr, "error", out)
 	end)

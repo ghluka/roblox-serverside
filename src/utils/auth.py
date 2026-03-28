@@ -1,12 +1,13 @@
+import functools
 import os
 import sqlite3
 from urllib.parse import urlencode
 
 import requests
 from dotenv import load_dotenv
-from flask import redirect, session, url_for
+from flask import abort, redirect, session, url_for
 
-from utils.inputs import PATH
+from utils.inputs import TOS_VERSION
 
 DB_PATH = "users.db"
 
@@ -64,6 +65,7 @@ class DiscordAuth:
     def require_login(self, func):
         """Decorator to protect routes that require login."""
 
+        @functools.wraps(func)
         def wrapped(*args, **kwargs):
             if "user" not in session:
                 return redirect(url_for("auth.login"))
@@ -74,58 +76,52 @@ class DiscordAuth:
                 return redirect(url_for("auth.logout"))
             return func(*args, **kwargs)
 
-        wrapped.__name__ = func.__name__
         return wrapped
 
     def require_agreement(self, func):
         """Decorator to protect routes that require a Terms of Service agreement."""
 
+        @functools.wraps(func)
         def wrapped(*args, **kwargs):
             if "user" not in session:
                 return redirect(url_for("auth.login"))
 
             with sqlite3.connect(DB_PATH) as conn:
                 cursor = conn.cursor()
-
                 cursor.execute(
                     "SELECT tos_version FROM users WHERE discord_id = ?",
                     (session.get("user").get("id"),),
                 )
                 result = cursor.fetchone()[0]
 
-                with open(f"{PATH}/static/terms.html", "r", encoding="utf8") as f:
-                    version = int(f.read().split('version="')[1].split('"')[0])
-
-                if result == 0 or result != version:
-                    return ""
+            if result == 0 or result != TOS_VERSION:
+                return ""
 
             return func(*args, **kwargs)
 
-        wrapped.__name__ = func.__name__
         return wrapped
 
     def require_admin(self, func):
         """Decorator to protect routes that require an administrator rank."""
 
+        @functools.wraps(func)
         def wrapped(*args, **kwargs):
             if "user" not in session:
-                return redirect("/404.html")
+                abort(404)
 
             with sqlite3.connect(DB_PATH) as conn:
                 cursor = conn.cursor()
-
                 cursor.execute(
                     "SELECT whitelist FROM users WHERE discord_id = ?",
                     (session.get("user").get("id"),),
                 )
                 result = cursor.fetchone()[0]
 
-                if result < 255:
-                    return redirect("/404.html")
+            if result < 255:
+                abort(404)
 
             return func(*args, **kwargs)
 
-        wrapped.__name__ = func.__name__
         return wrapped
 
 

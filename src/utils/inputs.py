@@ -4,6 +4,8 @@ from tkinter import filedialog
 
 PATH = pathlib.Path(__file__).parent.parent.resolve()
 
+TOS_VERSION = 1
+
 
 def select_rbxmx() -> str:
     """Opens a file dialog to select a Roblox XML model file."""
