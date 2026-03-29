@@ -1,6 +1,13 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
+function trackExecution() {
+    const count = (parseInt(localStorage.getItem('nettss_executed') || '0')) + 1;
+    localStorage.setItem('nettss_executed', count);
+    const el = document.getElementById('stat-scripts');
+    if (el) el.textContent = count.toLocaleString();
+}
+
 function execute(script) {
     const url = window.location.origin + "/api/execute";
 
@@ -13,6 +20,8 @@ function execute(script) {
     }).then(response => response.text()).then(function(response) {
         if (response == "NO CLIENT") {
             userIdAlert(getUserId());
+        } else {
+            trackExecution();
         }
     }).catch(error => console.error('Error:', error));
 }
@@ -28,6 +37,8 @@ function executeSS(script) {
     }).then(response => response.text()).then(function(response) {
         if (response == "NO CLIENT") {
             userIdAlert(getUserId());
+        } else {
+            trackExecution();
         }
     }).catch(error => console.error('Error:', error));
 }
@@ -48,6 +59,8 @@ function executeRequire(script)
     }).then(response => response.text()).then(function(response) {
         if (response == "NO CLIENT") {
             userIdAlert(getUserId());
+        } else {
+            trackExecution();
         }
     }).catch(error => console.error('Error:', error));
 }

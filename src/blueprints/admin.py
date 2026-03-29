@@ -3,6 +3,7 @@ import os
 import pickle
 import re
 import sqlite3
+from datetime import datetime
 
 from flask import (
     Blueprint,
@@ -71,11 +72,27 @@ def admin_user(user_id):
             roblox_id = request.form.get("roblox_id")
             whitelist = request.form.get("whitelist")
 
+            cur.execute("SELECT whitelist FROM users WHERE id = ?", (user_id,))
+            old_row = cur.fetchone()
+            old_whitelist = old_row[0] if old_row else None
+
             cur.execute(
                 "UPDATE users SET roblox_id = ?, whitelist = ? WHERE id = ?",
                 (roblox_id, whitelist, user_id),
             )
             conn.commit()
+
+            if old_whitelist is not None and str(old_whitelist) != str(whitelist):
+                with open(f"{PATH}/ranks.json", "r", encoding="utf8") as f:
+                    ranks = json.load(f)
+                old_name = ranks.get(str(old_whitelist), str(old_whitelist))
+                new_name = ranks.get(str(whitelist), str(whitelist))
+                timestamp = datetime.utcnow().isoformat()
+                cur.execute(
+                    "INSERT INTO user_history (user_id, event_type, description, timestamp) VALUES (?, ?, ?, ?)",
+                    (user_id, "whitelist", f"Whitelist tier changed from {old_name} to {new_name}", timestamp),
+                )
+                conn.commit()
 
             return redirect(url_for("admin.admin_user", user_id=user_id))
 

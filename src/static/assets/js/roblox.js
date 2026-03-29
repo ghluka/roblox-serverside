@@ -70,6 +70,8 @@ function updatePlayers() {
     }).then(response => response.text()).then(function(response) {
         document.getElementById("player-list").innerHTML = response;
         document.getElementById("playersearch").dispatchEvent(new Event("input"));
+        const clientEl = document.getElementById('stat-client');
+        const clientIconEl = document.getElementById('stat-client-icon');
         if (response == "") {
             document.getElementById("player-action-warning").innerHTML = `
             <h3>Waiting For Game...</h3>
@@ -79,6 +81,8 @@ function updatePlayers() {
             `;
             document.getElementById("player-action-warning").style.display = "flex";
             document.getElementById("player-actions-container").style.display = "none";
+            if (clientEl) { clientEl.textContent = 'Offline'; clientEl.className = 'stat-value stat-offline'; }
+            if (clientIconEl) { clientIconEl.className = 'bx bx-wifi-off stat-icon stat-offline'; }
             return;
         }
         document.getElementById("player-action-warning").innerHTML = `
@@ -86,6 +90,8 @@ function updatePlayers() {
             <br>
             <h5>Select a player on the left to see information and a list of scripts you can perform on them.</h5>
             `;
+        if (clientEl) { clientEl.textContent = 'Online'; clientEl.className = 'stat-value stat-online'; }
+        if (clientIconEl) { clientIconEl.className = 'bx bx-wifi stat-icon stat-online'; }
     }).catch(_ => { });
     document.getElementById("playersearch").dispatchEvent(new Event("input"));
     setTimeout(updatePlayers, 10000);
@@ -220,3 +226,52 @@ function initCustomSelect() {
 }
 
 initCustomSelect();
+
+// Seed scripts-executed stat from localStorage on page load
+(function() {
+    const count = parseInt(localStorage.getItem('nettss_executed') || '0');
+    const el = document.getElementById('stat-scripts');
+    if (el) el.textContent = count.toLocaleString();
+}());
+
+// Activity history feed
+function historyIcon(type) {
+    const icons = { signup: 'bxs-user-plus', whitelist: 'bxs-shield' };
+    return icons[type] || 'bx-info-circle';
+}
+
+function formatHistoryTime(isoStr) {
+    const d = new Date(isoStr + 'Z');
+    const diff = Math.floor((Date.now() - d.getTime()) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 2592000) return `${Math.floor(diff / 86400)}d ago`;
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function loadHistory() {
+    const list = document.getElementById('dash-history');
+    if (!list) return;
+    fetch('/api/history')
+        .then(r => r.json())
+        .then(events => {
+            if (!events.length) {
+                list.innerHTML = '<li class="dash-history-empty">No activity yet.</li>';
+                return;
+            }
+            list.innerHTML = events.map(e => `
+                <li class="dash-history-item dash-history-${e.event_type}">
+                    <span class="dash-history-icon"><i class="bx ${historyIcon(e.event_type)}"></i></span>
+                    <div>
+                        <p class="dash-history-desc">${e.description}</p>
+                        <span class="dash-history-time">${formatHistoryTime(e.timestamp)}</span>
+                    </div>
+                </li>
+            `).join('');
+        })
+        .catch(() => {
+            list.innerHTML = '<li class="dash-history-empty">Could not load history.</li>';
+        });
+}
+loadHistory();

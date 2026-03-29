@@ -39,6 +39,17 @@ def init_db():
             )
         """
         )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS user_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                event_type TEXT NOT NULL,
+                description TEXT NOT NULL,
+                timestamp TEXT NOT NULL
+            )
+        """
+        )
         conn.commit()
 
 
@@ -68,6 +79,7 @@ def signup(user_info):
                     0,
                 ),
             )
+            new_user_id = cursor.lastrowid
             conn.commit()
         else:
             email = user_info.get("email", existing_user[2])

@@ -1,7 +1,7 @@
 import json
 import sqlite3
 
-from flask import Blueprint, render_template, session
+from flask import Blueprint, jsonify, render_template, session
 
 from blueprints.auth import DB_PATH, discord_auth, signup
 from utils.inputs import PATH, TOS_VERSION
@@ -55,3 +55,33 @@ def dashboard():
         tos_updated=tos_updated,
         new_user=new_user,
     )
+
+
+@dash.route("/api/history")
+@discord_auth.require_login
+def user_history():
+    user = session["user"]
+    discord_id = user.get("id")
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, signup_date FROM users WHERE discord_id = ?", (discord_id,))
+        result = cursor.fetchone()
+        if not result:
+            return jsonify([])
+
+        user_id, signup_date = result
+        cursor.execute(
+            "SELECT event_type, description, timestamp FROM user_history"
+            " WHERE user_id = ? ORDER BY timestamp DESC LIMIT 50",
+            (user_id,),
+        )
+        rows = cursor.fetchall()
+
+    events = [
+        {"event_type": r[0], "description": r[1], "timestamp": r[2]}
+        for r in rows
+    ]
+    if signup_date:
+        events.append({"event_type": "signup", "description": "Account created", "timestamp": signup_date})
+    return jsonify(events)
