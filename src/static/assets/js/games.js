@@ -21,6 +21,10 @@ async function updateGames() {
         loading = true;
 
         const res = await fetch(`/api/games/page?page=${page}`);
+
+        if (document.getElementById("loadingGames")) {
+            document.getElementById("loadingGames").remove();
+        }
         const data = await res.json();
 
         if (data.games.length === 0) {
@@ -30,29 +34,28 @@ async function updateGames() {
         }
 
         for (const v of data.games) {
-            const div = document.createElement("div");
-            div.className = "game";
-            div.onclick = () => window.open(v.url);
+            try {
+                const div = document.createElement("div");
+                div.className = "game";
+                div.onclick = () => window.open(v.url);
 
-            div.innerHTML = `
-                <img src="${v.thumbnail}" class="preview-img">
-                <h3>${v.data[0].name}</h3>
-                <div class="swap-group">
-                    <h5 class="swap-item"><i class='bx bxs-user'></i> ${v.data[0].visits.toLocaleString()} visits</h5>
-                    <h5 class="swap-item"><i class='bx bxs-user'></i> ${v.data[0].playing.toLocaleString()} playing</h5>
-                </div>
-                <button class="play-button"
-                    onclick="event.stopPropagation();
-                    window.location.href='roblox://experiences/start?placeId=${v.placeid}'">
-                    <i class="bx bx-play"></i>
-                </button>
-            `;
+                div.innerHTML = `
+                    <img src="${v.thumbnail}" class="preview-img">
+                    <h3>${v.data[0].name}</h3>
+                    <div class="swap-group">
+                        <h5 class="swap-item"><i class='bx bxs-user'></i> ${v.data[0].visits.toLocaleString()} visits</h5>
+                        <h5 class="swap-item"><i class='bx bxs-user'></i> ${v.data[0].playing.toLocaleString()} playing</h5>
+                    </div>
+                    <button class="play-button"
+                        onclick="event.stopPropagation();
+                        window.location.href='roblox://experiences/start?placeId=${v.placeid}'">
+                        <i class="bx bx-play"></i>
+                    </button>
+                `;
 
-            document.getElementById("games_list").appendChild(div);
-        }
-
-        if (document.getElementById("loadingGames")) {
-            document.getElementById("loadingGames").remove();
+                document.getElementById("games_list").appendChild(div);
+            }
+            catch {}
         }
 
         page++;
