@@ -374,13 +374,14 @@ a, a:visited {
 .game-stats {
     display: flex;
     flex-direction: row;
+    gap: 5px;
 }
 
 .game-stats > div {
     display: inline-flex;
     flex-direction: row;
     position: relative;
-    margin: 5px;
+    margin-top: 5px;
     border: 2px solid var(--border);
     border-radius: 8px;
     background-color: var(--dark-hov);
