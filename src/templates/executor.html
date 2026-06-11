@@ -3,7 +3,7 @@
 {% block body %}
     <div class="sidebar">
         <div class="logo-details">
-            <div class="logo_name" onclick="window.location.href = '/'"><span style="color: #bc49db;">Nett</span><span>SS</span></div>
+            <div class="logo_name" onclick="window.location.href = '/'"><span class="brand-nett">Nett</span><span>SS</span></div>
             <i class="bx bx-menu" id="btn"></i>
         </div>
         <ul class="nav-list">
@@ -56,7 +56,7 @@
           <img class="avatar" src="{{discord_avatar}}">
           <div>
             <p>{{discord_username}}</p>
-            <h5 style="color: #606070;">Logout</h5>
+            <h5 class="muted-text">Logout</h5>
           </div>
         </div>
     </div>
@@ -74,6 +74,7 @@
             <p>Here's an overview of your account and recent activity.</p>
             {% endif %}
           </div>
+          <button class="dash-header-action" onclick="document.querySelector('.exec-tab').click()"><i class="bx bx-play"></i> Run Script</button>
         </div>
 
         <div class="stat-grid">
@@ -115,8 +116,8 @@
               <img id="avatar" class="avatar dash-account-avatar">
               <div>
                 <p class="stat-label">Roblox Username</p>
-                <h2 id="username" style="margin: 4px 0 8px;">_</h2>
-                <button onclick="resetRobloxId()" style="margin: 0;">Set Username</button>
+                <h2 id="username" class="dash-username">_</h2>
+                <button class="compact-button" onclick="resetRobloxId()">Set Username</button>
               </div>
             </div>
           </div>
@@ -127,15 +128,41 @@
             <ol class="dash-steps">
               <li>Go to the <strong>Loader</strong> page and copy your loader script</li>
               <li>Paste it into a <strong>Script</strong> inside ServerScriptService in Studio</li>
-              <li><strong>Publish &amp; join your game</strong> — the client connects automatically</li>
+              <li><strong>Publish &amp; join your game</strong> - the client connects automatically</li>
               <li>Head to the <strong>Executor</strong> tab and run your first script</li>
             </ol>
             {% else %}
             <h3><i class="bx bx-history"></i> Activity History</h3>
             <ul class="dash-history" id="dash-history">
-              <li class="dash-history-loading"><i class="bx bx-loader-alt bx-spin"></i> Loading…</li>
+              <li class="dash-history-loading"><i class="bx bx-loader-alt bx-spin"></i> Loading...</li>
             </ul>
             {% endif %}
+          </div>
+
+          <div class="script-container dash-card theme-card">
+            <h3><i class="bx bx-palette"></i> Theme</h3>
+            <div class="theme-options" role="group" aria-label="Theme options">
+              <button class="theme-option" type="button" data-theme-option="violet" aria-label="Violet theme">
+                <span class="theme-swatch violet"></span>
+                <span>Violet</span>
+              </button>
+              <button class="theme-option" type="button" data-theme-option="cyber" aria-label="Cyber theme">
+                <span class="theme-swatch cyber"></span>
+                <span>Cyber</span>
+              </button>
+              <button class="theme-option" type="button" data-theme-option="ember" aria-label="Ember theme">
+                <span class="theme-swatch ember"></span>
+                <span>Ember</span>
+              </button>
+              <button class="theme-option" type="button" data-theme-option="ocean" aria-label="Ocean theme">
+                <span class="theme-swatch ocean"></span>
+                <span>Ocean</span>
+              </button>
+              <button class="theme-option" type="button" data-theme-option="mono" aria-label="Mono theme">
+                <span class="theme-swatch mono"></span>
+                <span>Mono</span>
+              </button>
+            </div>
           </div>
 
         </div>
@@ -143,13 +170,25 @@
     </section>
     <section class="home-section" id="games">
       <div class="script-container scripthub-container">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Library</p>
+            <h2>Whitelisted Games</h2>
+          </div>
+        </div>
         <div class="grid-container" id="games_list">
         </div>
       </div>
     </section>
     <section class="home-section" id="executor">
       <div class="script-container executor-container">
-        <div id="container" style="width:100%; height:100%;"></div>
+        <div class="section-heading executor-heading">
+          <div>
+            <p class="section-kicker">Executor</p>
+            <h2>Editor</h2>
+          </div>
+        </div>
+        <div id="container" class="editor-frame"></div>
         <div class="execution-buttons">
           <button id="execute" onclick='execute(editor.getValue());'><i class="bx bx-play"></i> Execute</button>
           <button id="clear" onclick='editor._actions["clear-editor"]._run();'><i class="bx bx-trash"></i> Clear</button>
@@ -162,7 +201,12 @@
     <section class="home-section" id="players">
       <div class="player-container">
         <div class="script-container player-list-container">
-          <h3>Player list</h3>
+          <div class="section-heading compact-heading">
+            <div>
+              <p class="section-kicker">Session</p>
+              <h3>Players</h3>
+            </div>
+          </div>
           <section class="centered">
     <input class="search" id="playersearch" value="" placeholder="Search Players" oninput="
         const val = this.value.toLowerCase();
@@ -178,20 +222,20 @@
           <ul id="player-list">
           </ul>
         </div>
-        <div class="script-container" id="player-actions" userid="1">
+        <div class="script-container player-actions-panel" id="player-actions" userid="1">
           <h3 id="player-action-warning"></h3>
           <div class="grid-container avatar-container" id="player-actions-container">
-            <div style="padding: 0!important; border: none; background: transparent;">
+            <div class="player-profile-card">
                 <div>
-                  <img class="avatar player-avatar" id="player-action-avatar" style="width: 100px; height: 100px;">
-                  <div style="width: 100%;">
+                  <img class="avatar player-avatar selected-player-avatar" id="player-action-avatar">
+                  <div class="selected-player-copy">
                     <h2 id="player-action-displayname">Roblox</h2>
-                    <h3 style="color: #606070;" id="player-action-username">@Roblox</h3>
+                    <h3 class="muted-text" id="player-action-username">@Roblox</h3>
                   </div>
                 </div>
             </div>
             
-            <h4 style="width: 100%; margin: 10px 0 0 10px;">Character Actions</h4>
+            <h4 class="action-section-title">Character Actions</h4>
             <div class="grid-container avatar-container action-buttons">
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction(`targetchar.Humanoid.WalkSpeed = ${this.parentElement.querySelector('input').value}`);">Set Speed</button>
@@ -199,7 +243,7 @@
               </div>
             </div>
 
-            <h4 style="width: 100%; margin: 10px 0 0 10px;">Essential Actions</h4>
+            <h4 class="action-section-title">Essential Actions</h4>
             <div class="grid-container avatar-container action-buttons">
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 50%;" onclick="executePlayerAction('target:Kick()');">Kick</button>
@@ -215,7 +259,7 @@
               </div>
             </div>
 
-            <h4 style="width: 100%; margin: 10px 0 0 10px;">Fun Actions</h4>
+            <h4 class="action-section-title">Fun Actions</h4>
             <div class="grid-container avatar-container action-buttons">
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('targethum.Health = 0');">Kill</button>
@@ -254,7 +298,7 @@
               </div>
             </div>
 
-            <h4 style="width: 100%; margin: 10px 0 0 10px;">Tools Actions</h4>
+            <h4 class="action-section-title">Tools Actions</h4>
             <div class="grid-container avatar-container action-buttons">
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 33%;" onclick="executePlayerAction('require(580330877)().Parent = target.Backpack');">F3X</button>
@@ -263,7 +307,7 @@
               </div>
             </div>
 
-            <h4 style="width: 100%; margin: 10px 0 0 10px;">Troll Actions</h4>
+            <h4 class="action-section-title">Troll Actions</h4>
             <div class="grid-container avatar-container action-buttons">
               <div class="action-buttons" style="padding: 0!important;">
                 <button style="width: 50%;" onclick="let sel = document.getElementById('jumpscare');
@@ -299,9 +343,30 @@
     </section>
     <section class="home-section" id="scripthub">
       <div class="script-container scripthub-container">
-        <div class="centered">
-          <input class="search" id="module-username" value="" placeholder="Target's username">
-          <a id="report-button">report a script as broken</a>
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Scripts</p>
+            <h2>Script Hub</h2>
+          </div>
+          <button class="report-button" id="report-button" type="button"><i class="bx bx-error-circle"></i> Report</button>
+        </div>
+        <div class="scripthub-toolbar">
+          <div class="target-picker" id="module-target-picker">
+            <button class="target-picker-button" id="module-target-button" type="button" aria-expanded="false">
+              <i class="bx bxs-user-detail"></i>
+              <span id="module-target-label">All players</span>
+              <i class="bx bxs-chevron-down"></i>
+            </button>
+            <div class="target-picker-menu" id="module-target-menu">
+              <label class="target-option target-option-all">
+                <input type="checkbox" id="module-target-all">
+                <span>All players</span>
+              </label>
+              <div class="target-options" id="module-target-options">
+                <p class="target-empty">Waiting for players...</p>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="grid-container" id="modules">
         </div>
@@ -394,6 +459,8 @@
       {%endif%}
     </script>
     <script defer src="/assets/js/games.js"></script>
+    <script defer src="/assets/js/theme.js"></script>
+    <script defer src="/assets/js/module-targets.js"></script>
     <script defer src="/assets/js/roblox.js"></script>
     <script defer src="/assets/js/report.js"></script>
     <script defer src="/assets/js/execute.js"></script>

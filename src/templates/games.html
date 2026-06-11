@@ -1,6 +1,4 @@
 <section>
-    <h2><b>Games</b></h2>
-    <br>
 </section>
 {%if message != ""%}
 <p style="width: 100%; text-align: center;"><i class="bx bx-error"></i> {{message}}</p>
@@ -9,21 +7,21 @@
 <br>
 <section class="centered game-stats">
     <div>
-        <img class="avatar" src="/assets/svg/game.svg">
+        <i class="bx bx-game game-stat-icon"></i>
         <div>
             <h3 style="color: #606070;">Total Games</h3>
             <h3>{{games | length}}</h3>
         </div>
     </div>
     <div>
-        <img class="avatar" src="/assets/svg/joins.svg">
+        <i class="bx bx-joystick-button game-stat-icon"></i>
         <div>
             <h3 style="color: #606070;">Total Visits</h3>
             <h3>{{"{:,}".format(visits)}}</h3>
         </div>
     </div>
     <div>
-        <img class="avatar" src="/assets/svg/users.svg">
+        <i class="bx bxs-user game-stat-icon"></i>
         <div>
             <h3 style="color: #606070;">Total Playing</h3>
             <h3>{{"{:,}".format(playing)}}</h3>

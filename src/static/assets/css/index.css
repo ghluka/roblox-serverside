@@ -1,24 +1,113 @@
 :root {
-    --bg: rgba(30, 30, 45, 1);
-    --lite: rgba(30, 30, 45, 0.9);
-    --monaco: rgba(25, 25, 40, 0.9);
-    --dark: rgba(20, 20, 35, 0.2);
-    --dark-hov: rgba(20, 20, 35, 0.5);
-    --dark-btn: rgba(25, 25, 40, 1);
-    --dark-btn-hov: rgba(20, 20, 35, 1);
-    --darker-hov: rgba(20, 20, 35, 1);
-    --side: rgba(20, 20, 35, 1);
-    --nett: #bc49db;
-    --selected: rgba(188, 73, 219, 0.1);
+    --bg: rgb(26, 24, 38);
+    --lite: rgba(34, 30, 49, 0.94);
+    --monaco: rgba(23, 21, 35, 0.96);
+    --dark: rgba(18, 16, 28, 0.36);
+    --dark-hov: rgba(18, 16, 28, 0.68);
+    --dark-btn: rgb(37, 33, 54);
+    --dark-btn-hov: rgb(28, 25, 42);
+    --darker-hov: rgb(18, 16, 28);
+    --side: rgb(18, 16, 28);
+    --nett: #b667f1;
+    --accent-rgb: 182, 103, 241;
+    --accent-contrast: #ffffff;
+    --accent-2: #d38cff;
+    --accent-2-contrast: #1e0f2d;
+    --selected: rgba(var(--accent-rgb), 0.1);
     --card: rgba(20, 20, 35, 0.1);
-    --card-dark: rgba(188, 73, 219, 0.1);
-    --border: rgba(80, 64, 112, 0.25);
-    --color-success: rgb(0, 120, 0);
-    --color-danger: rgb(180, 0, 0);
+    --card-dark: rgba(var(--accent-rgb), 0.1);
+    --border: rgba(133, 102, 184, 0.28);
+    --color-success: rgb(20, 150, 87);
+    --color-success-hover: rgb(16, 124, 72);
+    --color-success-ring: rgba(20, 190, 105, 0.24);
+    --color-danger: rgb(190, 52, 65);
+    --color-danger-hover: rgb(160, 42, 54);
+    --color-danger-ring: rgba(255, 80, 96, 0.24);
+}
+
+:root[data-theme="cyber"] {
+    --bg: rgb(13, 22, 25);
+    --lite: rgba(17, 31, 35, 0.94);
+    --monaco: rgba(12, 24, 29, 0.96);
+    --dark: rgba(9, 18, 21, 0.36);
+    --dark-hov: rgba(9, 18, 21, 0.68);
+    --dark-btn: rgb(18, 37, 42);
+    --dark-btn-hov: rgb(12, 29, 34);
+    --darker-hov: rgb(9, 18, 21);
+    --side: rgb(10, 17, 20);
+    --nett: #24d7bd;
+    --accent-rgb: 36, 215, 189;
+    --accent-contrast: #061816;
+    --accent-2: #69cfff;
+    --accent-2-contrast: #061521;
+    --selected: rgba(36, 215, 189, 0.12);
+    --card-dark: rgba(36, 215, 189, 0.1);
+    --border: rgba(72, 141, 137, 0.32);
+}
+
+:root[data-theme="ember"] {
+    --bg: rgb(31, 22, 27);
+    --lite: rgba(39, 27, 33, 0.94);
+    --monaco: rgba(26, 18, 25, 0.96);
+    --dark: rgba(23, 15, 20, 0.36);
+    --dark-hov: rgba(23, 15, 20, 0.68);
+    --dark-btn: rgb(45, 31, 38);
+    --dark-btn-hov: rgb(34, 23, 30);
+    --darker-hov: rgb(23, 15, 20);
+    --side: rgb(24, 17, 23);
+    --nett: #e53946;
+    --accent-rgb: 229, 57, 70;
+    --accent-contrast: #ffffff;
+    --accent-2: #ff7d8d;
+    --accent-2-contrast: #26080d;
+    --selected: rgba(229, 57, 70, 0.13);
+    --card-dark: rgba(229, 57, 70, 0.1);
+    --border: rgba(151, 70, 84, 0.34);
+}
+
+:root[data-theme="ocean"] {
+    --bg: rgb(15, 22, 36);
+    --lite: rgba(20, 30, 48, 0.94);
+    --monaco: rgba(12, 20, 35, 0.96);
+    --dark: rgba(10, 16, 28, 0.38);
+    --dark-hov: rgba(10, 16, 28, 0.72);
+    --dark-btn: rgb(23, 38, 60);
+    --dark-btn-hov: rgb(15, 29, 48);
+    --darker-hov: rgb(10, 16, 28);
+    --side: rgb(11, 16, 27);
+    --nett: #5aa7ff;
+    --accent-rgb: 90, 167, 255;
+    --accent-contrast: #061525;
+    --accent-2: #84cfff;
+    --accent-2-contrast: #061521;
+    --selected: rgba(90, 167, 255, 0.12);
+    --card-dark: rgba(90, 167, 255, 0.1);
+    --border: rgba(82, 120, 170, 0.32);
+}
+
+:root[data-theme="mono"] {
+    --bg: rgb(22, 23, 27);
+    --lite: rgba(31, 32, 38, 0.94);
+    --monaco: rgba(20, 21, 26, 0.96);
+    --dark: rgba(14, 15, 18, 0.38);
+    --dark-hov: rgba(14, 15, 18, 0.72);
+    --dark-btn: rgb(39, 40, 48);
+    --dark-btn-hov: rgb(29, 30, 37);
+    --darker-hov: rgb(14, 15, 18);
+    --side: rgb(16, 17, 21);
+    --nett: #d7dde8;
+    --accent-rgb: 215, 221, 232;
+    --accent-contrast: #111318;
+    --accent-2: #a8b0bd;
+    --accent-2-contrast: #111318;
+    --selected: rgba(215, 221, 232, 0.1);
+    --card-dark: rgba(215, 221, 232, 0.08);
+    --border: rgba(130, 137, 150, 0.28);
 }
 
 html, body {
     background-color: var(--bg);
+    scrollbar-color: rgba(var(--accent-rgb), 0.52) var(--side);
 }
 
 *:not(#container, #container *, #code, #code *, p, i, a, span) {
@@ -45,12 +134,12 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(80, 64, 112, 0.5);
+    background: rgba(var(--accent-rgb), 0.52);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--nett);
+    background: rgba(var(--accent-rgb), 0.86);
 }
 
 img {
@@ -70,7 +159,7 @@ img {
     position: relative;
     padding: 16px 8px 4px 8px;
     margin: 5px;
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
     border-radius: 8px;
     background-color: var(--lite);
 }
@@ -110,7 +199,7 @@ img {
 .script-container {
     padding: 16px 16px 8px 16px;
     margin: 5px;
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
     border-radius: 8px;
     background-color: var(--lite);
 }
@@ -130,7 +219,7 @@ img {
 }
 
 button, input, select, .select-selected {
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
     border-radius: 4px;
     background-color: var(--dark);
     padding: 8px 16px;
@@ -147,12 +236,15 @@ input {
     background-color: var(--dark-hov);
 }
 
-select:hover, button:hover:not(.play-button), input:hover:not(.search) {
-    transform: scale(1.01);
+select:hover,
+button:hover:not(.play-button):not(.target-picker-button),
+input:hover:not(.search) {
+    transform: scale(1);
 }
 
-button:active:not(.play-button), input:active:not(.search) {
-    transform: scale(0.97);
+button:active:not(.play-button):not(.target-picker-button),
+input:active:not(.search) {
+    transform: scale(0.99);
 }
 
 input {
@@ -188,7 +280,7 @@ input {
 .code {
     padding: 8px;
     margin: 5px;
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
     border-radius: 4px;
     background-color: #252525;
     color: #CCCCCC;
@@ -244,11 +336,6 @@ a, a:visited {
     color: var(--nett);
 }
 
-#report-button {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 .play-button {
     padding: 0!important;
     margin-top: auto!important;
@@ -294,7 +381,7 @@ a, a:visited {
     flex-direction: row;
     position: relative;
     margin: 5px;
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
     border-radius: 8px;
     background-color: var(--dark-hov);
     padding: 4px;
@@ -324,6 +411,13 @@ a, a:visited {
     justify-content: center;
     text-align: left;
     margin: 4px;
+}
+
+.game-stat-icon {
+    color: var(--nett);
+    font-size: 2.4rem;
+    min-width: 52px;
+    align-items: center;
 }
 
 .logo_name {

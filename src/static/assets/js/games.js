@@ -1,3 +1,22 @@
+function animatePopulateItems(container, selector) {
+    if (!container) return;
+    const items = Array.from(container.querySelectorAll(selector));
+    items.forEach((item, index) => {
+        item.classList.remove("populate-item");
+        item.style.animationDelay = `${Math.min(index, 12) * 28}ms`;
+        void item.offsetWidth;
+        item.classList.add("populate-item");
+    });
+}
+
+function animatePopulateItem(item, index = 0) {
+    if (!item) return;
+    item.classList.remove("populate-item");
+    item.style.animationDelay = `${Math.min(index, 12) * 28}ms`;
+    void item.offsetWidth;
+    item.classList.add("populate-item");
+}
+
 async function updateGames() {
     const url = "/api/games";
     const response = await fetch(url);
@@ -11,6 +30,7 @@ async function updateGames() {
     document.getElementById("games_list").innerHTML = html;
     document.getElementById("gamesearch").value = tc;
     document.getElementById("gamesearch").dispatchEvent(new Event("input"));
+    animatePopulateItems(document.getElementById("games_list"), ".game, .game-stats > div");
 
     let page = 0;
     let loading = false;
@@ -54,6 +74,7 @@ async function updateGames() {
                 `;
 
                 document.getElementById("games_list").appendChild(div);
+                animatePopulateItem(div);
             }
             catch {}
         }

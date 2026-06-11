@@ -28,14 +28,16 @@ def dashboard():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT id, roblox_id, whitelist, tos_version FROM users WHERE discord_id = ?",
+            "SELECT id, roblox_id, whitelist, tos_version, theme FROM users WHERE discord_id = ?",
             (discord_id,),
         )
         result = cursor.fetchone()
 
-    user_id, roblox_id, whitelist, tos_db_version = 0, 1, 0, 0
+    user_id, roblox_id, whitelist, tos_db_version, theme = 0, 1, 0, 0, "violet"
     if result:
-        user_id, roblox_id, whitelist, tos_db_version = result
+        user_id, roblox_id, whitelist, tos_db_version, theme = result
+    if theme not in {"violet", "cyber", "ember", "ocean", "mono"}:
+        theme = "violet"
 
     with open(f"{PATH}/ranks.json", "r", encoding="utf8") as f:
         whitelists = json.loads(f.read())
@@ -54,6 +56,7 @@ def dashboard():
         discord_username=username,
         tos_updated=tos_updated,
         new_user=new_user,
+        theme=theme,
     )
 
 

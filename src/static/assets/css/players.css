@@ -71,7 +71,7 @@
     transition: all 0.4s ease;
     background: var(--dark);
     cursor: pointer;
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
 }
 
 .players li a div div img {
@@ -117,17 +117,21 @@
 }
 
 @keyframes waiting {
-    0% { color: #e791ff; }
-    100% { color: #8520a1; }
+    0% { color: var(--accent-2); }
+    100% { color: var(--nett); }
 }
 
 .found {
     animation: none!important;
-    color: #bc49db!important;
+    color: var(--nett)!important;
 }
 
 #player-list::-webkit-scrollbar-track {
     background-color: var(--dark-hov);
+}
+
+#player-list:empty {
+    overflow-y: hidden;
 }
 
 @media only screen and (max-width: 1050px) {
@@ -163,7 +167,7 @@
 }
 
 .select-selected {
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
     border-radius: 4px;
     background-color: var(--dark-btn);
     cursor: pointer;
@@ -176,7 +180,7 @@
 }
 
 .select-items {
-    border: 2px solid #50407040;
+    border: 2px solid var(--border);
     border-radius: 4px;
     background-color: var(--dark-btn);
     width: 100%;

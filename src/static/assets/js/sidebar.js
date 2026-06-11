@@ -24,9 +24,13 @@ function openTab(evt, tabName) {
         const tab = tabcontent[i];
         if (tab.id == tabName) {
             tabcontent[i].style.display = "flex";
+            tab.classList.remove("tab-enter");
+            void tab.offsetWidth;
+            tab.classList.add("tab-enter");
         }
         else {
             tabcontent[i].style.display = "none";
+            tab.classList.remove("tab-enter");
         }
     }
 

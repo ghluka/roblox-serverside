@@ -35,7 +35,8 @@ def init_db():
                 whitelist INTEGER,
                 user_data TEXT,
                 signup_date TEXT,
-                tos_version INTEGER
+                tos_version INTEGER,
+                theme TEXT DEFAULT 'violet'
             )
         """
         )
@@ -50,6 +51,10 @@ def init_db():
             )
         """
         )
+        try:
+            conn.execute("ALTER TABLE users ADD COLUMN theme TEXT DEFAULT 'violet'")
+        except sqlite3.OperationalError:
+            pass
         conn.commit()
 
 
@@ -189,6 +194,36 @@ def agree_to_terms():
         )
 
     return "You have confirmed that you agree to our Terms of Service."
+
+
+@auth.route("/api/theme", methods=["GET", "POST"])
+@discord_auth.require_login
+def user_theme():
+    valid_themes = {"violet", "cyber", "ember", "ocean", "mono"}
+    user = session["user"]
+    discord_id = user.get("id")
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        if request.method == "POST":
+            data = request.get_json(silent=True) or {}
+            theme = data.get("theme")
+            if theme not in valid_themes:
+                return jsonify({"error": "Invalid theme"}), 400
+
+            cursor.execute(
+                "UPDATE users SET theme = ? WHERE discord_id = ?",
+                (theme, discord_id),
+            )
+            conn.commit()
+            return jsonify({"theme": theme})
+
+        cursor.execute("SELECT theme FROM users WHERE discord_id = ?", (discord_id,))
+        row = cursor.fetchone()
+
+    theme = row[0] if row and row[0] in valid_themes else "violet"
+    return jsonify({"theme": theme})
 
 
 init_db()

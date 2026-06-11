@@ -230,6 +230,33 @@ def roblox_player_ping():
     return "Connect to a server please!"
 
 
+@executor.route("/api/players.json", methods=["GET"])
+@discord_auth.require_login
+def roblox_players_json():
+    user = session["user"]
+    discord_id = user.get("id")
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT roblox_id FROM users WHERE discord_id = ?", (discord_id,)
+        )
+        userid = str(cursor.fetchone()[0])
+
+    players = users_players.get(userid, {})
+    return {
+        "players": [
+            {
+                "username": username,
+                "displayName": data.get("DisplayName", username),
+                "userId": data.get("UserId"),
+                "avatarUrl": data.get("AvatarUrl"),
+            }
+            for username, data in players.items()
+        ]
+    }
+
+
 @executor.route("/api/close", methods=["POST"])
 def roblox_close():
     userid = request.headers.get("user-id")

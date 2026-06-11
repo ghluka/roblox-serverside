@@ -63,12 +63,25 @@ function updateUserInfoDashboard() {
 //}
 updateUserInfoDashboard();
 
+function animatePopulateItems(container, selector) {
+    if (!container) return;
+    const items = Array.from(container.querySelectorAll(selector));
+    items.forEach((item, index) => {
+        item.classList.remove("populate-item");
+        item.style.animationDelay = `${Math.min(index, 12) * 28}ms`;
+        void item.offsetWidth;
+        item.classList.add("populate-item");
+    });
+}
+
 function updatePlayers() {
     const url = "/api/players";
     fetch(url, {
         method: "GET"
     }).then(response => response.text()).then(function(response) {
-        document.getElementById("player-list").innerHTML = response;
+        const playerList = document.getElementById("player-list");
+        playerList.innerHTML = response;
+        animatePopulateItems(playerList, ".players");
         document.getElementById("playersearch").dispatchEvent(new Event("input"));
         const clientEl = document.getElementById('stat-client');
         const clientIconEl = document.getElementById('stat-client-icon');
@@ -104,7 +117,9 @@ function updateModules() {
     fetch(url, {
         method: "GET"
     }).then(response => response.text()).then(function(response) {
-        document.getElementById("modules").innerHTML = response;
+        const modules = document.getElementById("modules");
+        modules.innerHTML = response;
+        animatePopulateItems(modules, ".module");
     }).catch(error => console.error('Error:', error));
     setTimeout(updateModules, 60000 * 5);
 }

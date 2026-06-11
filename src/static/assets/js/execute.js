@@ -45,24 +45,32 @@ function executeSS(script) {
 
 function executeRequire(script)
 {
-    var username =  document.getElementById("module-username").value;
-    if (username == "") {
-        var username = document.getElementById("username").innerHTML;
+    let targets = [];
+    if (typeof window.getModuleTargets === "function") {
+        targets = window.getModuleTargets();
     }
-    const url = window.location.origin + "/api/execute_module?username=" + username
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "text/plain"
-        },
-        body: script
-    }).then(response => response.text()).then(function(response) {
-        if (response == "NO CLIENT") {
-            userIdAlert(getUserId());
-        } else {
-            trackExecution();
-        }
-    }).catch(error => console.error('Error:', error));
+
+    if (targets.length === 0) {
+        const usernameEl = document.getElementById("username");
+        targets = [usernameEl ? usernameEl.textContent.trim() : ""];
+    }
+
+    targets.forEach(username => {
+        const url = window.location.origin + "/api/execute_module?username=" + encodeURIComponent(username);
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: script
+        }).then(response => response.text()).then(function(response) {
+            if (response == "NO CLIENT") {
+                userIdAlert(getUserId());
+            } else {
+                trackExecution();
+            }
+        }).catch(error => console.error('Error:', error));
+    });
 }
 
 function executePlayerAction(script) {
