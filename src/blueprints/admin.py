@@ -248,7 +248,6 @@ def admin_upload_rbxmx(module_name):
 
 
 @admin.route("/admin/module/<module_name>/script.luau")
-@discord_auth.require_admin
 def admin_view_script(module_name):
     if "/" in module_name or "\\" in module_name or ".." in module_name:
         return Response('print("Hello World!")', mimetype="text/x-lua")

@@ -135,6 +135,10 @@ local target = "{username}"
             ) as convert_file:
                 convert = convert_file.read().replace("{{coreGui}}", coregui)
             with open(
+                f"{PATH}/static/assets/lua/vlua.luau", encoding="utf8"
+            ) as vlua_file:
+                vluau = vlua_file.read()
+            with open(
                 f"{PATH}/static/assets/lua/functions.luau", encoding="utf8"
             ) as functions_file:
                 functions = functions_file.read()
@@ -167,6 +171,11 @@ local target = "{username}"
                 end
                 {header}
                 {convert}
+                {vluau}
+                local function loadstring(...)
+                    return ls("\\n"..tostring(...).."\\n")
+                end
+                getfenv().loadstring = loadstring
                 {functions}
                 {script_file.read()}
                 end)"""
