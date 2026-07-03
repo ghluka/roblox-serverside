@@ -252,7 +252,9 @@ def roblox_players_json():
         )
         userid = str(cursor.fetchone()[0])
 
-    players = users_players.get(userid, {})
+    players = users_players.get(userid)
+    if not isinstance(players, dict):
+        return {"players": []}
     return {
         "players": [
             {

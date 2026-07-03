@@ -433,3 +433,7 @@ a, a:visited {
     font-weight: 400;
     font-style: normal;
 }
+
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
+    background-color: var(--nett)!important;
+}
