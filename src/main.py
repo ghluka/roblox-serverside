@@ -1,10 +1,11 @@
 import os
+from datetime import date
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from flask import Flask, render_template, request, session
+from flask import Flask, Response, render_template, request, session
 from markupsafe import Markup
 
 from blueprints.admin import admin
@@ -33,6 +34,85 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 with open(f"{PATH}/CNAME", "r", encoding="utf-8") as f:
     domain = f.read().strip()
+
+_scheme = "http" if domain.startswith(("localhost", "127.0.0.1")) else "https"
+BASE_URL = f"{_scheme}://{domain}"
+
+SITEMAP_PAGES = [
+    ("/", "weekly", "1.0"),
+    ("/discord", "monthly", "0.6"),
+    ("/terms", "yearly", "0.3"),
+    ("/privacy", "yearly", "0.3"),
+    ("/eula", "yearly", "0.3"),
+]
+
+ROBOTS_DISALLOW = [
+    "/api/",
+    "/admin",
+    "/admin/",
+    "/dashboard",
+    "/login",
+    "/callback",
+    "/logout",
+    "/script",
+]
+
+AI_USER_AGENTS = [
+    "GPTBot",
+    "ChatGPT-User",
+    "OAI-SearchBot",
+    "Google-Extended",
+    "Anthropic-AI",
+    "Claude-Web",
+    "ClaudeBot",
+    "CCBot",
+    "PerplexityBot",
+    "Cohere-ai",
+    "Applebot-Extended",
+    "Amazonbot",
+    "Bytespider",
+]
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    disallow = [f"Disallow: {path}" for path in ROBOTS_DISALLOW]
+
+    lines = [
+        "# robots.txt",
+        "User-agent: *",
+        "# Content Signals (contentsignals.org) - AI content-usage preferences",
+        "Content-Signal: search=yes, ai-input=yes, ai-train=yes",
+        *disallow,
+        "Allow: /",
+        "",
+        "# Sitemap",
+        f"Sitemap: {BASE_URL}/sitemap.xml",
+        "",
+        "# AI/LLM crawlers are welcome on all public pages",
+    ]
+
+    for ua in AI_USER_AGENTS:
+        lines += ["", f"User-agent: {ua}", *disallow, "Allow: /"]
+
+    lines.append("")
+    return Response("\n".join(lines), mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    today = date.today().isoformat()
+    urls = "".join(
+        f"<url><loc>{BASE_URL}{path}</loc><lastmod>{today}</lastmod>"
+        f"<changefreq>{freq}</changefreq><priority>{priority}</priority></url>"
+        for path, freq, priority in SITEMAP_PAGES
+    )
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"{urls}</urlset>"
+    )
+    return Response(xml, mimetype="application/xml")
 
 
 @app.route("/")
