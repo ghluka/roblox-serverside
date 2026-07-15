@@ -37,7 +37,23 @@
             <button type="submit" style="background-color: var(--nett);">Save</button>
         </form>
         <button onclick="window.location.href = '/admin#gd'">Go back</button>
+        <button onclick="deleteGame()" style="background-color: #c0392b;"><i class="bx bx-trash"></i> Delete Game</button>
     </div>
+    <script>
+        function deleteGame() {
+            if (!confirm(`Delete game {{ placeid }}? This removes it from the list entirely.`)) return;
+            fetch(`/admin/game/{{ placeid }}/delete`, { method: "POST" })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = "/admin#gd";
+                    } else {
+                        alert(data.error || "Failed to delete game.");
+                    }
+                })
+                .catch(() => alert("Failed to delete game."));
+        }
+    </script>
     <script>
         fetch(`/api/game/{{ placeid }}`)
         .then(r => r.json())

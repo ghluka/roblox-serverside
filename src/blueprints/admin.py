@@ -456,6 +456,27 @@ def admin_game_edit(placeid):
     return render_template("admin/edit/game.html", game=game, placeid=placeid)
 
 
+@admin.route("/admin/game/<placeid>/delete", methods=["POST"])
+@discord_auth.require_admin
+def admin_game_delete(placeid):
+    games_path = f"{PATH}/games/games.json"
+
+    with open(games_path, encoding="utf8") as f:
+        games = json.load(f)
+
+    if placeid == "0":
+        return jsonify({"success": False, "error": "Cannot delete this entry"}), 400
+    if placeid not in games:
+        return jsonify({"success": False, "error": "Game not found"}), 404
+
+    del games[placeid]
+
+    with open(games_path, "w", encoding="utf8") as f:
+        json.dump(games, f, indent=4)
+
+    return jsonify({"success": True})
+
+
 @admin.route("/admin/set_cookie", methods=["POST"])
 @discord_auth.require_admin
 def admin_set_cookie():

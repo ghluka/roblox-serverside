@@ -1,5 +1,6 @@
 import json
 import sqlite3
+from datetime import datetime
 
 import requests
 from flask import Blueprint, Response, jsonify, request
@@ -18,6 +19,15 @@ def roblox_id_exists(roblox_id):
         return cursor.fetchone() is not None
 
 
+def _key_active(key_expires):
+    if not key_expires:
+        return False
+    try:
+        return datetime.fromisoformat(key_expires) > datetime.utcnow()
+    except (ValueError, TypeError):
+        return False
+
+
 @user.route("/api/whitelist", methods=["GET"])
 def whitelist_check():
     roblox_id = request.args.get("userid")
@@ -27,6 +37,8 @@ def whitelist_check():
         games_json = json.loads(games_file.read())
     try:
         whitelist_limit = games_json[str(game_id)].get("whitelist")
+        if whitelist_limit is None:
+            whitelist_limit = 255
     except KeyError:
         whitelist_limit = 255
 
@@ -34,12 +46,20 @@ def whitelist_check():
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT MAX(whitelist) FROM users WHERE roblox_id = ?", (roblox_id,)
+                "SELECT whitelist, key_expires, key_game FROM users"
+                " WHERE roblox_id = ? ORDER BY whitelist DESC",
+                (roblox_id,),
             )
-            whitelist = cursor.fetchone()[0]
+            rows = cursor.fetchall()
 
-            if whitelist >= whitelist_limit:
-                return "true"
+        for whitelist, key_expires, key_game in rows:
+            if whitelist is None or whitelist < whitelist_limit:
+                continue
+            if whitelist == 0:
+                if _key_active(key_expires) and str(key_game) == str(game_id):
+                    return "true"
+                continue
+            return "true"
 
     return "false"
 

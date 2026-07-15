@@ -57,10 +57,31 @@
                     <td>{{ u }}</td>
                     <td>{{ games[u]["url"] }}</td>
                     <td>{{ games[u].get("whitelist", 0) }}</td>
-                    <td><a href="/admin/game/{{ u }}">View/Edit</a></td>
+                    <td>
+                        <a href="/admin/game/{{ u }}">View/Edit</a>
+                        {% if u != "0" %}
+                        &middot; <a href="#" onclick="deleteGame('{{ u }}'); return false;" style="color:#e05555;">Delete</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
+            <script>
+                function deleteGame(id) {
+                    if (!confirm(`Delete game ${id}? This removes it from the list entirely.`)) return;
+                    fetch(`/admin/game/${id}/delete`, { method: "POST" })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = window.location.pathname + window.location.search + "#gd";
+                                location.reload();
+                            } else {
+                                alert(data.error || "Failed to delete game.");
+                            }
+                        })
+                        .catch(() => alert("Failed to delete game."));
+                }
+            </script>
         </div>
 
         <div id="gr" class="tabcontent">
