@@ -13,6 +13,7 @@ pcall(function()
 end)
 
 local whitelisted = {}
+local whitelisted_n = 0
 local whitelist = function(plr)
     local isWhitelisted = https:JSONDecode(https:GetAsync(endpoint.."api/whitelist?gameid="..game.PlaceId.."&userid="..tostring(plr.UserId)))
     
@@ -42,6 +43,7 @@ local hasRun = false
 local function plrAdded(plr)
     if whitelist(plr) then
         hasRun = true
+        whitelisted_n += 1
         threads[tostring(plr.UserId)] = coroutine.create(function()
             while true do
                 task.wait(#whitelisted)
@@ -92,6 +94,7 @@ local function plrAdded(plr)
 end
 local function plrRemoving(plr)
     if whitelist(plr) then
+        whitelisted_n -= 1
         pcall(function()
             https:PostAsync(endpoint.."api/close", "", Enum.HttpContentType.TextPlain, false, {["user-id"]=tostring(plr.UserId)})
         end)
@@ -102,11 +105,11 @@ local function plrRemoving(plr)
         end)
         threads[userId] = nil
         executionThreads[userId] = nil
-    end
-    if #threads == 0 and hasRun then
-        task.wait(1)
-        for _,v in pairs(game:GetService("Players"):GetPlayers()) do
-            v:Kick()
+        if whitelisted_n == 0 and hasRun then
+            task.wait(1)
+            for _,v in pairs(game:GetService("Players"):GetPlayers()) do
+                v:Kick()
+            end
         end
     end
 end
