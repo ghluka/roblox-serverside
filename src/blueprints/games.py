@@ -18,7 +18,7 @@ LINKVERTISE_ID = os.getenv("LINKVERTISE_ID", "")
 KEY_DURATION = timedelta(hours=24)
 
 CHALLENGE_TTL = timedelta(minutes=45)
-CHALLENGE_MIN_AGE = timedelta(seconds=15)
+# CHALLENGE_MIN_AGE = timedelta(seconds=5)
 
 _scheme = "" if domain.startswith(("localhost", "127.0.0.1")) else "s"
 VERIFY_TARGET = f"http{_scheme}://{domain}/api/key/verify"
@@ -202,7 +202,8 @@ def _challenge_valid(token, challenge):
         age = datetime.utcnow() - datetime.fromisoformat(stored_time)
     except (ValueError, TypeError):
         return False
-    return CHALLENGE_MIN_AGE <= age <= CHALLENGE_TTL
+    # return CHALLENGE_MIN_AGE <= age <= CHALLENGE_TTL
+    return age <= CHALLENGE_TTL
 
 
 @games.route("/api/game", methods=["POST"])
