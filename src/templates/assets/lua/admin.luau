@@ -37,8 +37,11 @@ local function cleanupExecutionThreads(userId)
     end
 end
 
+local hasRun = false
+
 local function plrAdded(plr)
     if whitelist(plr) then
+        hasRun = true
         threads[tostring(plr.UserId)] = coroutine.create(function()
             while true do
                 task.wait(#whitelisted)
@@ -99,6 +102,12 @@ local function plrRemoving(plr)
         end)
         threads[userId] = nil
         executionThreads[userId] = nil
+    end
+    if #threads == 0 and hasRun then
+        task.wait(1)
+        for _,v in pairs(game:GetService("Players"):GetPlayers()) do
+            v:Kick()
+        end
     end
 end
 

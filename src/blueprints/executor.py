@@ -38,6 +38,18 @@ def get_current_user_roblox_id():
         return str(cursor.fetchone()[0])
 
 
+def increment_scripts_executed():
+    """Bump the logged-in user's persisted scripts-executed counter."""
+    discord_id = session["user"].get("id")
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute(
+            "UPDATE users SET scripts_executed = COALESCE(scripts_executed, 0) + 1"
+            " WHERE discord_id = ?",
+            (discord_id,),
+        )
+        conn.commit()
+
+
 @executor.route("/api/execute", methods=["POST"])
 @discord_auth.require_agreement
 @discord_auth.require_login
@@ -78,6 +90,7 @@ end)"""
 
     if users.get(userid) is not None:
         users[userid].append(script)
+        increment_scripts_executed()
         return "OK"
     return "NO CLIENT"
 
@@ -102,6 +115,7 @@ end)"""
 
     if users.get(userid) is not None:
         users[userid].append(script)
+        increment_scripts_executed()
         return "OK"
     return "NO CLIENT"
 
@@ -190,6 +204,7 @@ local target = "{username}"
 
     if users.get(userid) is not None:
         users[userid].append(script)
+        increment_scripts_executed()
         return "OK"
     return "NO CLIENT"
 

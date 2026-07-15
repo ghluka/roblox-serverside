@@ -51,10 +51,19 @@ def init_db():
             )
         """
         )
-        try:
-            conn.execute("ALTER TABLE users ADD COLUMN theme TEXT DEFAULT 'violet'")
-        except sqlite3.OperationalError:
-            pass
+        for ddl in (
+            "ALTER TABLE users ADD COLUMN theme TEXT DEFAULT 'violet'",
+            "ALTER TABLE users ADD COLUMN key_expires TEXT",
+            "ALTER TABLE users ADD COLUMN key_game TEXT",
+            "ALTER TABLE users ADD COLUMN free_refreshes INTEGER DEFAULT 0",
+            "ALTER TABLE users ADD COLUMN scripts_executed INTEGER DEFAULT 0",
+            "ALTER TABLE users ADD COLUMN key_challenge TEXT",
+            "ALTER TABLE users ADD COLUMN key_challenge_time TEXT",
+        ):
+            try:
+                conn.execute(ddl)
+            except sqlite3.OperationalError:
+                pass
         conn.commit()
 
 

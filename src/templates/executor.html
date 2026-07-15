@@ -82,7 +82,7 @@
             <i class="bx bx-code-alt stat-icon"></i>
             <div>
               <p class="stat-label">Scripts Executed</p>
-              <h2 class="stat-value" id="stat-scripts">0</h2>
+              <h2 class="stat-value" id="stat-scripts">{{ "{:,}".format(scripts_executed) }}</h2>
             </div>
           </div>
           <div class="stat-card">
@@ -126,10 +126,6 @@
             {% if new_user %}
             <h3><i class="bx bx-rocket"></i> Getting Started</h3>
             <ol class="dash-steps">
-              <li>Go to the <strong>Loader</strong> page and copy your loader script</li>
-              <li>Paste it into a <strong>Script</strong> inside ServerScriptService in Studio</li>
-              <li><strong>Publish &amp; join your game</strong> - the client connects automatically</li>
-              <li>Head to the <strong>Executor</strong> tab and run your first script</li>
             </ol>
             {% else %}
             <h3><i class="bx bx-history"></i> Activity History</h3>
@@ -458,6 +454,7 @@
         });
       {%endif%}
     </script>
+    <script defer src="/assets/js/linkvertise.js"></script>
     <script defer src="/assets/js/games.js"></script>
     <script defer src="/assets/js/theme.js"></script>
     <script defer src="/assets/js/module-targets.js"></script>

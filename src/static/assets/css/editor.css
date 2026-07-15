@@ -959,3 +959,262 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+#free-tier {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: none !important;
+    display: block !important;
+}
+
+#free-tier p {
+    all: revert;
+}
+
+#free-tier .free-tier-intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 4px 2px 18px;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--dark);
+    color: #b7b9c6;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.free-tier-intro i {
+    color: var(--nett);
+    font-size: 1.1rem;
+    margin-top: 1px;
+    flex: 0 0 auto;
+}
+
+.free-tier-intro b {
+    color: #fff;
+}
+
+#free-tier .ft-loading {
+    color: #b7b9c6;
+    padding: 12px 2px;
+}
+
+.ft-game {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--lite);
+    padding: 18px;
+}
+
+.ft-top {
+    display: flex;
+    gap: 22px;
+    align-items: stretch;
+}
+
+.ft-media {
+    position: relative;
+    flex: 1 1 55%;
+    min-width: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.ft-thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+}
+
+.ft-game.ft-locked .ft-thumb {
+    filter: grayscale(0.75) brightness(0.5);
+}
+
+.ft-lock {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    pointer-events: none;
+    color: #fff;
+}
+
+.ft-lock i {
+    font-size: 46px;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+}
+
+.ft-lock span {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.ft-info {
+    flex: 1 1 45%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.ft-title {
+    margin: 0 0 2px;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    color: #fff;
+    word-break: break-word;
+}
+
+#free-tier .ft-creator {
+    color: #9a9cab;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+}
+
+.ft-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.ft-stat {
+    flex: 1 1 0;
+    min-width: 84px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--dark);
+}
+
+.ft-stat > i {
+    font-size: 1.15rem;
+    color: var(--nett);
+    flex: 0 0 auto;
+}
+
+.ft-stat > div {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    min-width: 0;
+}
+
+.ft-stat-value {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.ft-stat-label {
+    color: #8a8c9b;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.ft-cta {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ft-btn-row {
+    display: flex;
+    gap: 8px;
+}
+
+.ft-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 44px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ft-btn-row .ft-btn {
+    flex: 1 1 0;
+}
+
+.ft-btn-play {
+    background: #335fff !important;
+    color: #fff !important;
+    font-size: 1.05rem;
+}
+
+.ft-btn-play .bx-play {
+    font-size: 1.4em;
+}
+
+.ft-btn-key {
+    background: var(--nett) !important;
+    color: #fff !important;
+}
+
+.ft-btn-ghost {
+    background: var(--dark-btn) !important;
+    color: #e6e6ef !important;
+    border-color: var(--border) !important;
+}
+
+#free-tier .ft-hint {
+    color: #9a9cab;
+    font-size: 0.82rem;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.ft-hint i {
+    vertical-align: middle;
+    color: var(--nett);
+}
+
+.ft-about {
+    border-top: 2px solid var(--border);
+    padding-top: 14px;
+}
+
+.ft-about h3 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: 1.05rem;
+}
+
+#free-tier .ft-desc {
+    color: #b7b9c6;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+@media only screen and (max-width: 720px) {
+    .ft-top {
+        flex-direction: column;
+        gap: 16px;
+    }
+}

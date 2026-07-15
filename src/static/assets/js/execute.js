@@ -2,10 +2,11 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 function trackExecution() {
-    const count = (parseInt(localStorage.getItem('nettss_executed') || '0')) + 1;
-    localStorage.setItem('nettss_executed', count);
     const el = document.getElementById('stat-scripts');
-    if (el) el.textContent = count.toLocaleString();
+    if (el) {
+        const count = parseInt(el.textContent.replace(/[^0-9]/g, '') || '0') + 1;
+        el.textContent = count.toLocaleString();
+    }
 }
 
 function execute(script) {

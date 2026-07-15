@@ -242,13 +242,6 @@ function initCustomSelect() {
 
 initCustomSelect();
 
-// Seed scripts-executed stat from localStorage on page load
-(function() {
-    const count = parseInt(localStorage.getItem('nettss_executed') || '0');
-    const el = document.getElementById('stat-scripts');
-    if (el) el.textContent = count.toLocaleString();
-}());
-
 // Activity history feed
 function historyIcon(type) {
     const icons = { signup: 'bxs-user-plus', whitelist: 'bxs-shield' };
